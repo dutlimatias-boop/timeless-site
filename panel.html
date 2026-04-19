@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel Operativo · Timeless</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f8f6f2;
+    --accent: #c8f060;
+    --muted: #555;
+    --border: rgba(255,255,255,0.07);
+    --card: #111;
+    --card2: #161616;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: #888;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3 { font-family: 'Syne', sans-serif; color: var(--white); font-weight: 800; }
+
+  /* HEADER */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,10,0.95); backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .logo { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--white); letter-spacing: -0.02em; }
+  .logo span { color: var(--accent); }
+
+  .header-right { display: flex; align-items: center; gap: 1rem; }
+  .hotel-badge {
+    font-size: 0.78rem; color: var(--muted);
+    background: var(--card); border: 1px solid var(--border);
+    padding: 0.35rem 0.75rem; border-radius: 100px;
+  }
+
+  .refresh-btn {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--muted); padding: 0.35rem 0.9rem; border-radius: 6px;
+    font-size: 0.8rem; cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .refresh-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* MAIN */
+  main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+
+  /* STATS */
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border); border-radius: 12px;
+    overflow: hidden; margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background: var(--card); padding: 1.5rem 1.75rem;
+    transition: background 0.2s;
+  }
+  .stat-card:hover { background: var(--card2); }
+
+  .stat-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.6rem; display: block; }
+  .stat-val { font-family: 'Syne', sans-serif; font-size: 2.25rem; font-weight: 800; color: var(--white); display: block; line-height: 1; margin-bottom: 0.3rem; }
+  .stat-sub { font-size: 0.75rem; color: var(--muted); }
+  .stat-val.accent { color: var(--accent); }
+  .stat-val.green { color: #4ade80; }
+  .stat-val.yellow { color: #fbbf24; }
+
+  /* FILTERS */
+  .filters {
+    display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;
+    align-items: center; justify-content: space-between;
+  }
+
+  .filter-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+  .filter-btn {
+    padding: 0.45rem 1rem; border-radius: 100px;
+    font-size: 0.82rem; font-weight: 500; cursor: pointer;
+    border: 1px solid var(--border); color: var(--muted);
+    background: transparent; transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .filter-btn:hover { border-color: rgba(255,255,255,0.15); color: var(--white); }
+  .filter-btn.active { background: var(--accent); color: #0a0a0a; border-color: var(--accent); font-weight: 600; }
+
+  .search-box {
+    background: var(--card); border: 1px solid var(--border);
+    color: var(--white); padding: 0.45rem 1rem; border-radius: 6px;
+    font-size: 0.85rem; font-family: 'DM Sans', sans-serif;
+    outline: none; width: 220px; transition: border-color 0.2s;
+  }
+  .search-box::placeholder { color: var(--muted); }
+  .search-box:focus { border-color: rgba(255,255,255,0.2); }
+
+  /* LEADS TABLE */
+  .leads-header {
+    display: grid;
+    grid-template-columns: 180px 1fr 130px 130px 110px 160px;
+    gap: 1rem; padding: 0.6rem 1.25rem;
+    font-size: 0.7rem; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .leads-list { display: flex; flex-direction: column; gap: 1px; }
+
+  .lead-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    display: grid;
+    grid-template-columns: 180px 1fr 130px 130px 110px 160px;
+    gap: 1rem;
+    align-items: center;
+    transition: border-color 0.2s, background 0.2s;
+    margin-bottom: 6px;
+  }
+  .lead-card:hover { border-color: rgba(255,255,255,0.12); background: var(--card2); }
+  .lead-card.hot { border-left: 3px solid var(--accent); }
+  .lead-card.reservado { border-left: 3px solid #4ade80; }
+
+  .lead-name { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; color: var(--white); display: block; }
+  .lead-phone { font-size: 0.78rem; color: var(--muted); margin-top: 0.15rem; display: block; }
+  .lead-date { font-size: 0.75rem; color: var(--muted); margin-top: 0.15rem; display: block; }
+
+  .lead-consulta { font-size: 0.82rem; color: #777; line-height: 1.5; }
+
+  .badge {
+    display: inline-block; padding: 0.25rem 0.65rem;
+    border-radius: 100px; font-size: 0.72rem; font-weight: 600;
+    font-family: 'Syne', sans-serif; letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+  .badge-reserva { background: rgba(200,240,96,0.12); color: var(--accent); border: 1px solid rgba(200,240,96,0.25); }
+  .badge-interes { background: rgba(251,191,36,0.1); color: #fbbf24; border: 1px solid rgba(251,191,36,0.2); }
+  .badge-proceso { background: rgba(96,165,250,0.1); color: #60a5fa; border: 1px solid rgba(96,165,250,0.2); }
+  .badge-general { background: rgba(255,255,255,0.05); color: #666; border: 1px solid var(--border); }
+  .badge-confirmado { background: rgba(74,222,128,0.12); color: #4ade80; border: 1px solid rgba(74,222,128,0.2); }
+
+  .estado-badge {
+    display: inline-block; padding: 0.2rem 0.6rem;
+    border-radius: 4px; font-size: 0.72rem;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .estado-interesado { background: rgba(251,191,36,0.1); color: #fbbf24; }
+  .estado-proceso { background: rgba(96,165,250,0.1); color: #60a5fa; }
+  .estado-reservado { background: rgba(74,222,128,0.12); color: #4ade80; }
+  .estado-nuevo { background: rgba(255,255,255,0.05); color: #555; }
+  .estado-cerrado { background: rgba(255,255,255,0.03); color: #444; }
+
+  .actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+  .action-btn {
+    padding: 0.3rem 0.65rem; border-radius: 6px;
+    font-size: 0.75rem; font-weight: 500; cursor: pointer;
+    border: 1px solid var(--border); color: var(--muted);
+    background: transparent; text-decoration: none;
+    transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    white-space: nowrap;
+  }
+  .action-btn:hover { border-color: rgba(255,255,255,0.15); color: var(--white); }
+  .action-btn.wsp { border-color: rgba(37,211,102,0.3); color: #25d366; }
+  .action-btn.wsp:hover { background: rgba(37,211,102,0.08); }
+  .action-btn.call { border-color: rgba(96,165,250,0.3); color: #60a5fa; }
+  .action-btn.call:hover { background: rgba(96,165,250,0.08); }
+
+  /* LOADING / EMPTY */
+  .loading {
+    text-align: center; padding: 4rem;
+    color: var(--muted); font-size: 0.9rem;
+  }
+  .loading-dot { display: inline-block; animation: pulse 1.4s infinite; }
+  .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes pulse { 0%, 80%, 100% { opacity: 0.2; } 40% { opacity: 1; } }
+
+  .empty { text-align: center; padding: 4rem; color: var(--muted); }
+  .empty p { font-size: 0.9rem; margin-top: 0.5rem; }
+
+  /* DETAIL PANEL */
+  .detail-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(4px); z-index: 200;
+    display: none; align-items: flex-start; justify-content: flex-end;
+  }
+  .detail-overlay.open { display: flex; }
+
+  .detail-panel {
+    background: #111; border-left: 1px solid var(--border);
+    width: 420px; height: 100vh; overflow-y: auto;
+    padding: 1.5rem; animation: slideIn 0.25s ease;
+  }
+  @keyframes slideIn { from { transform: translateX(30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+  .detail-close {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--muted); width: 32px; height: 32px;
+    border-radius: 6px; cursor: pointer; font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.5rem; transition: all 0.2s;
+  }
+  .detail-close:hover { border-color: rgba(255,255,255,0.2); color: var(--white); }
+
+  .detail-name { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--white); margin-bottom: 0.25rem; }
+  .detail-meta { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem; }
+
+  .detail-actions { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+
+  .detail-section { margin-bottom: 1.5rem; }
+  .detail-section-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.75rem; display: block; }
+
+  .detail-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); gap: 1rem; }
+  .detail-row:last-child { border-bottom: none; }
+  .detail-key { font-size: 0.8rem; color: var(--muted); flex-shrink: 0; }
+  .detail-val { font-size: 0.85rem; color: var(--white); text-align: right; word-break: break-word; }
+
+  .detail-consulta-box {
+    background: var(--black); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1rem;
+    font-size: 0.85rem; color: #888; line-height: 1.7;
+  }
+
+  .detail-respuesta-box {
+    background: rgba(200,240,96,0.04); border: 1px solid rgba(200,240,96,0.1);
+    border-radius: 8px; padding: 1rem;
+    font-size: 0.85rem; color: #999; line-height: 1.7;
+  }
+
+  /* FOOTER */
+  .panel-footer {
+    text-align: center; padding: 2rem;
+    font-size: 0.75rem; color: #333;
+    border-top: 1px solid var(--border); margin-top: 3rem;
+  }
+
+  @media (max-width: 900px) {
+    main { padding: 1rem; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .leads-header { display: none; }
+    .lead-card { grid-template-columns: 1fr; gap: 0.75rem; }
+    .search-box { width: 100%; }
+    .filters { flex-direction: column; align-items: flex-start; }
+    .detail-panel { width: 100vw; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Time<span>less</span></div>
+  <div class="header-right">
+    <span class="hotel-badge" id="client-badge">⏳ Cargando...</span>
+    <button class="refresh-btn" onclick="loadData()">↻ Actualizar</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- STATS -->
+  <div class="stats-grid" id="stats-grid">
+    <div class="stat-card">
+      <span class="stat-label">Total esta semana</span>
+      <span class="stat-val" id="stat-total">—</span>
+      <span class="stat-sub" id="stat-total-sub">cargando...</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Listos para cerrar</span>
+      <span class="stat-val accent" id="stat-hot">—</span>
+      <span class="stat-sub">intencion de reserva</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Reservados</span>
+      <span class="stat-val green" id="stat-reservados">—</span>
+      <span class="stat-sub" id="stat-conversion">esta semana</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">En seguimiento</span>
+      <span class="stat-val yellow" id="stat-proceso">—</span>
+      <span class="stat-sub">requieren contacto</span>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filters">
+    <div class="filter-tabs">
+      <button class="filter-btn active" data-filter="todos" onclick="setFilter('todos', this)">Todos</button>
+      <button class="filter-btn" data-filter="hot" onclick="setFilter('hot', this)">🔥 Listos para cerrar</button>
+      <button class="filter-btn" data-filter="en_proceso" onclick="setFilter('en_proceso', this)">En proceso</button>
+      <button class="filter-btn" data-filter="reservado" onclick="setFilter('reservado', this)">✅ Reservados</button>
+      <button class="filter-btn" data-filter="nuevo" onclick="setFilter('nuevo', this)">Nuevos</button>
+    </div>
+    <input class="search-box" type="text" placeholder="Buscar por nombre, consulta..." id="search-input" oninput="renderLeads()">
+  </div>
+
+  <!-- LEADS -->
+  <div class="leads-header">
+    <span>Cliente</span>
+    <span>Consulta</span>
+    <span>Intención</span>
+    <span>Reserva</span>
+    <span>Estado</span>
+    <span>Acciones</span>
+  </div>
+  <div class="leads-list" id="leads-list">
+    <div class="loading">
+      <span class="loading-dot">●</span>
+      <span class="loading-dot">●</span>
+      <span class="loading-dot">●</span>
+      <br><br>Cargando conversaciones...
+    </div>
+  </div>
+
+</main>
+
+<!-- DETAIL PANEL -->
+<div class="detail-overlay" id="detail-overlay" onclick="closeDetail(event)">
+  <div class="detail-panel" id="detail-panel">
+    <button class="detail-close" onclick="closeDetailPanel()">✕</button>
+    <div id="detail-content"></div>
+  </div>
+</div>
+
+<div class="panel-footer">
+  Generado por <strong style="color:#444;">TIMELESS</strong> · Panel interno · Solo para uso del equipo
+</div>
+
+<script>
+// --- CONFIGURACIÓN DE CLIENTES ---
+const CLIENTS = {
+  hotel: {
+    name: 'Hotel Patagonia · Bariloche', emoji: '🏨',
+    webhook: 'https://matiasdutli22.app.n8n.cloud/webhook/hotel-patagonia-data',
+    wspMsg: n => `Hola ${n}! Te escribo del Hotel Patagonia. ¿Pudiste concretar tu reserva?`,
+    listField: r => r.fecha_checkin
+      ? `<span style="font-size:0.78rem;color:#888;">📅 ${r.fecha_checkin}</span><br><span style="font-size:0.72rem;color:#555;">${r.fecha_checkout ? '→ '+r.fecha_checkout : ''} ${r.tipo_habitacion ? '· '+r.tipo_habitacion : ''}</span>`
+      : '<span style="color:#333;font-size:0.78rem;">—</span>',
+    detailFields: r => [
+      { k: 'Habitación', v: r.tipo_habitacion },
+      { k: 'Check-in', v: r.fecha_checkin },
+      { k: 'Check-out', v: r.fecha_checkout },
+      { k: 'Personas', v: r.cantidad_personas },
+      { k: 'Ocasión especial', v: r.ocasion_especial }
+    ]
+  },
+  clinica: {
+    name: 'Clínica Salud+', emoji: '🏥',
+    webhook: 'https://matiasdutli22.app.n8n.cloud/webhook/clinica-data',
+    wspMsg: n => `Hola ${n}! Te escribo de la Clínica. ¿Pudiste sacar tu turno?`,
+    listField: r => r.especialidad
+      ? `<span style="font-size:0.78rem;color:#888;">🩺 ${r.especialidad}</span><br><span style="font-size:0.72rem;color:#555;">${r.fecha_turno ? '📅 '+r.fecha_turno : ''} ${r.obra_social ? '· '+r.obra_social : ''}</span>`
+      : '<span style="color:#333;font-size:0.78rem;">—</span>',
+    detailFields: r => [
+      { k: 'Especialidad', v: r.especialidad },
+      { k: 'Fecha turno', v: r.fecha_turno },
+      { k: 'Obra social', v: r.obra_social }
+    ]
+  },
+  restaurante: {
+    name: 'La Brasería del Puerto', emoji: '🍽️',
+    webhook: 'https://matiasdutli22.app.n8n.cloud/webhook/restaurante-data',
+    wspMsg: n => `Hola ${n}! Te escribo de La Brasería. ¿Confirmamos tu reserva?`,
+    listField: r => r.fecha_reserva
+      ? `<span style="font-size:0.78rem;color:#888;">📅 ${r.fecha_reserva}</span><br><span style="font-size:0.72rem;color:#555;">${r.hora_reserva ? '🕐 '+r.hora_reserva : ''} ${r.cantidad_personas ? '· '+r.cantidad_personas+'p' : ''}</span>`
+      : '<span style="color:#333;font-size:0.78rem;">—</span>',
+    detailFields: r => [
+      { k: 'Fecha reserva', v: r.fecha_reserva },
+      { k: 'Hora', v: r.hora_reserva },
+      { k: 'Personas', v: r.cantidad_personas },
+      { k: 'Ocasión especial', v: r.ocasion_especial }
+    ]
+  },
+  beauty: {
+    name: 'Lumière Beauty Studio', emoji: '💅',
+    webhook: 'https://matiasdutli22.app.n8n.cloud/webhook/beauty-data',
+    wspMsg: n => `Hola ${n}! Te escribo de Lumière Beauty. ¿Confirmamos tu turno?`,
+    listField: r => r.servicio
+      ? `<span style="font-size:0.78rem;color:#888;">✨ ${r.servicio}</span><br><span style="font-size:0.72rem;color:#555;">${r.fecha_turno ? '📅 '+r.fecha_turno : ''} ${r.hora_turno ? '· '+r.hora_turno : ''}</span>`
+      : '<span style="color:#333;font-size:0.78rem;">—</span>',
+    detailFields: r => [
+      { k: 'Servicio', v: r.servicio },
+      { k: 'Fecha turno', v: r.fecha_turno },
+      { k: 'Hora turno', v: r.hora_turno }
+    ]
+  },
+  inmobiliaria: {
+    name: 'Grupo Raíces Propiedades', emoji: '🏠',
+    webhook: 'https://matiasdutli22.app.n8n.cloud/webhook/inmobiliaria-data',
+    wspMsg: n => `Hola ${n}! Te escribo de Grupo Raíces. ¿Coordinamos una visita?`,
+    listField: r => r.zona
+      ? `<span style="font-size:0.78rem;color:#888;">📍 ${r.zona}</span><br><span style="font-size:0.72rem;color:#555;">${r.tipo_operacion || ''} ${r.ambientes ? '· '+r.ambientes+' amb' : ''}</span>`
+      : '<span style="color:#333;font-size:0.78rem;">—</span>',
+    detailFields: r => [
+      { k: 'Operación', v: r.tipo_operacion },
+      { k: 'Zona', v: r.zona },
+      { k: 'Ambientes', v: r.ambientes },
+      { k: 'Presupuesto', v: r.presupuesto },
+      { k: 'Fecha visita', v: r.fecha_visita }
+    ]
+  },
+  sunlife: {
+    name: 'Sun Life Beach Hotel · Englewood FL', emoji: '🏖️',
+    webhook: 'https://matiasdutli22.app.n8n.cloud/webhook/sunlife-data',
+    wspMsg: n => `Hi ${n}! This is Sun Life Beach Hotel. Did you get a chance to complete your booking?`,
+    listField: r => r.fecha_checkin
+      ? `<span style="font-size:0.78rem;color:#888;">📅 ${r.fecha_checkin}</span><br><span style="font-size:0.72rem;color:#555;">${r.fecha_checkout ? '→ '+r.fecha_checkout : ''} ${r.tipo_habitacion ? '· '+r.tipo_habitacion : ''}</span>`
+      : '<span style="color:#333;font-size:0.78rem;">—</span>',
+    detailFields: r => [
+      { k: 'Room Type', v: r.tipo_habitacion },
+      { k: 'Check-in', v: r.fecha_checkin },
+      { k: 'Check-out', v: r.fecha_checkout },
+      { k: 'Guests', v: r.cantidad_personas },
+      { k: 'Special occasion', v: r.ocasion_especial }
+    ]
+  }
+};
+
+// Detectar cliente desde URL: panel.html?client=clinica
+const urlParams = new URLSearchParams(window.location.search);
+const clientKey = urlParams.get('client') || 'hotel';
+const CLIENT = CLIENTS[clientKey] || CLIENTS.hotel;
+
+// Setear badge del header
+document.getElementById('client-badge').textContent = `${CLIENT.emoji} ${CLIENT.name}`;
+document.title = `Panel — ${CLIENT.name} · Timeless`;
+
+const WEBHOOK_URL = CLIENT.webhook;
+
+let allData = [];
+let currentFilter = 'todos';
+
+async function loadData() {
+  document.getElementById('leads-list').innerHTML = `
+    <div class="loading">
+      <span class="loading-dot">●</span>
+      <span class="loading-dot">●</span>
+      <span class="loading-dot">●</span>
+      <br><br>Actualizando...
+    </div>`;
+
+  try {
+    const res = await fetch(WEBHOOK_URL);
+    const raw = await res.json();
+
+    // n8n devuelve array de objetos con { json: {...} }
+    allData = Array.isArray(raw)
+      ? raw.map(r => r.json || r).filter(r => r.fecha || r.consulta)
+      : [];
+
+    // Ordenar por fecha más reciente
+    allData.sort((a, b) => {
+      const fa = parseFecha(a.fecha, a.hora);
+      const fb = parseFecha(b.fecha, b.hora);
+      return fb - fa;
+    });
+
+    updateStats();
+    renderLeads();
+  } catch(e) {
+    console.error('Panel error:', e);
+    document.getElementById('leads-list').innerHTML = `
+      <div class="empty">
+        <div style="font-size:2rem;">⚠️</div>
+        <p>No se pudo conectar con el servidor.<br>
+        <span style="font-size:0.78rem;color:#333;">Verificá que el workflow de n8n esté activo.</span></p>
+      </div>`;
+  }
+}
+
+function parseFecha(fechaStr, horaStr = '') {
+  if (!fechaStr) return new Date(0);
+  try {
+    const [dia, mes, anio] = fechaStr.split('/');
+    const [h, m] = (horaStr || '0:0').split(':');
+    return new Date(anio, mes - 1, dia, h, m);
+  } catch { return new Date(0); }
+}
+
+function updateStats() {
+  const ahora = new Date();
+  const semana = allData.filter(r => {
+    const f = parseFecha(r.fecha);
+    return (ahora - f) / (1000 * 60 * 60 * 24) <= 7;
+  });
+
+  const total = semana.length;
+  const reservados = semana.filter(r => isReservado(r)).length;
+  const hot = semana.filter(r => isHot(r)).length;
+  const proceso = semana.filter(r => isEnProceso(r)).length;
+  const tasa = total > 0 ? ((reservados / total) * 100).toFixed(0) : 0;
+
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-total-sub').textContent = `${allData.length} en total`;
+  document.getElementById('stat-hot').textContent = hot;
+  document.getElementById('stat-reservados').textContent = reservados;
+  document.getElementById('stat-conversion').textContent = `${tasa}% conversión`;
+  document.getElementById('stat-proceso').textContent = proceso;
+}
+
+function isHot(r) {
+  const i = (r.intencion || '').toLowerCase();
+  const e = (r.estado || '').toLowerCase();
+  return (i.includes('intencion_reserva') || i.includes('interesado')) && e !== 'reservado' && e !== 'cerrado';
+}
+
+function isReservado(r) {
+  const i = (r.intencion || '').toLowerCase();
+  const e = (r.estado || '').toLowerCase();
+  return e === 'reservado' || i.includes('reserva_confirmada');
+}
+
+function isEnProceso(r) {
+  const e = (r.estado || '').toLowerCase();
+  return e === 'en_proceso' || e === 'interesado';
+}
+
+function getIntencionBadge(intencion) {
+  const i = (intencion || '').toLowerCase();
+  if (i.includes('reserva_confirmada')) return `<span class="badge badge-confirmado">Reserva ✓</span>`;
+  if (i.includes('intencion_reserva')) return `<span class="badge badge-reserva">🔥 Quiere reservar</span>`;
+  if (i.includes('consulta_precio')) return `<span class="badge badge-interes">💰 Precio</span>`;
+  if (i.includes('consulta_disponibilidad')) return `<span class="badge badge-proceso">📅 Disponibilidad</span>`;
+  if (i.includes('consulta_servicios')) return `<span class="badge badge-proceso">🛎 Servicios</span>`;
+  if (i.includes('cancelacion')) return `<span class="badge" style="background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.2);">Cancelación</span>`;
+  return `<span class="badge badge-general">${intencion || 'General'}</span>`;
+}
+
+function getEstadoBadge(estado) {
+  const e = (estado || '').toLowerCase();
+  if (e === 'reservado') return `<span class="estado-badge estado-reservado">Reservado</span>`;
+  if (e === 'interesado') return `<span class="estado-badge estado-interesado">Interesado</span>`;
+  if (e === 'en_proceso') return `<span class="estado-badge estado-proceso">En proceso</span>`;
+  if (e === 'cerrado') return `<span class="estado-badge estado-cerrado">Cerrado</span>`;
+  return `<span class="estado-badge estado-nuevo">${estado || 'Nuevo'}</span>`;
+}
+
+function setFilter(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderLeads();
+}
+
+function renderLeads() {
+  const search = (document.getElementById('search-input').value || '').toLowerCase();
+
+  let filtered = allData.filter(r => {
+    // Filtro por estado
+    if (currentFilter === 'hot') return isHot(r);
+    if (currentFilter === 'reservado') return isReservado(r);
+    if (currentFilter === 'en_proceso') return isEnProceso(r);
+    if (currentFilter === 'nuevo') return (r.estado || '').toLowerCase() === 'nuevo' || !(r.estado);
+    return true;
+  });
+
+  // Filtro por búsqueda
+  if (search) {
+    filtered = filtered.filter(r =>
+      (r.nombre_cliente || '').toLowerCase().includes(search) ||
+      (r.consulta || '').toLowerCase().includes(search) ||
+      (r.telefono_contacto || '').includes(search)
+    );
+  }
+
+  const list = document.getElementById('leads-list');
+
+  if (filtered.length === 0) {
+    list.innerHTML = `<div class="empty"><div style="font-size:2rem;">🔍</div><p>No hay conversaciones con este filtro.</p></div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map((r, idx) => {
+    const isHotLead = isHot(r);
+    const isRes = isReservado(r);
+    const nombre = r.nombre_cliente || 'Sin nombre';
+    const tel = r.telefono_contacto || '';
+    const consulta = String(r.consulta || '').slice(0, 80) + (String(r.consulta || '').length > 80 ? '...' : '');
+    const fecha = r.fecha || '';
+    const hora = r.hora ? String(r.hora).slice(0,5) : '';
+
+    const wspMsg = encodeURIComponent(CLIENT.wspMsg(nombre));
+    const telClean = String(tel).replace(/\D/g, '');
+    const dataIdx = allData.indexOf(r);
+
+    return `
+    <div class="lead-card ${isHotLead ? 'hot' : isRes ? 'reservado' : ''}" onclick="openDetail(${dataIdx})">
+      <div>
+        <span class="lead-name">${nombre}</span>
+        ${tel ? `<span class="lead-phone">📞 ${tel}</span>` : `<span class="lead-phone" style="color:#333;">Sin teléfono</span>`}
+        <span class="lead-date">${fecha} ${hora}</span>
+      </div>
+      <div class="lead-consulta">${consulta || '—'}</div>
+      <div>${getIntencionBadge(r.intencion)}</div>
+      <div>${CLIENT.listField(r)}</div>
+      <div>${getEstadoBadge(r.estado)}</div>
+      <div class="actions" onclick="event.stopPropagation()">
+        ${telClean ? `<a class="action-btn wsp" href="https://wa.me/${telClean}?text=${wspMsg}" target="_blank">💬 WS</a>` : ''}
+        ${telClean ? `<a class="action-btn call" href="tel:+${telClean}">📞</a>` : ''}
+        <button class="action-btn" onclick="openDetail(${dataIdx})">Ver →</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openDetail(idx) {
+  const r = allData[idx];
+  if (!r) return;
+
+  const nombre = r.nombre_cliente || 'Sin nombre';
+  const tel = r.telefono_contacto || '';
+  const telClean = tel.replace(/\D/g, '');
+  const wspMsg = encodeURIComponent(CLIENT.wspMsg(nombre));
+
+  const extraFields = CLIENT.detailFields(r)
+    .map(f => `<div class="detail-row"><span class="detail-key">${f.k}</span><span class="detail-val">${f.v || '—'}</span></div>`)
+    .join('');
+
+  document.getElementById('detail-content').innerHTML = `
+    <div class="detail-name">${nombre}</div>
+    <div class="detail-meta">${r.fecha || ''} ${r.hora ? '· ' + r.hora.slice(0,5) : ''} · ${r.canal || 'Chat'}</div>
+
+    <div class="detail-actions">
+      ${telClean ? `<a class="action-btn wsp" href="https://wa.me/${telClean}?text=${wspMsg}" target="_blank">💬 Escribir por WhatsApp</a>` : ''}
+      ${telClean ? `<a class="action-btn call" href="tel:+${telClean}">📞 Llamar</a>` : ''}
+    </div>
+
+    <div class="detail-section">
+      <span class="detail-section-title">Estado de la conversación</span>
+      <div class="detail-row">
+        <span class="detail-key">Intención</span>
+        <span class="detail-val">${getIntencionBadge(r.intencion)}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-key">Estado</span>
+        <span class="detail-val">${getEstadoBadge(r.estado)}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-key">Seguimiento</span>
+        <span class="detail-val">${r.seguimiento || 'Pendiente'}</span>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <span class="detail-section-title">Datos del cliente</span>
+      ${extraFields}
+    </div>
+
+    <div class="detail-section">
+      <span class="detail-section-title">Consulta del cliente</span>
+      <div class="detail-consulta-box">${r.consulta || '—'}</div>
+    </div>
+
+    <div class="detail-section">
+      <span class="detail-section-title">Respuesta del bot</span>
+      <div class="detail-respuesta-box">${r.output_limpio || r.respuesta || '—'}</div>
+    </div>
+  `;
+
+  document.getElementById('detail-overlay').classList.add('open');
+}
+
+function closeDetail(e) {
+  if (e.target === document.getElementById('detail-overlay')) closeDetailPanel();
+}
+
+function closeDetailPanel() {
+  document.getElementById('detail-overlay').classList.remove('open');
+}
+
+// Cargar al iniciar
+loadData();
+</script>
+</body>
+</html>

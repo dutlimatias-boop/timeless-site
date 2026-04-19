@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timeless — Tu negocio siempre atendido. Vos siempre informado.</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f8f6f2;
+    --accent: #c8f060;
+    --muted: #555;
+    --border: rgba(255,255,255,0.07);
+    --card: #111;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: #888;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3 { font-family: 'Syne', sans-serif; color: var(--white); line-height: 1.05; font-weight: 800; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.25rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(10,10,10,0.92); backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 800; color: var(--white); letter-spacing: -0.02em; }
+  .logo span { color: var(--accent); }
+
+  .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.875rem; font-weight: 400; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--white); }
+
+  .nav-cta {
+    background: var(--accent) !important; color: #0a0a0a !important;
+    padding: 0.5rem 1.25rem !important; border-radius: 6px;
+    font-weight: 600 !important; font-size: 0.875rem !important; transition: opacity 0.2s !important;
+  }
+  .nav-cta:hover { opacity: 0.85 !important; }
+
+  .hero {
+    padding: 9rem 3rem 5rem; position: relative;
+    border-bottom: 1px solid var(--border); overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 80% at 70% 50%, rgba(200,240,96,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 2rem;
+    opacity: 0; animation: up 0.7s 0.1s forwards;
+  }
+
+  .hero-eyebrow::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent); animation: blink 2s infinite;
+  }
+
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+  .hero h1 {
+    font-size: clamp(2.8rem, 5.5vw, 5.5rem); max-width: 800px;
+    margin-bottom: 1.5rem; letter-spacing: -0.03em;
+    opacity: 0; animation: up 0.7s 0.2s forwards;
+  }
+
+  .hero h1 em { font-style: normal; color: var(--accent); }
+
+  .hero-sub {
+    font-size: 1rem; max-width: 500px; color: var(--muted);
+    margin-bottom: 2.5rem; font-weight: 300; line-height: 1.75;
+    opacity: 0; animation: up 0.7s 0.3s forwards;
+  }
+
+  .hero-actions {
+    display: flex; gap: 1rem; align-items: center;
+    opacity: 0; animation: up 0.7s 0.4s forwards;
+  }
+
+  @keyframes up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.75rem 1.75rem; border-radius: 6px;
+    font-size: 0.9rem; font-weight: 600; text-decoration: none;
+    transition: all 0.2s; font-family: 'Syne', sans-serif;
+  }
+
+  .btn-accent { background: var(--accent); color: #0a0a0a; }
+  .btn-accent:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-ghost { color: #666; border: 1px solid var(--border); }
+  .btn-ghost:hover { color: var(--white); border-color: rgba(255,255,255,0.15); }
+
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--border); }
+  .metric { padding: 2.25rem 3rem; border-right: 1px solid var(--border); }
+  .metric:last-child { border-right: none; }
+  .metric-val { font-family: 'Syne', sans-serif; font-size: 2.25rem; font-weight: 800; color: var(--white); display: block; line-height: 1; margin-bottom: 0.4rem; letter-spacing: -0.02em; }
+  .metric-label { font-size: 0.8rem; color: var(--muted); font-weight: 300; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 3rem; }
+  .section { padding: 6rem 0; border-bottom: 1px solid var(--border); }
+
+  .label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; display: block; }
+
+  /* ROTATING CHAT DEMO */
+  .demo-section { padding: 6rem 0; border-bottom: 1px solid var(--border); background: #0d0d0d; }
+  .demo-inner { max-width: 1100px; margin: 0 auto; padding: 0 3rem; }
+  .demo-header { text-align: center; margin-bottom: 3rem; }
+  .demo-header h2 { font-size: clamp(2rem, 3.5vw, 3rem); letter-spacing: -0.02em; margin-bottom: 1rem; }
+  .demo-header p { font-size: 0.95rem; color: var(--muted); font-weight: 300; max-width: 500px; margin: 0 auto; }
+
+  .sector-tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 2.5rem; flex-wrap: wrap; }
+
+  .sector-tab {
+    padding: 0.5rem 1.25rem; border-radius: 100px;
+    font-size: 0.85rem; font-weight: 500; cursor: pointer;
+    border: 1px solid var(--border); color: var(--muted);
+    transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+    background: transparent;
+  }
+
+  .sector-tab.active { background: var(--accent); color: #0a0a0a; border-color: var(--accent); }
+  .sector-tab:hover:not(.active) { border-color: rgba(255,255,255,0.2); color: var(--white); }
+
+  .demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+
+  .demo-info h3 { font-size: clamp(1.5rem, 2.5vw, 2rem); letter-spacing: -0.02em; margin-bottom: 1rem; }
+  .demo-info p { font-size: 0.95rem; color: var(--muted); font-weight: 300; line-height: 1.8; margin-bottom: 1.5rem; }
+
+  .demo-features { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .demo-features li { font-size: 0.875rem; color: #777; display: flex; gap: 0.6rem; align-items: flex-start; }
+  .demo-features li::before { content: '—'; color: var(--accent); flex-shrink: 0; }
+
+  .chat-window { background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+
+  .chat-header { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.75rem; }
+
+  .chat-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(200,240,96,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; color: var(--accent); font-weight: 700; font-family: 'Syne', sans-serif;
+  }
+
+  .chat-name { font-size: 0.875rem; color: var(--white); font-weight: 500; }
+  .chat-business { font-size: 0.72rem; color: var(--muted); }
+  .chat-status { font-size: 0.72rem; color: var(--accent); margin-left: auto; }
+
+  .chat-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; min-height: 260px; }
+
+  .msg { max-width: 85%; padding: 0.75rem 1rem; font-size: 0.875rem; line-height: 1.55; opacity: 0; transform: translateY(8px); transition: opacity 0.4s, transform 0.4s; }
+  .msg.visible { opacity: 1; transform: translateY(0); }
+
+  .msg-in { background: #1a1a1a; color: #aaa; border-radius: 10px 10px 10px 2px; align-self: flex-start; }
+  .msg-out { background: rgba(200,240,96,0.08); border: 1px solid rgba(200,240,96,0.15); color: #c8f060; border-radius: 10px 10px 2px 10px; align-self: flex-end; }
+
+  .msg-meta { font-size: 0.7rem; color: var(--muted); margin-top: 0.25rem; }
+  .msg-meta.right { text-align: right; }
+
+  .typing { display: flex; gap: 4px; align-items: center; padding: 0.75rem 1rem; background: #1a1a1a; border-radius: 10px 10px 10px 2px; align-self: flex-start; width: fit-content; opacity: 0; transition: opacity 0.3s; }
+  .typing.visible { opacity: 1; }
+  .typing span { width: 6px; height: 6px; border-radius: 50%; background: #555; animation: dot 1.2s infinite; }
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes dot { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-4px); } }
+
+  .response-tag { text-align: center; font-size: 0.72rem; color: var(--muted); padding: 0.75rem; border-top: 1px solid var(--border); }
+
+  /* HOW */
+  .how-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .how-card { background: var(--black); padding: 2rem; transition: background 0.2s; }
+  .how-card:hover { background: #111; }
+  .how-num { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 1.5rem; display: block; }
+  .how-card h3 { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--white); margin-bottom: 0.75rem; }
+  .how-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; font-weight: 300; }
+
+  /* PRICING */
+  .pricing-header { text-align: center; margin-bottom: 3.5rem; }
+  .pricing-header h2 { font-size: clamp(2rem, 3.5vw, 3rem); letter-spacing: -0.02em; margin-bottom: 1rem; }
+  .pricing-header p { font-size: 0.95rem; color: var(--muted); font-weight: 300; max-width: 500px; margin: 0 auto; }
+
+  .pricing-toggle { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1.5rem; font-size: 0.875rem; }
+  .toggle-label { color: var(--muted); }
+  .toggle-label.active { color: var(--white); font-weight: 500; }
+  .toggle-switch { width: 44px; height: 24px; background: var(--card); border: 1px solid var(--border); border-radius: 100px; cursor: pointer; position: relative; transition: background 0.2s; }
+  .toggle-switch.on { background: rgba(200,240,96,0.2); border-color: rgba(200,240,96,0.3); }
+  .toggle-dot { width: 18px; height: 18px; background: var(--muted); border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: transform 0.2s, background 0.2s; }
+  .toggle-switch.on .toggle-dot { transform: translateX(20px); background: var(--accent); }
+
+  .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; align-items: start; }
+  .plan-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: border-color 0.3s; }
+  .plan-card:hover { border-color: rgba(255,255,255,0.15); }
+  .plan-card.featured { border-color: rgba(200,240,96,0.4); }
+  .plan-badge { background: var(--accent); color: #0a0a0a; font-size: 0.7rem; font-weight: 700; font-family: 'Syne', sans-serif; letter-spacing: 0.05em; text-transform: uppercase; text-align: center; padding: 0.4rem; }
+  .plan-top { padding: 1.75rem; border-bottom: 1px solid var(--border); }
+  .plan-name { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem; display: block; }
+  .plan-tagline { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 1.25rem; line-height: 1.3; }
+  .plan-price { display: flex; align-items: baseline; gap: 0.3rem; margin-bottom: 0.4rem; }
+  .plan-amount { font-family: 'Syne', sans-serif; font-size: 2.75rem; font-weight: 800; color: var(--white); line-height: 1; letter-spacing: -0.03em; }
+  .plan-currency { font-size: 1rem; color: var(--muted); }
+  .plan-period { font-size: 0.85rem; color: var(--muted); }
+  .plan-setup { font-size: 0.78rem; color: var(--muted); margin-top: 0.25rem; }
+  .plan-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; font-weight: 300; margin-top: 1rem; }
+  .plan-features { padding: 1.5rem 1.75rem; list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .plan-features li { font-size: 0.85rem; color: #777; display: flex; gap: 0.6rem; align-items: flex-start; line-height: 1.5; }
+  .plan-features li .check { color: var(--accent); flex-shrink: 0; font-size: 0.8rem; margin-top: 0.1rem; }
+  .plan-cta { padding: 1.25rem 1.75rem; border-top: 1px solid var(--border); }
+  .btn-plan { display: block; text-align: center; padding: 0.75rem; border-radius: 8px; font-size: 0.875rem; font-weight: 700; text-decoration: none; font-family: 'Syne', sans-serif; transition: all 0.2s; border: 1px solid var(--border); color: var(--white); }
+  .btn-plan:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.04); }
+  .btn-plan.featured { background: var(--accent); color: #0a0a0a; border: none; }
+  .btn-plan.featured:hover { opacity: 0.88; }
+  .pricing-note { text-align: center; font-size: 0.8rem; color: var(--muted); margin-top: 2rem; font-weight: 300; }
+
+  /* ABOUT */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .about-grid h2 { font-size: clamp(2rem, 3.5vw, 3rem); margin-bottom: 1.5rem; letter-spacing: -0.02em; }
+  .about-grid p { font-size: 0.95rem; color: var(--muted); line-height: 1.85; font-weight: 300; margin-bottom: 1rem; }
+  .about-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 2.5rem; }
+  .about-origin { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
+  .about-quote { font-family: 'Syne', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--white); line-height: 1.4; margin-bottom: 2rem; letter-spacing: -0.02em; }
+  .about-sig { border-top: 1px solid var(--border); padding-top: 1.25rem; }
+  .about-sig-name { font-size: 0.9rem; color: var(--white); font-weight: 600; display: block; font-family: 'Syne', sans-serif; }
+  .about-sig-role { font-size: 0.8rem; color: var(--muted); }
+
+  /* FAQ */
+  .faq-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 6rem; align-items: start; }
+  .faq-grid h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); position: sticky; top: 6rem; letter-spacing: -0.02em; }
+  .faq-list { display: flex; flex-direction: column; }
+  .faq-item { border-top: 1px solid var(--border); cursor: pointer; }
+  .faq-item:last-child { border-bottom: 1px solid var(--border); }
+  .faq-q { padding: 1.25rem 0; font-size: 0.9rem; color: var(--white); font-weight: 500; display: flex; justify-content: space-between; align-items: center; gap: 1rem; user-select: none; font-family: 'Syne', sans-serif; }
+  .faq-icon { color: var(--accent); font-size: 1.2rem; font-weight: 300; flex-shrink: 0; transition: transform 0.3s; }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-a { font-size: 0.875rem; color: var(--muted); line-height: 1.8; padding-bottom: 1.25rem; display: none; font-weight: 300; }
+  .faq-item.open .faq-a { display: block; }
+
+  .cta-section { padding: 7rem 0; text-align: center; }
+  .cta-section h2 { font-size: clamp(2.5rem, 5vw, 4.5rem); max-width: 680px; margin: 0 auto 1.25rem; letter-spacing: -0.03em; }
+  .cta-section h2 em { font-style: normal; color: var(--accent); }
+  .cta-section p { font-size: 0.95rem; color: var(--muted); margin-bottom: 2.5rem; font-weight: 300; }
+
+  footer { padding: 2rem 3rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  footer p { font-size: 0.8rem; color: var(--muted); }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links a:not(.nav-cta) { display: none; }
+    .hero { padding: 7rem 1.5rem 3.5rem; }
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+    .metric { padding: 1.75rem; }
+    .container { padding: 0 1.5rem; }
+    .demo-inner { padding: 0 1.5rem; }
+    .section { padding: 4rem 0; }
+    .demo-section { padding: 4rem 0; }
+    .demo-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .how-grid { grid-template-columns: 1fr 1fr; }
+    .plans-grid { grid-template-columns: 1fr; }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .faq-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .faq-grid h2 { position: static; }
+    .cta-section { padding: 5rem 0; }
+    footer { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Time<span>less</span></div>
+  <div class="nav-links">
+    <a href="#como-funciona">Cómo funciona</a>
+    <a href="#precio">Planes</a>
+    <a href="https://wa.me/TUNUMERO" class="nav-cta">Solicitar demo</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-eyebrow">Automatización con IA · Argentina & España</div>
+  <h1>Atendé más. <em>Trabajá menos.</em><br>Decidí mejor.</h1>
+  <p class="hero-sub">Timeless atiende a tus clientes automáticamente, registra cada conversación y te muestra exactamente qué está pasando en tu negocio. Vos supervisás, decidís y crecés.</p>
+  <div class="hero-actions">
+    <a href="https://wa.me/TUNUMERO" class="btn btn-accent">Solicitar demo gratuita →</a>
+    <a href="#demo" class="btn btn-ghost">Ver en acción</a>
+  </div>
+</section>
+
+<div class="metrics">
+  <div class="metric">
+    <span class="metric-val">24/7</span>
+    <span class="metric-label">Disponibilidad del sistema</span>
+  </div>
+  <div class="metric">
+    <span class="metric-val">&lt; 5s</span>
+    <span class="metric-label">Tiempo de respuesta promedio</span>
+  </div>
+  <div class="metric">
+    <span class="metric-val">0</span>
+    <span class="metric-label">Conocimiento técnico requerido</span>
+  </div>
+  <div class="metric">
+    <span class="metric-val">5–7d</span>
+    <span class="metric-label">Tiempo de implementación</span>
+  </div>
+</div>
+
+<!-- ROTATING CHAT DEMO -->
+<section class="demo-section" id="demo">
+  <div class="demo-inner">
+    <div class="demo-header">
+      <span class="label" style="display:block;">En acción</span>
+      <h2>El mismo sistema.<br>Adaptado a tu negocio.</h2>
+      <p>Cada asistente conoce tu negocio en profundidad y responde exactamente como lo haría una persona de tu equipo.</p>
+    </div>
+
+    <div class="sector-tabs">
+      <button class="sector-tab active" data-sector="hotel">Hotel</button>
+      <button class="sector-tab" data-sector="clinica">Clínica</button>
+      <button class="sector-tab" data-sector="inmobiliaria">Inmobiliaria</button>
+      <button class="sector-tab" data-sector="restaurante">Restaurante</button>
+    </div>
+
+    <div class="demo-grid">
+      <div class="demo-info" id="demo-info">
+        <h3 id="demo-title">Gestión de huéspedes</h3>
+        <p id="demo-desc">Sofia atiende consultas de disponibilidad, precios y reservas las 24 horas. Nunca más una reserva perdida por no responder a tiempo.</p>
+        <ul class="demo-features" id="demo-features">
+          <li>Responde consultas de disponibilidad al instante</li>
+          <li>Gestiona el proceso de reserva completo</li>
+          <li>Recordatorios automáticos pre check-in</li>
+          <li>Solicitud de reseñas post check-out</li>
+        </ul>
+      </div>
+
+      <div class="chat-window">
+        <div class="chat-header">
+          <div class="chat-avatar" id="chat-avatar">S</div>
+          <div>
+            <div class="chat-name" id="chat-name">Sofia</div>
+            <div class="chat-business" id="chat-business">Hotel Patagonia · Bariloche</div>
+          </div>
+          <div class="chat-status">● En línea</div>
+        </div>
+        <div class="chat-body" id="chat-body">
+          <div class="typing" id="typing-indicator">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+        <div class="response-tag" id="response-tag">Respuesta automática · Timeless</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<div style="background:#0d0d0d;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="container">
+    <section class="section" id="como-funciona">
+      <span class="label">Cómo funciona</span>
+      <h2 style="font-size:clamp(1.8rem,3vw,2.5rem);margin-bottom:3rem;letter-spacing:-0.02em;">Atendé. Registrá. Supervisá. Crecé.</h2>
+      <div class="how-grid">
+        <div class="how-card">
+          <span class="how-num">01</span>
+          <h3>Atención automática</h3>
+          <p>Tu asistente responde consultas por WhatsApp, Instagram y más canales al instante, con información precisa de tu negocio.</p>
+        </div>
+        <div class="how-card">
+          <span class="how-num">02</span>
+          <h3>Registro inteligente</h3>
+          <p>Cada conversación queda registrada automáticamente. Nombre, canal, intención, estado. Todo organizado sin que hagas nada.</p>
+        </div>
+        <div class="how-card">
+          <span class="how-num">03</span>
+          <h3>Dashboard en tiempo real</h3>
+          <p>Entrás al panel y en 30 segundos sabés qué pasó, quién tiene intención de comprar y a quién tenés que contactar hoy.</p>
+        </div>
+        <div class="how-card">
+          <span class="how-num">04</span>
+          <h3>Vos decidís</h3>
+          <p>El sistema trabaja, te informa y te sugiere acciones. Pero las decisiones son tuyas. Siempre con datos reales, nunca a ciegas.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div class="container">
+  <section class="section" id="precio">
+    <div class="pricing-header">
+      <span class="label" style="display:block;">Planes</span>
+      <h2>Empezá donde puedas.<br>Escalá cuando estés listo.</h2>
+      <p>Sin contratos largos. Cancelás cuando querés. Cada plan incluye implementación, mantenimiento y soporte.</p>
+      <div class="pricing-toggle">
+        <span class="toggle-label active" id="label-eur">Europa (€)</span>
+        <div class="toggle-switch" id="regionToggle"><div class="toggle-dot"></div></div>
+        <span class="toggle-label" id="label-ars">Latinoamérica (USD)</span>
+      </div>
+    </div>
+
+    <div class="plans-grid">
+      <div class="plan-card">
+        <div class="plan-top">
+          <span class="plan-name">Starter</span>
+          <div class="plan-tagline">Tu primera línea de atención automática.</div>
+          <div class="plan-price price-eur"><span class="plan-amount">150</span><span class="plan-currency">€</span><span class="plan-period">/ mes</span></div>
+          <div class="plan-price price-ars" style="display:none;"><span class="plan-amount">80</span><span class="plan-currency">USD</span><span class="plan-period">/ mes</span></div>
+          <div class="plan-setup eur-setup">+ 300€ implementación única</div>
+          <div class="plan-setup ars-setup" style="display:none;">+ 200 USD implementación única</div>
+          <p class="plan-desc">Ideal para empezar. Tu negocio responde solo, sin que toques el teléfono. Con dashboard básico incluido.</p>
+        </div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Asistente virtual 24/7 por WhatsApp</li>
+          <li><span class="check">✓</span> Respuestas personalizadas con tu info</li>
+          <li><span class="check">✓</span> Registro automático de conversaciones</li>
+          <li><span class="check">✓</span> Dashboard básico con métricas clave</li>
+          <li><span class="check">✓</span> Resumen diario por WhatsApp</li>
+          <li><span class="check">✓</span> Implementación y soporte incluido</li>
+        </ul>
+        <div class="plan-cta"><a href="https://wa.me/TUNUMERO" class="btn-plan">Empezar con Starter →</a></div>
+      </div>
+
+      <div class="plan-card featured">
+        <div class="plan-badge">Más popular</div>
+        <div class="plan-top">
+          <span class="plan-name">Pro</span>
+          <div class="plan-tagline">El sistema completo que trabaja mientras dormís.</div>
+          <div class="plan-price price-eur"><span class="plan-amount">300</span><span class="plan-currency">€</span><span class="plan-period">/ mes</span></div>
+          <div class="plan-price price-ars" style="display:none;"><span class="plan-amount">180</span><span class="plan-currency">USD</span><span class="plan-period">/ mes</span></div>
+          <div class="plan-setup eur-setup">+ 500€ implementación única</div>
+          <div class="plan-setup ars-setup" style="display:none;">+ 350 USD implementación única</div>
+          <p class="plan-desc">Para negocios que quieren crecer. Gestiona la experiencia completa del cliente y mejora tu reputación automáticamente.</p>
+        </div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Todo lo del plan Starter</li>
+          <li><span class="check">✓</span> WhatsApp + Instagram + Facebook</li>
+          <li><span class="check">✓</span> Seguimiento automático de interesados</li>
+          <li><span class="check">✓</span> Recordatorios y mensajes de bienvenida</li>
+          <li><span class="check">✓</span> Pedido automático de reseñas en Google</li>
+          <li><span class="check">✓</span> Dashboard Pro con gráficos completos</li>
+          <li><span class="check">✓</span> Integración con plataformas del sector</li>
+        </ul>
+        <div class="plan-cta"><a href="https://wa.me/TUNUMERO" class="btn-plan featured">Empezar con Pro →</a></div>
+      </div>
+
+      <div class="plan-card">
+        <div class="plan-top">
+          <span class="plan-name">Elite</span>
+          <div class="plan-tagline">Tu negocio en piloto automático, de principio a fin.</div>
+          <div class="plan-price price-eur"><span class="plan-amount">600</span><span class="plan-currency">€</span><span class="plan-period">/ mes</span></div>
+          <div class="plan-price price-ars" style="display:none;"><span class="plan-amount">350</span><span class="plan-currency">USD</span><span class="plan-period">/ mes</span></div>
+          <div class="plan-setup eur-setup">+ 800€ implementación única</div>
+          <div class="plan-setup ars-setup" style="display:none;">+ 600 USD implementación única</div>
+          <p class="plan-desc">Para negocios serios. Gestión comercial completa con pagos, facturación, CRM y campañas automáticas.</p>
+        </div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Todo lo del plan Pro</li>
+          <li><span class="check">✓</span> Gestión de pagos y depósitos online</li>
+          <li><span class="check">✓</span> Generación automática de facturas</li>
+          <li><span class="check">✓</span> CRM de clientes recurrentes</li>
+          <li><span class="check">✓</span> Campañas automáticas de fidelización</li>
+          <li><span class="check">✓</span> Dashboard Elite con predicciones</li>
+          <li><span class="check">✓</span> Prioridad en soporte</li>
+        </ul>
+        <div class="plan-cta"><a href="https://wa.me/TUNUMERO" class="btn-plan">Empezar con Elite →</a></div>
+      </div>
+    </div>
+    <p class="pricing-note">¿No sabés cuál elegir? La demo es gratuita y te ayudo a identificar el plan ideal para tu negocio.</p>
+  </section>
+</div>
+
+<!-- ABOUT -->
+<div style="background:#0d0d0d;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="container">
+    <section class="section">
+      <div class="about-grid">
+        <div>
+          <span class="label">Quién está detrás</span>
+          <h2>Matías Dutli</h2>
+          <p>Nacido en Suiza, formado en Argentina. Esa combinación define cómo trabajo: con la precisión europea y el entendimiento real del mercado latinoamericano.</p>
+          <p>Timeless nace de una convicción: la tecnología que usan las grandes empresas ahora está disponible para todos. Los pequeños negocios merecen las mismas herramientas, sin necesitar equipos de IT ni grandes presupuestos.</p>
+          <p>No soy una agencia. Soy la persona que implementa, configura y mantiene el sistema en tu negocio. Con vos desde el día uno.</p>
+        </div>
+        <div class="about-card">
+          <div class="about-origin">
+            <span>🇨🇭 Suiza</span>
+            <span style="color:#333;">·</span>
+            <span>🇦🇷 Argentina</span>
+          </div>
+          <div class="about-quote">"La tecnología que usan las grandes empresas ahora está disponible para todos. Mi trabajo es implementarla."</div>
+          <div class="about-sig">
+            <span class="about-sig-name">Matías Dutli</span>
+            <span class="about-sig-role">Fundador, Timeless</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="container">
+  <section class="section">
+    <div class="faq-grid">
+      <h2>Preguntas frecuentes</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q">¿Funciona para cualquier tipo de negocio? <span class="faq-icon">+</span></div>
+          <div class="faq-a">Sí. Timeless se adapta a hoteles, clínicas, inmobiliarias, restaurantes y cualquier negocio que reciba consultas de clientes. El sistema se personaliza completamente para cada caso.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">¿Necesito conocimientos técnicos? <span class="faq-icon">+</span></div>
+          <div class="faq-a">No. Me encargo de la implementación completa. Solo necesito información sobre tu negocio para configurar el sistema.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">¿Cuánto tiempo tarda la implementación? <span class="faq-icon">+</span></div>
+          <div class="faq-a">Entre 5 y 7 días desde que confirmás el servicio. Todo el proceso es remoto, sin necesidad de visitas presenciales.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">¿El sistema reemplaza a mis empleados? <span class="faq-icon">+</span></div>
+          <div class="faq-a">No. Timeless complementa a tu equipo. Atiende las consultas repetitivas y te informa para que vos y tu equipo se enfoquen en lo que realmente importa.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">¿Puedo cancelar cuando quiera? <span class="faq-icon">+</span></div>
+          <div class="faq-a">Sí. Sin contratos de largo plazo. Con 30 días de aviso es suficiente.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">¿Puedo ver el sistema funcionando antes de pagar? <span class="faq-icon">+</span></div>
+          <div class="faq-a">Sí. Ofrezco una demo gratuita personalizada para tu negocio, sin compromiso.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div style="border-top:1px solid var(--border);">
+  <div class="container">
+    <section class="cta-section">
+      <h2>Tu negocio <em>no para.</em><br>Vos tampoco perdés el control.</h2>
+      <p>Demo gratuita. Sin compromiso. Respondemos el mismo día.</p>
+      <a href="https://wa.me/TUNUMERO" class="btn btn-accent" style="font-size:1rem;padding:0.9rem 2rem;">Solicitar demo →</a>
+    </section>
+  </div>
+</div>
+
+<footer>
+  <div class="logo">Time<span>less</span></div>
+  <p>© 2025 Timeless · Matías Dutli</p>
+  <p>Argentina · España · Operación remota desde Suiza</p>
+</footer>
+
+<script>
+  const sectors = {
+    hotel: {
+      title: 'Gestión de huéspedes',
+      desc: 'Sofia atiende consultas de disponibilidad, precios y reservas las 24 horas. Nunca más una reserva perdida por no responder a tiempo.',
+      features: ['Responde consultas de disponibilidad al instante', 'Gestiona el proceso de reserva completo', 'Recordatorios automáticos pre check-in', 'Solicitud de reseñas post check-out'],
+      avatar: 'S', name: 'Sofia', business: 'Hotel Patagonia · Bariloche',
+      msgs: [
+        { type: 'in', text: 'Hola, tienen habitación doble para el 20 de mayo? Somos 2 personas.' },
+        { type: 'out', text: 'Buenas! Sí, tenemos disponibilidad para esa fecha. La habitación doble está a USD 80 por noche con desayuno incluido. ¿Te la reservo?' }
+      ]
+    },
+    clinica: {
+      title: 'Gestión de turnos y consultas',
+      desc: 'Susan atiende consultas médicas, agenda turnos y recuerda citas automáticamente. Sin llamadas perdidas, sin pacientes sin respuesta.',
+      features: ['Agenda turnos automáticamente', 'Responde preguntas frecuentes sobre servicios', 'Recordatorios de cita 24hs antes', 'Seguimiento post consulta'],
+      avatar: 'Su', name: 'Susan', business: 'Clínica Dental Sonrisa · Madrid',
+      msgs: [
+        { type: 'in', text: 'Buen día, necesito turno para una limpieza dental, ¿tienen disponibilidad esta semana?' },
+        { type: 'out', text: 'Hola! Tenemos turno el jueves a las 10hs o el viernes a las 16hs. Ambos con la Dra. Martínez. ¿Cuál te queda mejor?' }
+      ]
+    },
+    inmobiliaria: {
+      title: 'Atención a clientes',
+      desc: 'Natalia responde consultas sobre propiedades, coordina visitas y califica compradores potenciales automáticamente.',
+      features: ['Responde consultas de propiedades 24/7', 'Coordina visitas automáticamente', 'Califica compradores según intención real', 'Seguimiento de leads sin respuesta'],
+      avatar: 'N', name: 'Natalia', business: 'Inmobiliaria del Sur · Buenos Aires',
+      msgs: [
+        { type: 'in', text: 'Hola, vi el departamento de 2 ambientes en Palermo, ¿sigue disponible? ¿Cuánto sale el alquiler?' },
+        { type: 'out', text: 'Hola! Sí, está disponible. Son $850 USD mensuales, piso 4 con balcón. Podemos coordinar una visita esta semana. ¿Qué día te viene bien?' }
+      ]
+    },
+    restaurante: {
+      title: 'Reservas y pedidos',
+      desc: 'Melanie gestiona reservas de mesa, responde consultas del menú y coordina pedidos de catering automáticamente.',
+      features: ['Gestiona reservas de mesa al instante', 'Responde consultas sobre el menú', 'Coordina pedidos de catering y eventos', 'Confirmaciones y recordatorios automáticos'],
+      avatar: 'M', name: 'Melanie', business: 'Restaurante La Parrilla · Barcelona',
+      msgs: [
+        { type: 'in', text: 'Hola, quiero reservar mesa para 4 personas el sábado a las 21hs, ¿tienen lugar?' },
+        { type: 'out', text: 'Hola! Sí, tenemos disponibilidad el sábado a las 21hs para 4 personas. ¿A nombre de quién hago la reserva?' }
+      ]
+    }
+  };
+
+  let currentSector = 'hotel';
+  let animating = false;
+
+  function showSector(sectorKey) {
+    if (animating || sectorKey === currentSector) return;
+    animating = true;
+    currentSector = sectorKey;
+
+    const s = sectors[sectorKey];
+    document.getElementById('demo-title').textContent = s.title;
+    document.getElementById('demo-desc').textContent = s.desc;
+    document.getElementById('chat-avatar').textContent = s.avatar;
+    document.getElementById('chat-name').textContent = s.name;
+    document.getElementById('chat-business').textContent = s.business;
+
+    const featuresEl = document.getElementById('demo-features');
+    featuresEl.innerHTML = s.features.map(f => `<li>${f}</li>`).join('');
+
+    const chatBody = document.getElementById('chat-body');
+    chatBody.innerHTML = '<div class="typing visible" id="typing-indicator"><span></span><span></span><span></span></div>';
+
+    setTimeout(() => {
+      const typing = document.getElementById('typing-indicator');
+      if (typing) typing.classList.remove('visible');
+
+      const msg1 = document.createElement('div');
+      msg1.innerHTML = `<div class="msg msg-in">${s.msgs[0].text}</div><div class="msg-meta">Ahora</div>`;
+      chatBody.appendChild(msg1);
+      setTimeout(() => msg1.querySelector('.msg').classList.add('visible'), 50);
+
+      setTimeout(() => {
+        const typing2 = document.createElement('div');
+        typing2.className = 'typing visible';
+        typing2.innerHTML = '<span></span><span></span><span></span>';
+        chatBody.appendChild(typing2);
+
+        setTimeout(() => {
+          typing2.remove();
+          const msg2 = document.createElement('div');
+          msg2.style.alignSelf = 'flex-end';
+          msg2.style.textAlign = 'right';
+          msg2.innerHTML = `<div class="msg msg-out">${s.msgs[1].text}</div><div class="msg-meta right">Ahora ✓✓</div>`;
+          chatBody.appendChild(msg2);
+          setTimeout(() => msg2.querySelector('.msg').classList.add('visible'), 50);
+          animating = false;
+        }, 1500);
+      }, 800);
+    }, 800);
+  }
+
+  document.querySelectorAll('.sector-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.sector-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      showSector(tab.dataset.sector);
+    });
+  });
+
+  showSector('hotel');
+
+  let autoRotate = setInterval(() => {
+    const sectors_keys = ['hotel', 'clinica', 'inmobiliaria', 'restaurante'];
+    const idx = sectors_keys.indexOf(currentSector);
+    const next = sectors_keys[(idx + 1) % sectors_keys.length];
+    document.querySelectorAll('.sector-tab').forEach(t => t.classList.remove('active'));
+    document.querySelector(`[data-sector="${next}"]`).classList.add('active');
+    showSector(next);
+  }, 5000);
+
+  document.querySelectorAll('.sector-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      clearInterval(autoRotate);
+    });
+  });
+
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const open = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!open) item.classList.add('open');
+    });
+  });
+
+  const toggle = document.getElementById('regionToggle');
+  const labelEur = document.getElementById('label-eur');
+  const labelArs = document.getElementById('label-ars');
+  let isArs = false;
+
+  toggle.addEventListener('click', () => {
+    isArs = !isArs;
+    toggle.classList.toggle('on', isArs);
+    labelEur.classList.toggle('active', !isArs);
+    labelArs.classList.toggle('active', isArs);
+    document.querySelectorAll('.price-eur').forEach(el => el.style.display = isArs ? 'none' : 'flex');
+    document.querySelectorAll('.price-ars').forEach(el => el.style.display = isArs ? 'flex' : 'none');
+    document.querySelectorAll('.eur-setup').forEach(el => el.style.display = isArs ? 'none' : 'block');
+    document.querySelectorAll('.ars-setup').forEach(el => el.style.display = isArs ? 'block' : 'none');
+  });
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.how-card, .metric, .plan-card, .about-card').forEach(el => {
+    el.style.opacity = '0'; el.style.transform = 'translateY(12px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    io.observe(el);
+  });
+</script>
+</body>
+</html>

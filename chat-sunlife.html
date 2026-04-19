@@ -144,7 +144,8 @@ header {
 }
 
 /* Hide n8n's own header/branding since we have ours */
-#n8n-chat .chat-window {
+#n8n-chat .chat-window,
+#n8n-chat > div {
   border-radius: 0 !important;
   box-shadow: none !important;
   border: none !important;
@@ -152,10 +153,21 @@ header {
   max-height: 100% !important;
   background: #fdf9f4 !important;
   font-family: 'Inter', sans-serif !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
-#n8n-chat .chat-window-header {
+/* Kill the dark blue header - try every possible selector */
+#n8n-chat .chat-window-header,
+#n8n-chat [class*="header"],
+#n8n-chat [class*="Header"],
+#n8n-chat [class*="title"],
+#n8n-chat [class*="Title"] {
   display: none !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 #n8n-chat .chat-messages-list {

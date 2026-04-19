@@ -10,23 +10,24 @@
 html { scroll-behavior: smooth; }
 
 :root {
-  --teal: #0d7377;
-  --teal-dark: #085f63;
-  --teal-light: #14a085;
-  --teal-pale: #e8f5f5;
-  --gold: #c8820a;
-  --gold-pale: #fef5e4;
+  --teal: #0e7c7b;
+  --teal-dark: #085f5e;
+  --teal-light: #12957a;
+  --teal-pale: #e4f2f1;
+  --gold: #b8720a;
+  --gold-pale: #fdf1dc;
   --green: #1a7a4a;
-  --green-pale: #e8f5ed;
+  --green-pale: #e6f4ed;
   --red-pale: #fde8e8;
   --red: #c0392b;
-  --bg: #f7f8fa;
-  --white: #ffffff;
-  --text-primary: #0f1923;
-  --text-secondary: #4a5568;
-  --text-muted: #8a9bb0;
-  --border: #e2e8f0;
-  --border-dark: #cbd5e0;
+  --bg: #f5f0e8;
+  --bg-card: #fdf9f4;
+  --white: #fdf9f4;
+  --text-primary: #1a1a18;
+  --text-secondary: #4a5040;
+  --text-muted: #8a9080;
+  --border: #e0d8cc;
+  --border-dark: #ccc4b4;
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
   --shadow: 0 4px 12px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
   --shadow-lg: 0 10px 30px rgba(0,0,0,0.08), 0 4px 10px rgba(0,0,0,0.05);
@@ -43,21 +44,22 @@ body {
   line-height: 1.6;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c8b89a' fill-opacity='0.07'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 
 /* ─── HEADER ─── */
 header {
-  background: var(--white);
-  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 60%, #0e9e7a 100%);
+  border-bottom: none;
   padding: 0 2rem;
-  height: 64px;
+  height: 68px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 20px rgba(8,95,94,0.35);
 }
 
 .header-left { display: flex; align-items: center; gap: 12px; }
@@ -74,13 +76,13 @@ header {
 .hotel-name {
   font-size: 0.95rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #ffffff;
   letter-spacing: -0.02em;
   line-height: 1.2;
 }
 .hotel-subtitle {
   font-size: 0.72rem;
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.65);
   font-weight: 400;
   letter-spacing: 0.01em;
 }
@@ -89,7 +91,7 @@ header {
 
 .status-dot {
   display: flex; align-items: center; gap: 6px;
-  font-size: 0.78rem; color: var(--text-muted); font-weight: 500;
+  font-size: 0.78rem; color: rgba(255,255,255,0.75); font-weight: 500;
 }
 .dot-live {
   width: 7px; height: 7px; border-radius: 50%;
@@ -114,11 +116,11 @@ header {
   white-space: nowrap;
 }
 .btn-outline {
-  background: transparent;
-  border: 1px solid var(--border-dark);
-  color: var(--text-secondary);
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.9);
 }
-.btn-outline:hover { background: var(--bg); border-color: var(--teal); color: var(--teal); }
+.btn-outline:hover { background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.5); color: white; }
 
 .btn-teal {
   background: var(--teal);
@@ -162,12 +164,12 @@ main { max-width: 1280px; margin: 0 auto; padding: 2rem; }
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.4rem 1.5rem;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 8px rgba(100,80,40,0.08);
   transition: box-shadow 0.2s, transform 0.2s;
   position: relative;
   overflow: hidden;
 }
-.stat-card:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
+.stat-card:hover { box-shadow: 0 6px 18px rgba(100,80,40,0.12); transform: translateY(-2px); }
 .stat-card::before {
   content: '';
   position: absolute;
@@ -288,7 +290,7 @@ main { max-width: 1280px; margin: 0 auto; padding: 2rem; }
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 8px rgba(100,80,40,0.08);
   overflow: hidden;
 }
 
@@ -297,7 +299,7 @@ main { max-width: 1280px; margin: 0 auto; padding: 2rem; }
   grid-template-columns: 200px 1fr 160px 160px 120px 180px;
   gap: 0;
   padding: 0.75rem 1.25rem;
-  background: var(--bg);
+  background: #ede8df;
   border-bottom: 1px solid var(--border);
 }
 .th {

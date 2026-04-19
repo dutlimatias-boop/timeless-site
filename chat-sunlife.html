@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chat with Emma · Sun Life Beach Hotel</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f5f0e8;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* HEADER */
+header {
+  background: linear-gradient(135deg, #085f5e 0%, #0e7c7b 60%, #0e9e7a 100%);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 2px 20px rgba(8,95,94,0.35);
+}
+
+.logo-icon {
+  width: 46px; height: 46px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.hotel-info { flex: 1; }
+.hotel-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+.hotel-location {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.65);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+.online-badge {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 0.35rem 0.75rem;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.85);
+  font-weight: 500;
+}
+.online-dot {
+  width: 7px; height: 7px;
+  background: #4ade80;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(74,222,128,0.3);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(74,222,128,0.2); }
+  50% { box-shadow: 0 0 0 4px rgba(74,222,128,0.1); }
+}
+
+/* INTRO STRIP */
+.intro-strip {
+  background: #fdf9f4;
+  border-bottom: 1px solid #e0d8cc;
+  padding: 0.85rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.82rem;
+  color: #6b7060;
+}
+.intro-strip strong { color: #1a1a18; }
+
+/* CHAT CONTAINER */
+.chat-wrap {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding: 1.5rem 1rem;
+}
+
+.chat-frame-wrap {
+  width: 100%;
+  max-width: 780px;
+  background: #fdf9f4;
+  border-radius: 20px;
+  border: 1px solid #e0d8cc;
+  box-shadow: 0 8px 40px rgba(100,80,40,0.1), 0 2px 8px rgba(100,80,40,0.06);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 540px;
+}
+
+.chat-frame-header {
+  background: #fdf9f4;
+  border-bottom: 1px solid #ede8df;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.emma-avatar {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, #e4f2f1, #b8dcdc);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  border: 2px solid #c8e0e0;
+}
+
+.emma-info { flex: 1; }
+.emma-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #1a1a18;
+  line-height: 1.2;
+}
+.emma-role {
+  font-size: 0.72rem;
+  color: #8a9080;
+  margin-top: 1px;
+}
+
+.emma-status {
+  font-size: 0.72rem;
+  color: #059669;
+  font-weight: 500;
+  display: flex; align-items: center; gap: 5px;
+}
+.emma-status::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: #22c55e;
+  border-radius: 50%;
+}
+
+iframe {
+  flex: 1;
+  border: none;
+  width: 100%;
+  min-height: 480px;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 1.25rem;
+  font-size: 0.72rem;
+  color: #a09880;
+  border-top: 1px solid #e0d8cc;
+  background: #f5f0e8;
+}
+footer a { color: #0e7c7b; text-decoration: none; font-weight: 500; }
+
+@media (max-width: 640px) {
+  header { padding: 1rem; }
+  .intro-strip { display: none; }
+  .chat-wrap { padding: 0.75rem 0.5rem; }
+  .chat-frame-wrap { border-radius: 14px; min-height: 500px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo-icon">🏖️</div>
+  <div class="hotel-info">
+    <div class="hotel-name">Sun Life Beach Hotel</div>
+    <div class="hotel-location">Englewood, Florida · Suites and Efficiencies</div>
+  </div>
+  <div class="online-badge">
+    <span class="online-dot"></span>
+    Emma is online
+  </div>
+</header>
+
+<!-- INTRO STRIP -->
+<div class="intro-strip">
+  💬 Ask Emma anything about our rooms, rates, availability, or nearby activities — she's here 24/7.
+</div>
+
+<!-- CHAT -->
+<div class="chat-wrap">
+  <div class="chat-frame-wrap">
+    <div class="chat-frame-header">
+      <div class="emma-avatar">👩‍💼</div>
+      <div class="emma-info">
+        <div class="emma-name">Emma</div>
+        <div class="emma-role">Virtual Front Desk · Sun Life Beach Hotel</div>
+      </div>
+      <div class="emma-status">Online now</div>
+    </div>
+    <iframe
+      src="https://matiasdutli22.app.n8n.cloud/webhook/7927dcd1-6b79-4a42-9661-22e85347a85f/chat"
+      allow="microphone"
+      title="Chat with Emma">
+    </iframe>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  Sun Life Beach Hotel · 1225 S McCall Rd, Englewood FL 34223 · <a href="mailto:ana@sunlifebeachhotel.com">ana@sunlifebeachhotel.com</a>
+</footer>
+
+</body>
+</html>

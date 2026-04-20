@@ -237,6 +237,9 @@ header {
   grid-template-columns: repeat(4, 1fr);
   gap: 0.75rem;
 }
+@media (max-width: 680px) {
+  .room-grid { grid-template-columns: repeat(2, 1fr); }
+}
 .room-tile {
   background: var(--card);
   border: 1px solid var(--border);
@@ -521,10 +524,10 @@ header {
       <div class="room-type">Two Queens</div>
       <div class="room-status-txt status-occupied">2 more nights</div>
     </div>
-    <div class="room-tile free">
+    <div class="room-tile occupied">
       <div class="room-num">Room 4</div>
-      <div class="room-type">ADA Room</div>
-      <div class="room-status-txt status-free">Available</div>
+      <div class="room-type">Single Queen</div>
+      <div class="room-status-txt status-occupied">4 more nights</div>
     </div>
     <div class="room-tile checkin">
       <div class="room-num">Room 5</div>
@@ -533,8 +536,18 @@ header {
     </div>
     <div class="room-tile occupied">
       <div class="room-num">Room 6</div>
-      <div class="room-type">Single Queen</div>
-      <div class="room-status-txt status-occupied">5 more nights</div>
+      <div class="room-type">Two Queens</div>
+      <div class="room-status-txt status-occupied">3 more nights</div>
+    </div>
+    <div class="room-tile free">
+      <div class="room-num">Room 7</div>
+      <div class="room-type">ADA Room</div>
+      <div class="room-status-txt status-free">Available</div>
+    </div>
+    <div class="room-tile occupied">
+      <div class="room-num">Room 8</div>
+      <div class="room-type">King Bed</div>
+      <div class="room-status-txt status-occupied">1 more night</div>
     </div>
   </div>
 

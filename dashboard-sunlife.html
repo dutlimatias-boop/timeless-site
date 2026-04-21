@@ -93,8 +93,12 @@ header {
 .sec-title { font-size: 1.1rem; font-weight: 800; color: var(--text); letter-spacing: -0.02em; margin-bottom: 0.25rem; }
 .sec-sub   { font-size: 0.75rem; color: var(--muted); margin-bottom: 1.25rem; }
 
-/* DIVIDER */
-hr { border: none; border-top: 2px solid var(--border); margin: 3rem 0; }
+/* SECTION BREAK */
+.section-break {
+  margin: 4rem -1.5rem 0;
+  background: linear-gradient(135deg, #085f5e 0%, #0e7c7b 70%, #0e9e7a 100%);
+  padding: 2.5rem 1.5rem 0;
+}
 
 /* ── SECTION 1 LAYOUT ── */
 .s1-layout {
@@ -368,10 +372,16 @@ hr { border: none; border-top: 2px solid var(--border); margin: 3rem 0; }
   <!--  SECTION 2 — METRICS                  -->
   <!-- ══════════════════════════════════════ -->
 
-  <hr>
+  <div class="section-break">
+    <div style="max-width:1000px;margin:0 auto;">
+      <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.5);margin-bottom:0.4rem;">Section 2</div>
+      <div style="font-size:1.4rem;font-weight:800;color:#fff;letter-spacing:-0.03em;">Weekly summary</div>
+      <div style="font-size:0.78rem;color:rgba(255,255,255,0.6);margin-top:4px;padding-bottom:2rem;">April 14 – 21 · How Emma helped your hotel this week</div>
+    </div>
+  </div>
 
-  <div class="sec-title">Weekly summary</div>
-  <div class="sec-sub">April 14 – 21 · How Emma helped your hotel this week</div>
+  <div style="background:#f0ece4;padding:2rem 0 3rem;margin:0 -1.5rem;padding-left:1.5rem;padding-right:1.5rem;">
+  <div style="max-width:1000px;margin:0 auto;">
 
   <div class="metrics-grid">
     <div class="metric-tile">
@@ -416,6 +426,8 @@ hr { border: none; border-top: 2px solid var(--border); margin: 3rem 0; }
       <div class="faq-item"><div class="faq-n">5</div><div class="faq-q">Max guests per room?</div><div class="faq-c">5×</div></div>
     </div>
   </div>
+
+  </div></div><!-- close metrics wrapper -->
 
 </div>
 

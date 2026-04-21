@@ -3,645 +3,806 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sun Life · Emma</title>
+<title>Sun Life · Emma Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
+
 :root {
-  --bg: #f7f4ef;
-  --card: #ffffff;
+  --bg: #f5f0e8;
+  --card: #fdf9f4;
   --teal: #0e7c7b;
-  --teal-light: #e8f4f4;
-  --gold: #c07c1a;
-  --gold-light: #fdf3e3;
+  --teal-dark: #085f5e;
+  --teal-light: #e4f2f1;
+  --gold: #b8720a;
+  --gold-light: #fef3e2;
   --text: #1a1a18;
-  --muted: #9a9585;
-  --border: #ede8e0;
+  --muted: #8a9080;
+  --border: #e0d8cc;
   --green: #16a34a;
   --green-light: #f0fdf4;
   --red: #dc2626;
-  --red-light: #fff5f5;
+  --red-light: #fef2f2;
+  --blue: #2563eb;
+  --blue-light: #eff6ff;
 }
+
 body {
   font-family: 'Inter', sans-serif;
   background: var(--bg);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
-  color: var(--text);
 }
 
 /* HEADER */
 header {
-  background: linear-gradient(135deg, #085f5e 0%, #0e7c7b 70%, #0e9e7a 100%);
+  background: linear-gradient(135deg, #085f5e 0%, #0e7c7b 60%, #0e9e7a 100%);
   padding: 1rem 2rem;
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 20px rgba(8,95,94,0.3);
 }
-.h-left { display: flex; align-items: center; gap: 12px; }
-.h-logo {
-  width: 36px; height: 36px;
+
+.header-left { display: flex; align-items: center; gap: 12px; }
+
+.logo {
+  width: 38px; height: 38px;
   background: rgba(255,255,255,0.15);
-  border-radius: 9px;
+  border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 1rem;
+  font-size: 1.1rem;
   border: 1px solid rgba(255,255,255,0.2);
 }
-.h-name { font-size: 0.9rem; font-weight: 700; color: #fff; }
-.h-loc  { font-size: 0.68rem; color: rgba(255,255,255,0.55); margin-top: 1px; }
-.h-right { display: flex; align-items: center; gap: 8px; }
-.h-pill {
-  display: flex; align-items: center; gap: 5px;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.18);
-  padding: 0.3rem 0.8rem; border-radius: 100px;
-  font-size: 0.72rem; color: rgba(255,255,255,0.8); font-weight: 500;
-}
-.live-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; animation: glow 2s infinite; }
-@keyframes glow { 0%,100%{opacity:1} 50%{opacity:0.5} }
 
-/* PAGE */
-.page { max-width: 1000px; margin: 0 auto; padding: 2rem 1.5rem 5rem; }
+.hotel-name { font-size: 0.95rem; font-weight: 700; color: #fff; }
+.hotel-sub { font-size: 0.7rem; color: rgba(255,255,255,0.6); margin-top: 1px; }
+
+.header-right { display: flex; align-items: center; gap: 10px; }
+
+.date-badge {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 0.35rem 0.85rem;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.85);
+  font-weight: 500;
+}
+
+.emma-badge {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 0.35rem 0.85rem;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.85);
+  font-weight: 500;
+}
+.dot-green {
+  width: 6px; height: 6px;
+  background: #4ade80;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 0 2px rgba(74,222,128,0.2); }
+  50% { box-shadow: 0 0 0 4px rgba(74,222,128,0.1); }
+}
+
+/* MAIN */
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.75rem 1.5rem;
+}
 
 /* GREETING */
-.greeting { margin-bottom: 1.5rem; }
-.greeting h1 { font-size: 1.75rem; font-weight: 800; color: var(--text); letter-spacing: -0.04em; }
-.greeting-sub { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
-
-/* EMMA BRIEFING */
-.briefing {
-  background: var(--teal);
-  border-radius: 14px;
-  padding: 1rem 1.25rem;
-  margin-bottom: 2rem;
-  display: flex; align-items: flex-start; gap: 12px;
+.greeting {
+  margin-bottom: 1.75rem;
 }
-.briefing-av {
-  width: 34px; height: 34px;
+.greeting h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.03em;
+}
+.greeting p {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* TABS */
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1.5rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 5px;
+  width: fit-content;
+}
+.tab {
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  transition: all 0.2s;
+}
+.tab.active {
+  background: var(--teal);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(14,124,123,0.25);
+}
+
+/* SECTION: TODAY */
+.today-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 1.25rem;
+}
+
+/* EMMA MESSAGE */
+.emma-message {
+  background: var(--teal);
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.emma-avatar {
+  width: 40px; height: 40px;
   background: rgba(255,255,255,0.2);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 0.95rem; flex-shrink: 0;
+  font-size: 1.1rem;
+  flex-shrink: 0;
 }
-.briefing-text strong { font-size: 0.68rem; font-weight: 700; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.06em; color: #fff; display: block; margin-bottom: 3px; }
-.briefing-text p { font-size: 0.82rem; color: #fff; line-height: 1.55; opacity: 0.95; }
+.emma-msg-text { color: #fff; }
+.emma-msg-text strong { font-size: 0.88rem; font-weight: 700; display: block; margin-bottom: 3px; }
+.emma-msg-text p { font-size: 0.82rem; opacity: 0.9; line-height: 1.5; }
 
-/* SECTION TITLE */
-.sec-label {
-  font-size: 0.68rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.09em;
-  color: var(--muted); margin-bottom: 1rem;
-}
-.sec-title { font-size: 1.1rem; font-weight: 800; color: var(--text); letter-spacing: -0.02em; margin-bottom: 0.25rem; }
-.sec-sub   { font-size: 0.75rem; color: var(--muted); margin-bottom: 1.25rem; }
-
-/* SECTION BREAK */
-.section-break {
-  margin: 4rem -1.5rem 0;
-  background: linear-gradient(135deg, #085f5e 0%, #0e7c7b 70%, #0e9e7a 100%);
-  padding: 2.5rem 1.5rem 0;
-}
-
-/* ── SECTION 1 LAYOUT ── */
-.s1-layout {
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 1.25rem;
-  align-items: start;
-}
-
-/* CALENDAR */
-.cal-card {
+/* TASK LIST */
+.card {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 1.25rem;
-  position: sticky;
-  top: 1rem;
+  margin-bottom: 1.25rem;
 }
-.cal-nav {
-  display: flex; align-items: center; justify-content: space-between;
+
+.card-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   margin-bottom: 1rem;
 }
-.cal-nav-title { font-size: 0.88rem; font-weight: 700; color: var(--text); }
-.cal-nav button {
-  background: none; border: none; cursor: pointer;
-  color: var(--muted); font-size: 0.85rem; padding: 2px 6px;
-  border-radius: 6px;
+
+.task {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
 }
-.cal-nav button:hover { background: var(--bg); color: var(--text); }
-.cal-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 2px;
+.task:last-child { border-bottom: none; padding-bottom: 0; }
+.task:first-of-type { padding-top: 0; }
+
+.task-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
 }
-.cal-dn { font-size: 0.58rem; font-weight: 700; color: var(--muted); text-align: center; padding: 3px 0; text-transform: uppercase; }
-.cal-d {
-  font-size: 0.75rem; font-weight: 500; color: var(--text);
-  text-align: center; padding: 6px 2px;
-  border-radius: 7px; cursor: pointer; position: relative;
-  transition: background 0.15s;
+.task-icon.checkout { background: var(--red-light); }
+.task-icon.checkin { background: var(--green-light); }
+.task-icon.clean { background: var(--gold-light); }
+.task-icon.msg { background: var(--blue-light); }
+
+.task-info { flex: 1; }
+.task-title { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+.task-sub { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+
+.task-time {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--teal);
+  white-space: nowrap;
 }
-.cal-d:hover { background: var(--bg); }
-.cal-d.today  { background: var(--teal); color: #fff; font-weight: 800; }
-.cal-d.selected { background: var(--teal-light); color: var(--teal); font-weight: 700; outline: 2px solid var(--teal); }
-.cal-d.today.selected { background: var(--teal); color: #fff; }
-.cal-d.occ::after { content:''; width: 4px; height: 4px; background: var(--gold); border-radius: 50%; position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); }
-.cal-d.today::after { background: rgba(255,255,255,0.6); }
-.cal-d.dim { color: var(--muted); opacity: 0.35; cursor: default; }
-.cal-d.dim:hover { background: none; }
 
-.cal-legend { display: flex; gap: 10px; margin-top: 1rem; font-size: 0.65rem; color: var(--muted); }
-.cal-legend span { display: flex; align-items: center; gap: 4px; }
-.leg { width: 7px; height: 7px; border-radius: 2px; display: inline-block; }
+.task-badge {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 100px;
+}
+.badge-done { background: var(--green-light); color: var(--green); }
+.badge-pending { background: var(--gold-light); color: var(--gold); }
+.badge-new { background: var(--blue-light); color: var(--blue); }
 
-/* OCC BAR */
-.occ-section { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
-.occ-row { display: flex; justify-content: space-between; font-size: 0.72rem; margin-bottom: 5px; }
-.occ-row span:first-child { color: var(--muted); font-weight: 500; }
-.occ-row span:last-child  { color: var(--teal); font-weight: 800; }
-.occ-track { background: var(--border); border-radius: 100px; height: 6px; overflow: hidden; }
-.occ-fill  { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--teal), #0e9e7a); transition: width 0.4s; }
-
-/* DAY PANEL */
-.day-panel { min-height: 400px; }
-.day-header { margin-bottom: 1.25rem; }
-.day-date { font-size: 1.3rem; font-weight: 800; color: var(--text); letter-spacing: -0.03em; }
-.day-date span { color: var(--teal); }
-
-/* TASK CARDS */
-.task-list { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
-.task-card {
+/* GUESTS TODAY */
+.guest-card {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 0.85rem 1.1rem;
-  display: flex; align-items: center; gap: 0.85rem;
-  border-left-width: 3px;
+  padding: 1rem 1.1rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
-.task-card.t-red    { border-left-color: var(--red); }
-.task-card.t-teal   { border-left-color: var(--teal); }
-.task-card.t-gold   { border-left-color: var(--gold); }
-.task-card.t-green  { border-left-color: var(--green); }
-.t-icon {
-  width: 36px; height: 36px; border-radius: 10px;
+.guest-avatar {
+  width: 38px; height: 38px;
+  border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem; flex-shrink: 0; background: var(--bg);
+  font-size: 1rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  color: #fff;
 }
-.t-body { flex: 1; }
-.t-title { font-size: 0.86rem; font-weight: 600; color: var(--text); }
-.t-sub   { font-size: 0.71rem; color: var(--muted); margin-top: 2px; line-height: 1.4; }
-.t-right { text-align: right; flex-shrink: 0; }
-.t-time  { font-size: 0.8rem; font-weight: 700; color: var(--teal); }
-.tag {
-  display: inline-block; margin-top: 3px;
-  font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
-  padding: 2px 7px; border-radius: 100px;
-}
-.tag-out   { background: var(--red-light);   color: var(--red); }
-.tag-in    { background: var(--green-light);  color: var(--green); }
-.tag-clean { background: var(--gold-light);   color: var(--gold); }
-.tag-msg   { background: var(--teal-light);   color: var(--teal); }
+.av-teal { background: var(--teal); }
+.av-gold { background: var(--gold); }
+.av-blue { background: var(--blue); }
 
-/* GUESTS */
-.guest-list { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
-.guest-card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 12px; padding: 0.8rem 1.1rem;
-  display: flex; align-items: center; gap: 0.85rem;
-}
-.g-av {
-  width: 36px; height: 36px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.78rem; font-weight: 800; color: #fff; flex-shrink: 0;
-}
-.av1 { background: linear-gradient(135deg,#0e7c7b,#0e9e7a); }
-.av2 { background: linear-gradient(135deg,#c07c1a,#e09a3a); }
-.av3 { background: linear-gradient(135deg,#6366f1,#8b5cf6); }
-.av4 { background: linear-gradient(135deg,#dc2626,#f87171); }
-.g-body { flex: 1; }
-.g-name   { font-size: 0.84rem; font-weight: 600; color: var(--text); }
-.g-detail { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
-.g-btn {
-  font-size: 0.7rem; font-weight: 700;
-  padding: 0.35rem 0.8rem; border-radius: 8px; border: none; cursor: pointer;
-}
-.btn-out { background: var(--red-light);  color: var(--red); }
-.btn-in  { background: var(--green-light); color: var(--green); }
-.btn-stay{ background: var(--teal-light);  color: var(--teal); }
+.guest-info { flex: 1; }
+.guest-name { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+.guest-detail { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
 
-/* ROOMS */
-.room-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem;
+.guest-action {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
 }
-.room-tile {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 12px; padding: 0.85rem 0.9rem; border-top-width: 3px;
-}
-.room-tile.occ  { border-top-color: var(--teal); }
-.room-tile.free { border-top-color: #d1d5db; }
-.room-tile.cout { border-top-color: var(--gold); }
-.room-tile.cin  { border-top-color: var(--green); }
-.r-num  { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); }
-.r-type { font-size: 0.78rem; font-weight: 600; color: var(--text); margin-top: 3px; line-height: 1.3; }
-.r-st   { font-size: 0.67rem; margin-top: 5px; font-weight: 500; }
-.st-occ  { color: var(--teal); }
-.st-free { color: #9ca3af; }
-.st-cout { color: var(--gold); }
-.st-cin  { color: var(--green); }
+.action-out { background: var(--red-light); color: var(--red); }
+.action-in { background: var(--green-light); color: var(--green); }
 
-/* EMPTY STATE */
-.empty-state {
-  text-align: center; padding: 3rem 1rem;
-  color: var(--muted); font-size: 0.85rem; line-height: 1.6;
+/* SIDE */
+.side-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
 }
-.empty-state .empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
 
-/* ── SECTION 2: METRICS ── */
+.mini-calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-top: 0.75rem;
+}
+.cal-day-name {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-align: center;
+  padding: 2px;
+  text-transform: uppercase;
+}
+.cal-day {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text);
+  text-align: center;
+  padding: 5px 2px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.cal-day.today {
+  background: var(--teal);
+  color: #fff;
+  font-weight: 700;
+}
+.cal-day.has-event { position: relative; }
+.cal-day.has-event::after {
+  content: '';
+  width: 4px; height: 4px;
+  background: var(--gold);
+  border-radius: 50%;
+  position: absolute;
+  bottom: 1px;
+  left: 50%; transform: translateX(-50%);
+}
+.cal-day.other-month { color: var(--muted); opacity: 0.4; }
+.cal-day.occupied { background: var(--teal-light); color: var(--teal); font-weight: 600; }
+
+/* OCCUPANCY */
+.occupancy-bar {
+  background: var(--border);
+  border-radius: 100px;
+  height: 8px;
+  margin: 0.5rem 0;
+  overflow: hidden;
+}
+.occupancy-fill {
+  height: 100%;
+  border-radius: 100px;
+  background: linear-gradient(90deg, var(--teal), #0e9e7a);
+}
+
+.room-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.78rem;
+}
+.room-row:last-child { border-bottom: none; }
+.room-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dot-occupied { background: var(--teal); }
+.dot-free { background: #d1d5db; }
+.dot-checkout { background: var(--gold); }
+.room-name { flex: 1; color: var(--text); font-weight: 500; }
+.room-status { color: var(--muted); font-size: 0.72rem; }
+
+/* METRICS SECTION */
+.metrics-section { display: none; }
+.metrics-section.active { display: block; }
+.today-section { display: block; }
+.today-section.hidden { display: none; }
+
 .metrics-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.85rem; margin-bottom: 1rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.25rem;
 }
-.metric-tile {
-  background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.25rem;
-}
-.m-icon  { font-size: 1.3rem; margin-bottom: 0.6rem; }
-.m-val   { font-size: 2rem; font-weight: 800; color: var(--text); letter-spacing: -0.05em; line-height: 1; }
-.m-lbl   { font-size: 0.73rem; color: var(--muted); margin-top: 5px; font-weight: 500; }
-.m-delta { font-size: 0.7rem; font-weight: 600; color: var(--green); margin-top: 5px; }
 
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
-.chart-card, .faq-card {
-  background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.25rem;
+.metric-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.25rem;
 }
-.chart-lbl { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 1rem; }
-.bars { display: flex; align-items: flex-end; gap: 5px; height: 80px; }
-.b-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; justify-content: flex-end; }
-.b { width: 100%; border-radius: 5px 5px 0 0; background: var(--teal-light); }
-.b.hi { background: var(--teal); }
-.b-day { font-size: 0.58rem; color: var(--muted); font-weight: 600; text-transform: uppercase; }
-.faq-item { display: flex; align-items: center; gap: 10px; padding: 0.55rem 0; border-bottom: 1px solid var(--border); }
-.faq-item:last-child { border-bottom: none; padding-bottom: 0; }
-.faq-item:first-child { padding-top: 0; }
-.faq-n { width: 22px; height: 22px; background: var(--teal-light); color: var(--teal); border-radius: 6px; font-size: 0.68rem; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.faq-q { flex: 1; font-size: 0.79rem; font-weight: 500; color: var(--text); }
-.faq-c { font-size: 0.7rem; font-weight: 700; color: var(--muted); }
+.metric-icon { font-size: 1.4rem; margin-bottom: 0.5rem; }
+.metric-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+.metric-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 4px;
+  font-weight: 500;
+}
+.metric-delta {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--green);
+  margin-top: 6px;
+}
 
-/* RESPONSIVE */
-@media (max-width: 720px) {
-  .s1-layout { grid-template-columns: 1fr; }
-  .room-grid { grid-template-columns: repeat(2, 1fr); }
+.chart-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 100px;
+  margin-top: 1rem;
+}
+.bar-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  height: 100%;
+  justify-content: flex-end;
+}
+.bar {
+  width: 100%;
+  border-radius: 6px 6px 0 0;
+  background: var(--teal-light);
+  transition: all 0.3s;
+}
+.bar.highlight { background: var(--teal); }
+.bar-label { font-size: 0.65rem; color: var(--muted); font-weight: 500; }
+
+.faq-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.82rem;
+}
+.faq-row:last-child { border-bottom: none; }
+.faq-rank {
+  width: 22px; height: 22px;
+  background: var(--teal-light);
+  color: var(--teal);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.faq-text { flex: 1; color: var(--text); font-weight: 500; }
+.faq-count { font-size: 0.72rem; color: var(--muted); font-weight: 600; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+
+@media (max-width: 768px) {
+  .today-grid { grid-template-columns: 1fr; }
   .metrics-grid { grid-template-columns: repeat(2, 1fr); }
   .two-col { grid-template-columns: 1fr; }
   header { padding: 0.85rem 1rem; }
-  .page { padding: 1.25rem 1rem 3rem; }
+  .date-badge { display: none; }
 }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="h-left">
-    <div class="h-logo">🏖️</div>
+  <div class="header-left">
+    <div class="logo">🏖️</div>
     <div>
-      <div class="h-name">Sun Life Beach Hotel</div>
-      <div class="h-loc">Englewood, Florida</div>
+      <div class="hotel-name">Sun Life Beach Hotel</div>
+      <div class="hotel-sub">Englewood, Florida</div>
     </div>
   </div>
-  <div class="h-right">
-    <div class="h-pill" id="header-date">Tuesday, April 21</div>
-    <div class="h-pill"><span class="live-dot"></span> Emma is active</div>
+  <div class="header-right">
+    <div class="date-badge">Sunday, April 20</div>
+    <div class="emma-badge"><span class="dot-green"></span> Emma is active</div>
   </div>
 </header>
 
-<div class="page">
+<main>
 
-  <!-- GREETING -->
   <div class="greeting">
     <h1>Good morning, Ana 👋</h1>
-    <div class="greeting-sub">Select a day to see what's happening</div>
+    <p>Here's everything you need to know for today.</p>
   </div>
 
-  <!-- EMMA BRIEFING -->
-  <div class="briefing">
-    <div class="briefing-av">👩‍💼</div>
-    <div class="briefing-text">
-      <strong>Emma's briefing · Today</strong>
-      <p>1 check-out at 10am · 2 check-ins this afternoon · Room 1 needs to be cleaned before 2pm · I answered 4 guest questions overnight — 1 message still needs your attention.</p>
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('today', this)">📋 My Day</button>
+    <button class="tab" onclick="showTab('metrics', this)">📊 Weekly Summary</button>
+  </div>
+
+  <!-- TODAY SECTION -->
+  <div class="today-section" id="today">
+
+    <!-- EMMA MESSAGE -->
+    <div class="emma-message">
+      <div class="emma-avatar">👩‍💼</div>
+      <div class="emma-msg-text">
+        <strong>Emma's morning briefing</strong>
+        <p>You have 1 check-out at 10am and 2 check-ins this afternoon. Room 3 needs to be ready by 2pm. I already sent late arrival instructions to the guests in Room 5. You have 4 new messages — I answered 3 automatically. ✅</p>
+      </div>
     </div>
-  </div>
 
-  <!-- ══════════════════════════════════════ -->
-  <!--  SECTION 1 — ORGANIZATION             -->
-  <!-- ══════════════════════════════════════ -->
+    <div class="today-grid">
+      <div>
 
-  <div class="sec-title">Organization</div>
-  <div class="sec-sub">Click any day to see tasks, guests and room status</div>
+        <!-- TASKS -->
+        <div class="card">
+          <div class="card-title">Today's tasks</div>
 
-  <div class="s1-layout">
-
-    <!-- CALENDAR -->
-    <div>
-      <div class="cal-card">
-        <div class="cal-nav">
-          <button onclick="changeMonth(-1)">‹</button>
-          <div class="cal-nav-title" id="cal-title">April 2026</div>
-          <button onclick="changeMonth(1)">›</button>
-        </div>
-        <div class="cal-grid" id="cal-grid"></div>
-        <div class="cal-legend">
-          <span><span class="leg" style="background:var(--teal);"></span> Today</span>
-          <span><span class="leg" style="background:var(--teal-light);outline:2px solid var(--teal);"></span> Selected</span>
-          <span><span style="display:inline-block;width:4px;height:4px;background:var(--gold);border-radius:50;"></span> Events</span>
-        </div>
-        <div class="occ-section">
-          <div class="occ-row">
-            <span>This week's occupancy</span>
-            <span>87%</span>
+          <div class="task">
+            <div class="task-icon checkout">🚪</div>
+            <div class="task-info">
+              <div class="task-title">Check-out — Room 2</div>
+              <div class="task-sub">The Johnson family · King Bed · 3 nights</div>
+            </div>
+            <div class="task-time">10:00 AM</div>
           </div>
-          <div class="occ-track"><div class="occ-fill" style="width:87%"></div></div>
+
+          <div class="task">
+            <div class="task-icon clean">🧹</div>
+            <div class="task-info">
+              <div class="task-title">Clean Room 2</div>
+              <div class="task-sub">Prepare for next guest arriving today</div>
+            </div>
+            <div class="task-time">After 10am</div>
+          </div>
+
+          <div class="task">
+            <div class="task-icon checkin">🏠</div>
+            <div class="task-info">
+              <div class="task-title">Check-in — Room 2</div>
+              <div class="task-sub">Sarah Mitchell · Queen Bed · 4 nights</div>
+            </div>
+            <div class="task-time">2:00 PM</div>
+          </div>
+
+          <div class="task">
+            <div class="task-icon checkin">🏠</div>
+            <div class="task-info">
+              <div class="task-title">Check-in — Room 5</div>
+              <div class="task-sub">Tom & Linda Rivera · Family Room · 7 nights · Late arrival</div>
+            </div>
+            <div class="task-time">9:00 PM</div>
+          </div>
+
+          <div class="task">
+            <div class="task-icon msg">💬</div>
+            <div class="task-info">
+              <div class="task-title">1 message needs your attention</div>
+              <div class="task-sub">Guest asking about extending their stay — Emma flagged it for you</div>
+            </div>
+            <span class="task-badge badge-new">Review</span>
+          </div>
+
+        </div>
+
+        <!-- GUESTS -->
+        <div class="card-title" style="margin-bottom:0.75rem;">Today's guests</div>
+
+        <div class="guest-card">
+          <div class="guest-avatar av-gold">J</div>
+          <div class="guest-info">
+            <div class="guest-name">Johnson Family</div>
+            <div class="guest-detail">Room 2 · King Bed · Checking out today</div>
+          </div>
+          <button class="guest-action action-out">Check-out</button>
+        </div>
+
+        <div class="guest-card">
+          <div class="guest-avatar av-teal">S</div>
+          <div class="guest-info">
+            <div class="guest-name">Sarah Mitchell</div>
+            <div class="guest-detail">Room 2 · Queen Bed · 4 nights · Arriving 2pm</div>
+          </div>
+          <button class="guest-action action-in">Check-in</button>
+        </div>
+
+        <div class="guest-card">
+          <div class="guest-avatar av-blue">T</div>
+          <div class="guest-info">
+            <div class="guest-name">Tom & Linda Rivera</div>
+            <div class="guest-detail">Room 5 · Family Room · 7 nights · Late arrival 9pm</div>
+          </div>
+          <button class="guest-action action-in">Check-in</button>
+        </div>
+
+      </div>
+
+      <!-- SIDE -->
+      <div>
+
+        <!-- MINI CALENDAR -->
+        <div class="side-card">
+          <div class="card-title">April 2026</div>
+          <div class="mini-calendar">
+            <div class="cal-day-name">S</div>
+            <div class="cal-day-name">M</div>
+            <div class="cal-day-name">T</div>
+            <div class="cal-day-name">W</div>
+            <div class="cal-day-name">T</div>
+            <div class="cal-day-name">F</div>
+            <div class="cal-day-name">S</div>
+
+            <div class="cal-day other-month">30</div>
+            <div class="cal-day">1</div>
+            <div class="cal-day">2</div>
+            <div class="cal-day">3</div>
+            <div class="cal-day">4</div>
+            <div class="cal-day">5</div>
+            <div class="cal-day">6</div>
+
+            <div class="cal-day">7</div>
+            <div class="cal-day">8</div>
+            <div class="cal-day">9</div>
+            <div class="cal-day">10</div>
+            <div class="cal-day occupied">11</div>
+            <div class="cal-day occupied">12</div>
+            <div class="cal-day occupied">13</div>
+
+            <div class="cal-day occupied">14</div>
+            <div class="cal-day occupied">15</div>
+            <div class="cal-day occupied">16</div>
+            <div class="cal-day occupied">17</div>
+            <div class="cal-day occupied">18</div>
+            <div class="cal-day occupied">19</div>
+            <div class="cal-day today">20</div>
+
+            <div class="cal-day occupied">21</div>
+            <div class="cal-day occupied">22</div>
+            <div class="cal-day occupied">23</div>
+            <div class="cal-day occupied">24</div>
+            <div class="cal-day occupied">25</div>
+            <div class="cal-day occupied">26</div>
+            <div class="cal-day occupied">27</div>
+
+            <div class="cal-day">28</div>
+            <div class="cal-day">29</div>
+            <div class="cal-day">30</div>
+            <div class="cal-day other-month">1</div>
+            <div class="cal-day other-month">2</div>
+            <div class="cal-day other-month">3</div>
+            <div class="cal-day other-month">4</div>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:0.85rem;font-size:0.7rem;color:var(--muted);">
+            <span style="display:flex;align-items:center;gap:4px;"><span style="width:8px;height:8px;background:var(--teal-light);border-radius:3px;display:inline-block;"></span>Occupied</span>
+            <span style="display:flex;align-items:center;gap:4px;"><span style="width:8px;height:8px;background:var(--teal);border-radius:3px;display:inline-block;"></span>Today</span>
+          </div>
+        </div>
+
+        <!-- ROOM STATUS -->
+        <div class="side-card">
+          <div class="card-title">Room status</div>
+
+          <div class="room-row">
+            <div class="room-dot dot-checkout"></div>
+            <div class="room-name">Room 1 · King Bed</div>
+            <div class="room-status">Check-out today</div>
+          </div>
+          <div class="room-row">
+            <div class="room-dot dot-occupied"></div>
+            <div class="room-name">Room 2 · Queen Bed</div>
+            <div class="room-status">Arriving 2pm</div>
+          </div>
+          <div class="room-row">
+            <div class="room-dot dot-occupied"></div>
+            <div class="room-name">Room 3 · Two Queens</div>
+            <div class="room-status">Occupied · 2 more nights</div>
+          </div>
+          <div class="room-row">
+            <div class="room-dot dot-free"></div>
+            <div class="room-name">Room 4 · ADA</div>
+            <div class="room-status" style="color:#16a34a;">Available</div>
+          </div>
+          <div class="room-row">
+            <div class="room-dot dot-occupied"></div>
+            <div class="room-name">Room 5 · Family Suite</div>
+            <div class="room-status">Arriving 9pm</div>
+          </div>
+
+          <div style="margin-top:1rem;">
+            <div style="display:flex;justify-content:space-between;font-size:0.75rem;margin-bottom:4px;">
+              <span style="color:var(--muted);font-weight:500;">Occupancy this week</span>
+              <span style="font-weight:700;color:var(--teal);">87%</span>
+            </div>
+            <div class="occupancy-bar">
+              <div class="occupancy-fill" style="width:87%"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- METRICS SECTION -->
+  <div class="metrics-section" id="metrics">
+
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-icon">💬</div>
+        <div class="metric-value">47</div>
+        <div class="metric-label">Messages this week</div>
+        <div class="metric-delta">↑ 12 more than last week</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon">🤖</div>
+        <div class="metric-value">43</div>
+        <div class="metric-label">Answered by Emma</div>
+        <div class="metric-delta" style="color:var(--teal);">91% automatic</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon">🏠</div>
+        <div class="metric-value">87%</div>
+        <div class="metric-label">Occupancy this week</div>
+        <div class="metric-delta">↑ vs 72% last week</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon">⏱️</div>
+        <div class="metric-value">3.2h</div>
+        <div class="metric-label">Time saved by Emma</div>
+        <div class="metric-delta" style="color:var(--teal);">This week</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+
+      <div class="chart-card">
+        <div class="card-title">Messages per day</div>
+        <div class="bar-chart">
+          <div class="bar-wrap">
+            <div class="bar" style="height:40%"></div>
+            <div class="bar-label">Mon</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar" style="height:65%"></div>
+            <div class="bar-label">Tue</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar" style="height:50%"></div>
+            <div class="bar-label">Wed</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar" style="height:80%"></div>
+            <div class="bar-label">Thu</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar highlight" style="height:100%"></div>
+            <div class="bar-label">Fri</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar" style="height:75%"></div>
+            <div class="bar-label">Sat</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar" style="height:55%"></div>
+            <div class="bar-label">Sun</div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- DAY PANEL -->
-    <div class="day-panel" id="day-panel">
-      <!-- filled by JS -->
-    </div>
-
-  </div>
-
-  <!-- ══════════════════════════════════════ -->
-  <!--  SECTION 2 — METRICS                  -->
-  <!-- ══════════════════════════════════════ -->
-
-  <div class="section-break">
-    <div style="max-width:1000px;margin:0 auto;">
-      <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.5);margin-bottom:0.4rem;">Section 2</div>
-      <div style="font-size:1.4rem;font-weight:800;color:#fff;letter-spacing:-0.03em;">Weekly summary</div>
-      <div style="font-size:0.78rem;color:rgba(255,255,255,0.6);margin-top:4px;padding-bottom:2rem;">April 14 – 21 · How Emma helped your hotel this week</div>
-    </div>
-  </div>
-
-  <div style="background:#f0ece4;padding:2rem 0 3rem;margin:0 -1.5rem;padding-left:1.5rem;padding-right:1.5rem;">
-  <div style="max-width:1000px;margin:0 auto;">
-
-  <div class="metrics-grid">
-    <div class="metric-tile">
-      <div class="m-icon">💬</div>
-      <div class="m-val">47</div>
-      <div class="m-lbl">Guest messages</div>
-      <div class="m-delta">↑ 12 more than last week</div>
-    </div>
-    <div class="metric-tile">
-      <div class="m-icon">🤖</div>
-      <div class="m-val">91%</div>
-      <div class="m-lbl">Answered by Emma</div>
-      <div class="m-delta">Only 4 needed you</div>
-    </div>
-    <div class="metric-tile">
-      <div class="m-icon">⏱️</div>
-      <div class="m-val">3.2h</div>
-      <div class="m-lbl">Time saved</div>
-      <div class="m-delta">This week alone</div>
-    </div>
-  </div>
-
-  <div class="two-col">
-    <div class="chart-card">
-      <div class="chart-lbl">Messages per day</div>
-      <div class="bars">
-        <div class="b-wrap"><div class="b" style="height:40%"></div><div class="b-day">Mon</div></div>
-        <div class="b-wrap"><div class="b" style="height:60%"></div><div class="b-day">Tue</div></div>
-        <div class="b-wrap"><div class="b" style="height:50%"></div><div class="b-day">Wed</div></div>
-        <div class="b-wrap"><div class="b" style="height:75%"></div><div class="b-day">Thu</div></div>
-        <div class="b-wrap"><div class="b hi" style="height:100%"></div><div class="b-day">Fri</div></div>
-        <div class="b-wrap"><div class="b" style="height:80%"></div><div class="b-day">Sat</div></div>
-        <div class="b-wrap"><div class="b" style="height:55%"></div><div class="b-day">Sun</div></div>
+      <div class="chart-card">
+        <div class="card-title">Most asked questions this week</div>
+        <div class="faq-row">
+          <div class="faq-rank">1</div>
+          <div class="faq-text">Check-in / check-out times</div>
+          <div class="faq-count">11×</div>
+        </div>
+        <div class="faq-row">
+          <div class="faq-rank">2</div>
+          <div class="faq-text">Is the pool heated?</div>
+          <div class="faq-count">8×</div>
+        </div>
+        <div class="faq-row">
+          <div class="faq-rank">3</div>
+          <div class="faq-text">How far from the beach?</div>
+          <div class="faq-count">7×</div>
+        </div>
+        <div class="faq-row">
+          <div class="faq-rank">4</div>
+          <div class="faq-text">Weekly rates</div>
+          <div class="faq-count">6×</div>
+        </div>
+        <div class="faq-row">
+          <div class="faq-rank">5</div>
+          <div class="faq-text">Max guests per room</div>
+          <div class="faq-count">5×</div>
+        </div>
       </div>
+
     </div>
-    <div class="faq-card">
-      <div class="chart-lbl">Most asked this week</div>
-      <div class="faq-item"><div class="faq-n">1</div><div class="faq-q">Check-in & check-out times</div><div class="faq-c">11×</div></div>
-      <div class="faq-item"><div class="faq-n">2</div><div class="faq-q">Is the pool heated?</div><div class="faq-c">8×</div></div>
-      <div class="faq-item"><div class="faq-n">3</div><div class="faq-q">How far from the beach?</div><div class="faq-c">7×</div></div>
-      <div class="faq-item"><div class="faq-n">4</div><div class="faq-q">Weekly rates?</div><div class="faq-c">6×</div></div>
-      <div class="faq-item"><div class="faq-n">5</div><div class="faq-q">Max guests per room?</div><div class="faq-c">5×</div></div>
-    </div>
+
   </div>
 
-  </div></div><!-- close metrics wrapper -->
-
-</div>
+</main>
 
 <script>
-// ── DATA ──────────────────────────────────────────────
-const DAYS_DATA = {
-  '2026-04-21': {
-    tasks: [
-      { icon:'🚪', title:'Check-out — Johnson Family', sub:'Room 1 · King Bed · 3 nights', time:'10:00 AM', tag:'tag-out', tagTxt:'Check-out', color:'t-red' },
-      { icon:'🧹', title:'Prepare Room 1', sub:'Clean and ready before 2:00 PM', time:'After 10am', tag:'tag-clean', tagTxt:'Clean', color:'t-gold' },
-      { icon:'🏠', title:'Check-in — Sarah Mitchell', sub:'Room 1 · Queen Bed · 4 nights', time:'2:00 PM', tag:'tag-in', tagTxt:'Check-in', color:'t-teal' },
-      { icon:'🌙', title:'Check-in — Rivera Family', sub:'Room 5 · Family Suite · 7 nights · Emma sent late arrival info ✓', time:'9:00 PM', tag:'tag-in', tagTxt:'Check-in', color:'t-teal' },
-      { icon:'💬', title:'1 message needs your attention', sub:'Room 3 guest asking about extending stay', time:'', tag:'tag-msg', tagTxt:'Review', color:'t-gold' },
-    ],
-    guests: [
-      { initials:'JF', av:'av2', name:'Johnson Family', detail:'Room 1 · King Bed · Checking out 10am', btnClass:'btn-out', btnTxt:'Check-out' },
-      { initials:'SM', av:'av1', name:'Sarah Mitchell', detail:'Room 1 · Queen Bed · Arriving 2pm · 4 nights', btnClass:'btn-in', btnTxt:'Check-in' },
-      { initials:'TR', av:'av3', name:'Tom & Linda Rivera', detail:'Room 5 · Family Suite · Late arrival 9pm · 7 nights', btnClass:'btn-in', btnTxt:'Check-in' },
-    ],
-    rooms: [
-      { num:'Room 1', type:'King Bed',      status:'Check-out today',  stClass:'st-cout', tileClass:'cout' },
-      { num:'Room 2', type:'Two Queens',    status:'2 more nights',    stClass:'st-occ',  tileClass:'occ'  },
-      { num:'Room 3', type:'Single Queen',  status:'4 more nights',    stClass:'st-occ',  tileClass:'occ'  },
-      { num:'Room 4', type:'King Bed',      status:'1 more night',     stClass:'st-occ',  tileClass:'occ'  },
-      { num:'Room 5', type:'Family Suite',  status:'Arriving 9pm',     stClass:'st-cin',  tileClass:'cin'  },
-      { num:'Room 6', type:'Two Queens',    status:'3 more nights',    stClass:'st-occ',  tileClass:'occ'  },
-      { num:'Room 7', type:'ADA Room',      status:'Available',        stClass:'st-free', tileClass:'free' },
-      { num:'Room 8', type:'Single Queen',  status:'5 more nights',    stClass:'st-occ',  tileClass:'occ'  },
-    ]
-  },
-  '2026-04-22': {
-    tasks: [
-      { icon:'🚪', title:'Check-out — Williams Couple', sub:'Room 2 · Two Queens · 4 nights', time:'10:00 AM', tag:'tag-out', tagTxt:'Check-out', color:'t-red' },
-      { icon:'🧹', title:'Prepare Room 2', sub:'Clean and ready for next guest', time:'After 10am', tag:'tag-clean', tagTxt:'Clean', color:'t-gold' },
-    ],
-    guests: [
-      { initials:'WC', av:'av2', name:'Williams Couple', detail:'Room 2 · Two Queens · Checking out 10am', btnClass:'btn-out', btnTxt:'Check-out' },
-    ],
-    rooms: [
-      { num:'Room 1', type:'King Bed',      status:'3 more nights',    stClass:'st-occ',  tileClass:'occ'  },
-      { num:'Room 2', type:'Two Queens',    status:'Check-out today',  stClass:'st-cout', tileClass:'cout' },
-      { num:'Room 3', type:'Single Queen',  status:'3 more nights',    stClass:'st-occ',  tileClass:'occ'  },
-      { num:'Room 4', type:'King Bed',      status:'Available',        stClass:'st-free', tileClass:'free' },
-      { num:'Room 5', type:'Family Suite',  status:'6 more nights',    stClass:'st-occ',  tileClass:'occ'  },
-      { num:'Room 6', type:'Two Queens',    status:'2 more nights',    stClass:'st-occ',  tileClass:'occ'  },
-      { num:'Room 7', type:'ADA Room',      status:'Available',        stClass:'st-free', tileClass:'free' },
-      { num:'Room 8', type:'Single Queen',  status:'4 more nights',    stClass:'st-occ',  tileClass:'occ'  },
-    ]
-  },
-  '2026-04-25': {
-    tasks: [
-      { icon:'🏠', title:'Check-in — Karen Davis', sub:'Room 4 · King Bed · 3 nights', time:'2:00 PM', tag:'tag-in', tagTxt:'Check-in', color:'t-teal' },
-    ],
-    guests: [
-      { initials:'KD', av:'av4', name:'Karen Davis', detail:'Room 4 · King Bed · Arriving 2pm · 3 nights', btnClass:'btn-in', btnTxt:'Check-in' },
-    ],
-    rooms: [
-      { num:'Room 1', type:'King Bed',      status:'Available',        stClass:'st-free', tileClass:'free' },
-      { num:'Room 2', type:'Two Queens',    status:'2 more nights',    stClass:'st-occ',  tileClass:'occ'  },
-      { num:'Room 3', type:'Single Queen',  status:'Available',        stClass:'st-free', tileClass:'free' },
-      { num:'Room 4', type:'King Bed',      status:'Arriving 2pm',     stClass:'st-cin',  tileClass:'cin'  },
-      { num:'Room 5', type:'Family Suite',  status:'3 more nights',    stClass:'st-occ',  tileClass:'occ'  },
-      { num:'Room 6', type:'Two Queens',    status:'Available',        stClass:'st-free', tileClass:'free' },
-      { num:'Room 7', type:'ADA Room',      status:'Available',        stClass:'st-free', tileClass:'free' },
-      { num:'Room 8', type:'Single Queen',  status:'1 more night',     stClass:'st-occ',  tileClass:'occ'  },
-    ]
-  }
-};
-
-// days with events
-const EVENT_DAYS = new Set(['2026-04-21','2026-04-22','2026-04-25','2026-04-11','2026-04-12','2026-04-13','2026-04-14','2026-04-15','2026-04-16','2026-04-17','2026-04-18','2026-04-19','2026-04-20','2026-04-23','2026-04-24','2026-04-26','2026-04-27']);
-
-// ── CALENDAR ─────────────────────────────────────────
-let currentYear = 2026, currentMonth = 3; // 0-indexed
-let selectedDate = '2026-04-21';
-
-const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-const DAY_NAMES   = ['S','M','T','W','T','F','S'];
-
-function pad(n){ return String(n).padStart(2,'0'); }
-function dateKey(y,m,d){ return `${y}-${pad(m+1)}-${pad(d)}`; }
-
-function renderCalendar(){
-  const grid = document.getElementById('cal-grid');
-  document.getElementById('cal-title').textContent = `${MONTH_NAMES[currentMonth]} ${currentYear}`;
-  grid.innerHTML = '';
-
-  DAY_NAMES.forEach(d => {
-    const el = document.createElement('div');
-    el.className = 'cal-dn'; el.textContent = d;
-    grid.appendChild(el);
-  });
-
-  const firstDay = new Date(currentYear, currentMonth, 1).getDay();
-  const daysInMonth = new Date(currentYear, currentMonth+1, 0).getDate();
-  const prevDays = new Date(currentYear, currentMonth, 0).getDate();
-  const today = new Date();
-  const todayKey = dateKey(today.getFullYear(), today.getMonth(), today.getDate());
-
-  // prev month
-  for(let i = firstDay-1; i >= 0; i--){
-    const el = document.createElement('div');
-    el.className = 'cal-d dim'; el.textContent = prevDays - i;
-    grid.appendChild(el);
-  }
-
-  // current month
-  for(let d = 1; d <= daysInMonth; d++){
-    const key = dateKey(currentYear, currentMonth, d);
-    const el = document.createElement('div');
-    let cls = 'cal-d';
-    if(key === todayKey) cls += ' today';
-    if(key === selectedDate) cls += ' selected';
-    if(EVENT_DAYS.has(key)) cls += ' occ';
-    el.className = cls;
-    el.textContent = d;
-    el.onclick = () => selectDay(key, d);
-    grid.appendChild(el);
-  }
-
-  // next month
-  const total = firstDay + daysInMonth;
-  const remaining = total % 7 === 0 ? 0 : 7 - (total % 7);
-  for(let i = 1; i <= remaining; i++){
-    const el = document.createElement('div');
-    el.className = 'cal-d dim'; el.textContent = i;
-    grid.appendChild(el);
-  }
+function showTab(tab, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('today').style.display = tab === 'today' ? 'block' : 'none';
+  document.getElementById('metrics').style.display = tab === 'metrics' ? 'block' : 'none';
 }
-
-function changeMonth(dir){
-  currentMonth += dir;
-  if(currentMonth > 11){ currentMonth = 0; currentYear++; }
-  if(currentMonth < 0) { currentMonth = 11; currentYear--; }
-  renderCalendar();
-}
-
-function selectDay(key, day){
-  selectedDate = key;
-  renderCalendar();
-  renderDayPanel(key, day);
-}
-
-// ── DAY PANEL ─────────────────────────────────────────
-function renderDayPanel(key, day){
-  const panel = document.getElementById('day-panel');
-  const data  = DAYS_DATA[key];
-
-  const dateObj = new Date(key + 'T12:00:00');
-  const dayName = dateObj.toLocaleDateString('en-US', { weekday:'long' });
-  const monthName = dateObj.toLocaleDateString('en-US', { month:'long' });
-
-  if(!data){
-    panel.innerHTML = `
-      <div class="day-header">
-        <div class="day-date">${dayName}, <span>${monthName} ${day}</span></div>
-      </div>
-      <div class="empty-state">
-        <div class="empty-icon">🌴</div>
-        <strong>No tasks for this day</strong><br>
-        Enjoy the calm — everything is under control.
-      </div>`;
-    return;
-  }
-
-  // tasks
-  const tasksHTML = data.tasks.map(t => `
-    <div class="task-card ${t.color}">
-      <div class="t-icon">${t.icon}</div>
-      <div class="t-body">
-        <div class="t-title">${t.title}</div>
-        <div class="t-sub">${t.sub}</div>
-      </div>
-      <div class="t-right">
-        ${t.time ? `<div class="t-time">${t.time}</div>` : ''}
-        <span class="tag ${t.tag}">${t.tagTxt}</span>
-      </div>
-    </div>`).join('');
-
-  // guests
-  const guestsHTML = data.guests.map(g => `
-    <div class="guest-card">
-      <div class="g-av ${g.av}">${g.initials}</div>
-      <div class="g-body">
-        <div class="g-name">${g.name}</div>
-        <div class="g-detail">${g.detail}</div>
-      </div>
-      <button class="g-btn ${g.btnClass}">${g.btnTxt}</button>
-    </div>`).join('');
-
-  // rooms
-  const roomsHTML = data.rooms.map(r => `
-    <div class="room-tile ${r.tileClass}">
-      <div class="r-num">${r.num}</div>
-      <div class="r-type">${r.type}</div>
-      <div class="r-st ${r.stClass}">${r.status}</div>
-    </div>`).join('');
-
-  panel.innerHTML = `
-    <div class="day-header">
-      <div class="day-date">${dayName}, <span>${monthName} ${day}</span></div>
-    </div>
-    <div class="sec-label">Tasks</div>
-    <div class="task-list">${tasksHTML}</div>
-    <div class="sec-label">Guests</div>
-    <div class="guest-list">${guestsHTML}</div>
-    <div class="sec-label">Room status</div>
-    <div class="room-grid">${roomsHTML}</div>
-  `;
-}
-
-// ── INIT ──────────────────────────────────────────────
-renderCalendar();
-renderDayPanel('2026-04-21', 21);
 </script>
+
 </body>
 </html>

@@ -202,6 +202,19 @@ main { max-width: 1100px; margin: 0 auto; padding: 1.75rem 1.5rem 4rem; }
 .empty { text-align: center; padding: 2.5rem 1rem; color: var(--muted); font-size: 0.82rem; }
 .empty-icon { font-size: 2rem; margin-bottom: 0.5rem; }
 
+/* UPCOMING */
+.upcoming-row { display:flex; align-items:center; gap:12px; padding:0.6rem 0; border-bottom:1px solid var(--border); }
+.upcoming-row:last-child { border-bottom:none; }
+.upcoming-date { min-width:54px; text-align:center; background:var(--bg); border-radius:10px; padding:5px 6px; }
+.upcoming-date .ud-day { font-size:1rem; font-weight:800; color:var(--text); line-height:1; }
+.upcoming-date .ud-dow { font-size:0.6rem; font-weight:700; color:var(--muted); text-transform:uppercase; margin-top:2px; }
+.upcoming-events { flex:1; display:flex; flex-wrap:wrap; gap:6px; }
+.upcoming-tag { font-size:0.72rem; font-weight:600; padding:3px 9px; border-radius:100px; }
+.tag-in  { background:var(--green-light); color:var(--green); }
+.tag-out { background:var(--red-light); color:var(--red); }
+.tag-occ { background:var(--teal-light); color:var(--teal); }
+.upcoming-occ { font-size:0.72rem; font-weight:700; color:var(--muted); white-space:nowrap; }
+
 /* METRICS TAB */
 .metrics-section { display: none; }
 .metrics-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-bottom: 1.25rem; }
@@ -304,6 +317,13 @@ main { max-width: 1100px; margin: 0 auto; padding: 1.75rem 1.5rem 4rem; }
       </div>
 
     </div>
+
+    <!-- UPCOMING 7 DAYS -->
+    <div class="card" id="upcoming-card" style="margin-top:1.25rem;">
+      <div class="card-title">Upcoming — Next 7 Days</div>
+      <div id="upcoming-list"><div style="color:var(--muted);font-size:0.84rem;">Loading…</div></div>
+    </div>
+
   </div>
 
   <!-- ═══════ TAB 2: WEEKLY SUMMARY ═══════ -->
@@ -489,6 +509,7 @@ async function loadData() {
 
     DATA = buildDataFromReservations(unwrapped);
     EVENT_DAYS = new Set(Object.keys(DATA));
+    renderUpcoming();
   } catch (err) {
     console.error('Dashboard load error:', err);
     if (briefingEl) briefingEl.textContent = 'Could not load live data — check your connection.';
@@ -608,6 +629,37 @@ function renderDayContent(k){
     <div class="card-title" style="margin:1.1rem 0 0.75rem;">Room status</div>
     <div class="room-grid">${roomsHTML}</div>
   `;
+}
+
+// ── UPCOMING 7 DAYS ───────────────────────────────────────────────
+function renderUpcoming() {
+  const el = document.getElementById('upcoming-list');
+  if (!el) return;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const rows = [];
+  for (let i = 1; i <= 7; i++) {
+    const d = new Date(today); d.setDate(today.getDate() + i);
+    const key = d.toISOString().substring(0,10);
+    const data = DATA[key];
+    if (!data) continue;
+    const ins  = data.tasks.filter(t => t.cls === 'checkin').map(t => t.title.replace('Check-in — ',''));
+    const outs = data.tasks.filter(t => t.cls === 'checkout').map(t => t.title.replace('Check-out — ','').replace(' — don\'t sell',''));
+    const occ  = data.rooms.filter(r => r.tileCls !== 'free').length;
+    const tags = [
+      ...ins.map(n  => `<span class="upcoming-tag tag-in">↓ ${n}</span>`),
+      ...outs.map(n => `<span class="upcoming-tag tag-out">↑ ${n}</span>`)
+    ];
+    if (!tags.length && occ === 0) continue;
+    rows.push(`<div class="upcoming-row">
+      <div class="upcoming-date">
+        <div class="ud-day">${d.getDate()}</div>
+        <div class="ud-dow">${d.toLocaleDateString('en-US',{weekday:'short'})}</div>
+      </div>
+      <div class="upcoming-events">${tags.length ? tags.join('') : '<span style="color:var(--muted);font-size:0.78rem;">No arrivals or departures</span>'}</div>
+      <div class="upcoming-occ">${occ}/8 rooms</div>
+    </div>`);
+  }
+  el.innerHTML = rows.length ? rows.join('') : '<div style="color:var(--muted);font-size:0.84rem;padding:0.5rem 0;">No events in the next 7 days.</div>';
 }
 
 // ── WEEKLY SUMMARY ────────────────────────────────────────────────
@@ -771,6 +823,18 @@ loadData().then(() => {
   const sub = document.getElementById('greeting-sub');
   if (sub) sub.textContent = `Last updated at ${now.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'})}`;
 });
+
+// Auto-refresh every 5 minutes
+setInterval(() => {
+  weeklySummaryLoaded = false;
+  DATA = {}; EVENT_DAYS = new Set();
+  loadData().then(() => {
+    const sub = document.getElementById('greeting-sub');
+    if (sub) sub.textContent = `Last updated at ${new Date().toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'})}`;
+    const activeTab = document.querySelector('.tab.active');
+    if (activeTab && activeTab.textContent.includes('Weekly')) loadWeeklySummary();
+  });
+}, 5 * 60 * 1000);
 
 </script>
 </body>

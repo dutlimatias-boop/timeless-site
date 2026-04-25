@@ -320,7 +320,10 @@ main { max-width: 1100px; margin: 0 auto; padding: 1.75rem 1.5rem 4rem; }
         <div class="cal-card">
           <div class="cal-nav">
             <button onclick="changeMonth(-1)">‹</button>
-            <div class="cal-nav-title" id="cal-title"></div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div class="cal-nav-title" id="cal-title"></div>
+              <button id="today-btn" onclick="goToToday()" style="display:none;font-size:0.62rem;font-weight:700;padding:2px 8px;background:var(--teal-light);color:var(--teal);border:none;border-radius:100px;cursor:pointer;">Today</button>
+            </div>
             <button onclick="changeMonth(1)">›</button>
           </div>
           <div class="cal-grid" id="cal-grid"></div>
@@ -593,11 +596,23 @@ function renderCal(){
   for(let i=1;i<=rem;i++){ const el=document.createElement('div'); el.className='cal-d dim'; el.textContent=i; grid.appendChild(el); }
 }
 
+function goToToday(){
+  const now = new Date();
+  curYear = now.getFullYear(); curMonth = now.getMonth();
+  renderCal();
+  selectDay(now.toISOString().substring(0,10), now.getDate());
+  const btn = document.getElementById('today-btn');
+  if (btn) btn.style.display = 'none';
+}
+
 function changeMonth(dir){
   curMonth+=dir;
   if(curMonth>11){curMonth=0;curYear++;}
   if(curMonth<0){curMonth=11;curYear--;}
   renderCal();
+  const now = new Date();
+  const btn = document.getElementById('today-btn');
+  if (btn) btn.style.display = (curYear !== now.getFullYear() || curMonth !== now.getMonth()) ? 'inline-block' : 'none';
 }
 
 function selectDay(k, d){

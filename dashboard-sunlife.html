@@ -465,12 +465,17 @@ async function loadData() {
       body: JSON.stringify({})
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const payload = await res.json();
+    const _text = await res.text();
+    console.log('[Dashboard] Raw response (first 300 chars):', _text.substring(0, 300));
+    if (!_text || _text.trim() === '' || _text.trim() === '[]') {
+      throw new Error('n8n returned empty — check the Respond to Webhook node in Panel API workflow returns the sheet data');
+    }
+    const payload = JSON.parse(_text);
     const rows = Array.isArray(payload) ? payload
                : Array.isArray(payload.data) ? payload.data
                : Array.isArray(payload.rows) ? payload.rows
                : [payload];
-    console.log('[Dashboard] API response:', payload, '| rows parsed:', rows.length, rows.slice(0,2));
+    console.log('[Dashboard] Rows found:', rows.length, '| First row keys:', rows[0] ? Object.keys(rows[0]) : 'none');
 
     DATA = buildDataFromReservations(rows);
     EVENT_DAYS = new Set(Object.keys(DATA));
@@ -643,3 +648,4 @@ loadData();
 </script>
 </body>
 </html>
+

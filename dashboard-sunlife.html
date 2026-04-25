@@ -249,7 +249,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 1.75rem 1.5rem 4rem; }
 <main>
 
   <div class="greeting">
-    <h1>Good morning, Ana 👋</h1>
+    <h1 id="greeting-text">Good morning, Ana 👋</h1>
     <p>Here's everything you need to manage Sun Life today.</p>
   </div>
 
@@ -467,6 +467,7 @@ async function loadData() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const payload = await res.json();
     const rows = Array.isArray(payload) ? payload
+    console.log('[Dashboard] API response:', payload, '| rows parsed:', rows.length, rows.slice(0,2));
                : Array.isArray(payload.data) ? payload.data
                : Array.isArray(payload.rows) ? payload.rows
                : [payload];
@@ -482,6 +483,7 @@ async function loadData() {
   const _d = new Date(selectedKey + 'T12:00:00');
   const _labelEl = document.getElementById('day-label-date');
   if (_labelEl) _labelEl.textContent = _d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  updateOccupancyBar();
   renderCal();
   renderDayContent(selectedKey);
 }
@@ -601,7 +603,41 @@ function showTab(tab, el){
   document.getElementById('metrics').style.display = tab==='metrics' ? 'block' : 'none';
 }
 
+// ── OCCUPANCY BAR ─────────────────────────────────────────────────
+function updateOccupancyBar() {
+  if (!Object.keys(DATA).length) return;
+  const today = new Date();
+  const days = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - today.getDay() + i);
+    days.push(d.toISOString().substring(0, 10));
+  }
+  let total = 0, occupied = 0;
+  days.forEach(d => {
+    if (DATA[d]) {
+      total += 8;
+      occupied += DATA[d].rooms.filter(r => r.tileCls !== 'free').length;
+    }
+  });
+  const pct = total > 0 ? Math.round(occupied / total * 100) : 0;
+  document.querySelectorAll('.occ-row span:last-child').forEach(el => el.textContent = pct + '%');
+  document.querySelectorAll('.occ-fill').forEach(el => el.style.width = pct + '%');
+  const metricOcc = document.querySelector('.metric-tile .m-val');
+  // update occupancy metric tile (3rd tile in weekly summary)
+  const tiles = document.querySelectorAll('.metric-tile .m-val');
+  if (tiles[2]) tiles[2].textContent = pct + '%';
+}
+
 // ── INIT ──────────────────────────────────────────────────────────
+// Header date
+const _hd = document.getElementById('header-date');
+if (_hd) _hd.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+// Greeting
+const _hour = new Date().getHours();
+const _greet = _hour < 12 ? 'Good morning' : _hour < 18 ? 'Good afternoon' : 'Good evening';
+const _greetEl = document.getElementById('greeting-text');
+if (_greetEl) _greetEl.textContent = `${_greet}, Ana 👋`;
 loadData();
 
 </script>

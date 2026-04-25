@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -341,81 +341,151 @@ main { max-width: 1100px; margin: 0 auto; padding: 1.75rem 1.5rem 4rem; }
 
 <script>
 // ── DATA ──────────────────────────────────────────────────────────
-const DATA = {
-  '2026-04-21': {
-    briefing: '1 check-out at 10am · 2 check-ins this afternoon · Room 1 needs to be cleaned before 2pm · I answered 4 guest questions overnight — 1 needs your attention.',
-    tasks: [
-      { icon:'🚪', cls:'checkout', title:'Check-out — Johnson Family', sub:'Room 1 · King Bed · 3 nights', time:'10:00 AM' },
-      { icon:'🧹', cls:'clean',    title:'Prepare Room 1', sub:'Clean and ready before 2:00 PM', time:'After 10am' },
-      { icon:'🏠', cls:'checkin',  title:'Check-in — Sarah Mitchell', sub:'Room 2 · Queen Bed · 4 nights', time:'2:00 PM' },
-      { icon:'🌙', cls:'checkin',  title:'Check-in — Rivera Family', sub:'Room 5 · Family Suite · 7 nights · Late arrival — Emma sent instructions ✓', time:'9:00 PM' },
-      { icon:'💬', cls:'msg',      title:'1 message needs your attention', sub:'Room 3 guest asking about extending stay', time:'', badge:true },
-    ],
-    guests: [
-      { initials:'JF', av:'av-gold', name:'Johnson Family',       detail:'Room 1 · King Bed · Checking out 10am',         btnCls:'btn-out',  btnTxt:'Check-out' },
-      { initials:'SM', av:'av-teal', name:'Sarah Mitchell',       detail:'Room 2 · Queen Bed · Arriving 2pm · 4 nights',  btnCls:'btn-in',   btnTxt:'Check-in'  },
-      { initials:'TR', av:'av-blue', name:'Tom & Linda Rivera',   detail:'Room 5 · Family Suite · Late arrival 9pm',      btnCls:'btn-in',   btnTxt:'Check-in'  },
-      { initials:'WC', av:'av-teal', name:'Williams Couple',      detail:'Room 3 · Two Queens · Currently staying',       btnCls:'btn-stay', btnTxt:'Staying'   },
-    ],
-    rooms: [
-      { num:'Room 1', type:'King Bed',      st:'Check-out today',   stCls:'st-cout', tileCls:'cout' },
-      { num:'Room 2', type:'Two Queens',    st:'2 more nights',     stCls:'st-occ',  tileCls:'occ'  },
-      { num:'Room 3', type:'Single Queen',  st:'4 more nights',     stCls:'st-occ',  tileCls:'occ'  },
-      { num:'Room 4', type:'King Bed',      st:'1 more night',      stCls:'st-occ',  tileCls:'occ'  },
-      { num:'Room 5', type:'Family Suite',  st:'Arriving 9pm',      stCls:'st-cin',  tileCls:'cin'  },
-      { num:'Room 6', type:'Two Queens',    st:'3 more nights',     stCls:'st-occ',  tileCls:'occ'  },
-      { num:'Room 7', type:'ADA Room',      st:'Available',         stCls:'st-free', tileCls:'free' },
-      { num:'Room 8', type:'Single Queen',  st:'5 more nights',     stCls:'st-occ',  tileCls:'occ'  },
-    ]
-  },
-  '2026-04-22': {
-    briefing: '1 check-out this morning · Room 2 needs to be cleaned · No new messages overnight.',
-    tasks: [
-      { icon:'🚪', cls:'checkout', title:'Check-out — Williams Couple', sub:'Room 2 · Two Queens · 4 nights', time:'10:00 AM' },
-      { icon:'🧹', cls:'clean',    title:'Prepare Room 2', sub:'Clean and ready for next arrival', time:'After 10am' },
-    ],
-    guests: [
-      { initials:'WC', av:'av-gold', name:'Williams Couple', detail:'Room 2 · Two Queens · Checking out 10am', btnCls:'btn-out', btnTxt:'Check-out' },
-      { initials:'TR', av:'av-blue', name:'Rivera Family',   detail:'Room 5 · Family Suite · 6 more nights',  btnCls:'btn-stay', btnTxt:'Staying' },
-    ],
-    rooms: [
-      { num:'Room 1', type:'King Bed',      st:'3 more nights',    stCls:'st-occ',  tileCls:'occ'  },
-      { num:'Room 2', type:'Two Queens',    st:'Check-out today',  stCls:'st-cout', tileCls:'cout' },
-      { num:'Room 3', type:'Single Queen',  st:'3 more nights',    stCls:'st-occ',  tileCls:'occ'  },
-      { num:'Room 4', type:'King Bed',      st:'Available',        stCls:'st-free', tileCls:'free' },
-      { num:'Room 5', type:'Family Suite',  st:'6 more nights',    stCls:'st-occ',  tileCls:'occ'  },
-      { num:'Room 6', type:'Two Queens',    st:'2 more nights',    stCls:'st-occ',  tileCls:'occ'  },
-      { num:'Room 7', type:'ADA Room',      st:'Available',        stCls:'st-free', tileCls:'free' },
-      { num:'Room 8', type:'Single Queen',  st:'4 more nights',    stCls:'st-occ',  tileCls:'occ'  },
-    ]
-  },
-  '2026-04-25': {
-    briefing: '1 check-in this afternoon · Room 4 ready to go · 2 guest messages answered by Emma overnight.',
-    tasks: [
-      { icon:'🏠', cls:'checkin', title:'Check-in — Karen Davis', sub:'Room 4 · King Bed · 3 nights', time:'2:00 PM' },
-    ],
-    guests: [
-      { initials:'KD', av:'av-purple', name:'Karen Davis',    detail:'Room 4 · King Bed · Arriving 2pm · 3 nights', btnCls:'btn-in',   btnTxt:'Check-in' },
-      { initials:'TR', av:'av-blue',   name:'Rivera Family',  detail:'Room 5 · Family Suite · 3 more nights',       btnCls:'btn-stay', btnTxt:'Staying'  },
-    ],
-    rooms: [
-      { num:'Room 1', type:'King Bed',      st:'Available',        stCls:'st-free', tileCls:'free' },
-      { num:'Room 2', type:'Two Queens',    st:'2 more nights',    stCls:'st-occ',  tileCls:'occ'  },
-      { num:'Room 3', type:'Single Queen',  st:'Available',        stCls:'st-free', tileCls:'free' },
-      { num:'Room 4', type:'King Bed',      st:'Arriving 2pm',     stCls:'st-cin',  tileCls:'cin'  },
-      { num:'Room 5', type:'Family Suite',  st:'3 more nights',    stCls:'st-occ',  tileCls:'occ'  },
-      { num:'Room 6', type:'Two Queens',    st:'Available',        stCls:'st-free', tileCls:'free' },
-      { num:'Room 7', type:'ADA Room',      st:'Available',        stCls:'st-free', tileCls:'free' },
-      { num:'Room 8', type:'Single Queen',  st:'1 more night',     stCls:'st-occ',  tileCls:'occ'  },
-    ]
-  }
-};
+let DATA = {};
+let EVENT_DAYS = new Set();
 
-const EVENT_DAYS = new Set(['2026-04-14','2026-04-15','2026-04-16','2026-04-17','2026-04-18','2026-04-19','2026-04-20','2026-04-21','2026-04-22','2026-04-23','2026-04-24','2026-04-25','2026-04-26','2026-04-27']);
+function parseDate(v) {
+  if (!v) return null;
+  v = String(v).trim();
+  if (/^\d{4}-\d{2}-\d{2}/.test(v)) return v.substring(0, 10);
+  const m = v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if (m) return `${m[3]}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`;
+  return null;
+}
+
+function addDays(dateStr, n) {
+  const d = new Date(dateStr + 'T12:00:00');
+  d.setDate(d.getDate() + n);
+  return d.toISOString().substring(0, 10);
+}
+
+const AV_COLORS = ['av-teal', 'av-gold', 'av-blue', 'av-purple'];
+function getInitials(name) {
+  return name.split(' ').filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('');
+}
+
+function buildDataFromReservations(rows) {
+  const byDate = {};
+  const active = rows.filter(r => {
+    const s = (r['Status'] || r['status'] || '').toLowerCase();
+    return s !== 'cancelled' && s !== 'canceled' && s !== 'cancelado';
+  });
+
+  active.forEach((r, idx) => {
+    const name    = r['Guest Name']    || r['Nombre']    || 'Guest';
+    const room    = r['Room']          || r['Habitacion']|| 'Room ?';
+    const adults  = r['Adults']        || r['Huespedes'] || '';
+    const checkin  = parseDate(r['Check-in Date']  || r['Llegada']);
+    const checkout = parseDate(r['Check-out Date'] || r['Salida']);
+    if (!checkin || !checkout || checkin > checkout) return;
+
+    const av  = AV_COLORS[idx % AV_COLORS.length];
+    const ini = getInitials(name);
+
+    let d = checkin;
+    while (d <= checkout) {
+      if (!byDate[d]) byDate[d] = { tasks: [], guests: [], rooms: {} };
+      const isIn  = d === checkin;
+      const isOut = d === checkout;
+
+      if (isIn && isOut) {
+        byDate[d].rooms[room] = { name, st: 'Same-day', stCls: 'st-cin', tileCls: 'cin' };
+        byDate[d].tasks.push({ icon: '🏠', cls: 'checkout', title: `Check-out — ${name}`, sub: room, time: '11:00 AM' });
+        byDate[d].tasks.push({ icon: '🏠', cls: 'checkin',  title: `Check-in — ${name}`,  sub: room, time: '3:00 PM' });
+      } else if (isIn) {
+        byDate[d].rooms[room] = { name, st: 'Check-in', stCls: 'st-cin', tileCls: 'cin' };
+        byDate[d].tasks.push({ icon: '🏠', cls: 'checkin', title: `Check-in — ${name}`, sub: room + (adults ? ` · ${adults} guests` : ''), time: '3:00 PM' });
+        byDate[d].tasks.push({ icon: '🧹', cls: 'clean',   title: `Prepare — ${room}`,  sub: 'Room preparation before 3 PM', time: '' });
+      } else if (isOut) {
+        byDate[d].rooms[room] = { name, st: 'Check-out', stCls: 'st-cout', tileCls: 'cout' };
+        byDate[d].tasks.push({ icon: '🏠', cls: 'checkout', title: `Check-out — ${name}`, sub: room, time: '11:00 AM' });
+        byDate[d].tasks.push({ icon: '🧹', cls: 'clean',    title: `Clean — ${room}`,     sub: 'After 11 AM checkout', time: '' });
+      } else {
+        byDate[d].rooms[room] = { name, st: 'Occupied', stCls: 'st-occ', tileCls: 'occ' };
+      }
+
+      let detail, btnCls, btnTxt;
+      if (isIn && isOut) { detail = `${room} · Same-day stay`;   btnCls = 'btn-in';   btnTxt = 'Check-in/out'; }
+      else if (isIn)     { detail = `${room} · Check-in today${adults ? ' · ' + adults + ' guests' : ''}`; btnCls = 'btn-in';  btnTxt = 'Check-in'; }
+      else if (isOut)    { detail = `${room} · Checking out`;    btnCls = 'btn-out';  btnTxt = 'Check-out'; }
+      else               { detail = `${room} · Staying · out ${checkout}`; btnCls = 'btn-stay'; btnTxt = 'Staying'; }
+      byDate[d].guests.push({ initials: ini, av, name, detail, btnCls, btnTxt });
+
+      if (d >= checkout) break;
+      d = addDays(d, 1);
+    }
+  });
+
+  const ROOMS = ['Room 1','Room 2','Room 3','Room 4','Room 5','Room 6','Room 7','Room 8'];
+  const taskOrder = { checkout: 0, checkin: 1, clean: 2, msg: 3 };
+  const result = {};
+
+  for (const [date, v] of Object.entries(byDate)) {
+    const rooms = ROOMS.map(rn => {
+      if (v.rooms[rn]) {
+        const { name, st, stCls, tileCls } = v.rooms[rn];
+        return { num: rn, type: name, st, stCls, tileCls };
+      }
+      return { num: rn, type: 'Available', st: 'Available', stCls: 'st-free', tileCls: 'free' };
+    });
+
+    const checkins  = v.tasks.filter(t => t.cls === 'checkin').length;
+    const checkouts = v.tasks.filter(t => t.cls === 'checkout').length;
+    const occupied  = rooms.filter(r => r.tileCls !== 'free').length;
+    const parts = [];
+    if (checkins)  parts.push(`${checkins} check-in${checkins > 1 ? 's' : ''}`);
+    if (checkouts) parts.push(`${checkouts} check-out${checkouts > 1 ? 's' : ''}`);
+    if (!checkins && !checkouts) parts.push(`${occupied} room${occupied !== 1 ? 's' : ''} occupied`);
+    const briefing = (parts.join(' · ') || '0 rooms occupied') + '.';
+
+    const tasks = v.tasks
+      .filter((t, i, arr) => arr.findIndex(x => x.title === t.title) === i)
+      .sort((a, b) => (taskOrder[a.cls] ?? 9) - (taskOrder[b.cls] ?? 9));
+
+    result[date] = {
+      briefing,
+      tasks: tasks.length ? tasks : [{ icon: '🌴', cls: 'msg', title: 'No scheduled tasks', sub: 'Quiet day at Sun Life', time: '' }],
+      guests: v.guests,
+      rooms
+    };
+  }
+  return result;
+}
+
+async function loadData() {
+  const briefingEl = document.getElementById('briefing-text');
+  const contentEl  = document.getElementById('day-content');
+  if (briefingEl) briefingEl.textContent = 'Loading reservations from Google Sheets…';
+  if (contentEl)  contentEl.innerHTML = '<div class="empty"><div class="empty-icon">⏳</div><strong>Loading…</strong><br>Fetching live data from Ana\'s sheet.</div>';
+
+  try {
+    const res = await fetch('https://matiasdutli22.app.n8n.cloud/webhook/sunlife-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({})
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const payload = await res.json();
+    const rows = Array.isArray(payload) ? payload
+               : Array.isArray(payload.data) ? payload.data
+               : Array.isArray(payload.rows) ? payload.rows
+               : [payload];
+
+    DATA = buildDataFromReservations(rows);
+    EVENT_DAYS = new Set(Object.keys(DATA));
+  } catch (err) {
+    console.error('Dashboard load error:', err);
+    if (briefingEl) briefingEl.textContent = 'Could not load live data — check your connection.';
+    if (contentEl)  contentEl.innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div><strong>Connection error</strong><br>Could not reach the reservation system. Try refreshing.</div>';
+  }
+
+  renderCal();
+  renderDayContent(selectedKey);
+}
 
 // ── CALENDAR ──────────────────────────────────────────────────────
-let curYear = 2026, curMonth = 3;
-let selectedKey = '2026-04-21';
+let curYear = new Date().getFullYear(), curMonth = new Date().getMonth();
+let selectedKey = key(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DAYS   = ['S','M','T','W','T','F','S'];
 function pad(n){ return String(n).padStart(2,'0'); }
@@ -529,8 +599,8 @@ function showTab(tab, el){
 }
 
 // ── INIT ──────────────────────────────────────────────────────────
-renderCal();
-renderDayContent('2026-04-21');
+loadData();
+
 </script>
 </body>
 </html>

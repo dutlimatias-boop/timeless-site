@@ -675,7 +675,13 @@ function renderDayContent(k){
     </div>
     <div class="card-title" style="margin-bottom:0.75rem;">Guests</div>
     ${guestsHTML}
-    <div class="card-title" style="margin:1.1rem 0 0.75rem;">Room status</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin:1.1rem 0 0.75rem;">
+      <div class="card-title" style="margin:0;">Room status</div>
+      <div style="font-size:0.72rem;font-weight:600;color:var(--muted);">
+        ${data.rooms.filter(r=>r.tileCls!=='free').length} occupied &nbsp;·&nbsp;
+        <span style="color:var(--green);">${data.rooms.filter(r=>r.tileCls==='free').length} available</span>
+      </div>
+    </div>
     <div class="room-grid">${roomsHTML}</div>
   `;
 }

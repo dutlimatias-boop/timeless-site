@@ -719,6 +719,7 @@ async function loadWeeklySummary() {
     });
 
     const total = thisWeek.length;
+    const bookingReqs = thisWeek.filter(r => (r['Action Needed']||'').toLowerCase().includes('booking')).length;
     const actionNeeded = thisWeek.filter(r => (r['Action Needed']||'').trim() !== '').length;
     const autoHandled = total > 0 ? Math.round(((total - actionNeeded) / total) * 100) : 100;
     const timeSavedMin = total * 5;
@@ -730,7 +731,9 @@ async function loadWeeklySummary() {
     document.getElementById('w-messages').textContent = total;
     document.getElementById('w-messages-delta').textContent = diffStr;
     document.getElementById('w-emma').textContent = autoHandled + '%';
-    document.getElementById('w-emma-delta').textContent = actionNeeded > 0 ? `${actionNeeded} needed your attention` : 'Emma handled everything';
+    document.getElementById('w-emma-delta').textContent = bookingReqs > 0
+      ? `🔥 ${bookingReqs} booking request${bookingReqs > 1 ? 's' : ''} this week`
+      : actionNeeded > 0 ? `${actionNeeded} needed attention` : 'Emma handled everything';
     document.getElementById('w-time').textContent = timeSavedStr;
 
     // occupancy from DATA

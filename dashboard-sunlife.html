@@ -475,9 +475,10 @@ async function loadData() {
                : Array.isArray(payload.data) ? payload.data
                : Array.isArray(payload.rows) ? payload.rows
                : [payload];
-    console.log('[Dashboard] Rows found:', rows.length, '| First row keys:', rows[0] ? Object.keys(rows[0]) : 'none');
+    const unwrapped = rows.map(r => r.json || r);
+    console.log('[Dashboard] First row sample:', JSON.stringify(unwrapped[0]).substring(0,400));
 
-    DATA = buildDataFromReservations(rows);
+    DATA = buildDataFromReservations(unwrapped);
     EVENT_DAYS = new Set(Object.keys(DATA));
   } catch (err) {
     console.error('Dashboard load error:', err);

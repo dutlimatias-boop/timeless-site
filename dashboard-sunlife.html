@@ -306,32 +306,28 @@ main { max-width: 1100px; margin: 0 auto; padding: 1.75rem 1.5rem 4rem; }
   <div class="metrics-section" id="metrics">
 
     <div class="metrics-grid">
-      <div class="metric-tile"><div class="m-icon">💬</div><div class="m-val">47</div><div class="m-lbl">Guest messages</div><div class="m-delta">↑ 12 more than last week</div></div>
-      <div class="metric-tile"><div class="m-icon">🤖</div><div class="m-val">91%</div><div class="m-lbl">Answered by Emma</div><div class="m-delta">Only 4 needed you</div></div>
-      <div class="metric-tile"><div class="m-icon">🏨</div><div class="m-val">87%</div><div class="m-lbl">Occupancy</div><div class="m-delta">↑ vs 72% last week</div></div>
-      <div class="metric-tile"><div class="m-icon">⏱️</div><div class="m-val">3.2h</div><div class="m-lbl">Time saved</div><div class="m-delta">This week alone</div></div>
+      <div class="metric-tile"><div class="m-icon">💬</div><div class="m-val" id="w-messages">—</div><div class="m-lbl">Guest messages</div><div class="m-delta" id="w-messages-delta">Loading…</div></div>
+      <div class="metric-tile"><div class="m-icon">🤖</div><div class="m-val" id="w-emma">—</div><div class="m-lbl">Answered by Emma</div><div class="m-delta" id="w-emma-delta">Loading…</div></div>
+      <div class="metric-tile"><div class="m-icon">🏨</div><div class="m-val" id="w-occ">—</div><div class="m-lbl">Occupancy</div><div class="m-delta" id="w-occ-delta">This week</div></div>
+      <div class="metric-tile"><div class="m-icon">⏱️</div><div class="m-val" id="w-time">—</div><div class="m-lbl">Time saved</div><div class="m-delta">Est. 5 min per message</div></div>
     </div>
 
     <div class="two-col">
       <div class="chart-card">
         <div class="chart-lbl">Messages per day</div>
-        <div class="bars">
-          <div class="b-wrap"><div class="b" style="height:40%"></div><div class="b-day">Mon</div></div>
-          <div class="b-wrap"><div class="b" style="height:60%"></div><div class="b-day">Tue</div></div>
-          <div class="b-wrap"><div class="b" style="height:50%"></div><div class="b-day">Wed</div></div>
-          <div class="b-wrap"><div class="b" style="height:75%"></div><div class="b-day">Thu</div></div>
-          <div class="b-wrap"><div class="b hi" style="height:100%"></div><div class="b-day">Fri</div></div>
-          <div class="b-wrap"><div class="b" style="height:80%"></div><div class="b-day">Sat</div></div>
-          <div class="b-wrap"><div class="b" style="height:55%"></div><div class="b-day">Sun</div></div>
+        <div class="bars" id="w-bars">
+          <div class="b-wrap"><div class="b" style="height:4px"></div><div class="b-day">Mon</div></div>
+          <div class="b-wrap"><div class="b" style="height:4px"></div><div class="b-day">Tue</div></div>
+          <div class="b-wrap"><div class="b" style="height:4px"></div><div class="b-day">Wed</div></div>
+          <div class="b-wrap"><div class="b" style="height:4px"></div><div class="b-day">Thu</div></div>
+          <div class="b-wrap"><div class="b" style="height:4px"></div><div class="b-day">Fri</div></div>
+          <div class="b-wrap"><div class="b" style="height:4px"></div><div class="b-day">Sat</div></div>
+          <div class="b-wrap"><div class="b" style="height:4px"></div><div class="b-day">Sun</div></div>
         </div>
       </div>
       <div class="chart-card">
         <div class="chart-lbl">Most asked this week</div>
-        <div class="faq-row"><div class="faq-rank">1</div><div class="faq-text">Check-in & check-out times</div><div class="faq-count">11×</div></div>
-        <div class="faq-row"><div class="faq-rank">2</div><div class="faq-text">Is the pool heated?</div><div class="faq-count">8×</div></div>
-        <div class="faq-row"><div class="faq-rank">3</div><div class="faq-text">How far from the beach?</div><div class="faq-count">7×</div></div>
-        <div class="faq-row"><div class="faq-rank">4</div><div class="faq-text">Weekly rates?</div><div class="faq-count">6×</div></div>
-        <div class="faq-row"><div class="faq-rank">5</div><div class="faq-text">Max guests per room?</div><div class="faq-count">5×</div></div>
+        <div id="w-faq"><div style="color:var(--muted);font-size:0.85rem;padding:1rem 0;">Loading…</div></div>
       </div>
     </div>
 
@@ -610,12 +606,113 @@ function renderDayContent(k){
   `;
 }
 
+// ── WEEKLY SUMMARY ────────────────────────────────────────────────
+let weeklySummaryLoaded = false;
+
+async function loadWeeklySummary() {
+  if (weeklySummaryLoaded) return;
+  try {
+    const res = await fetch('https://matiasdutli22.app.n8n.cloud/webhook/sunlife-conversations');
+    const raw = await res.json();
+    const all = Array.isArray(raw) ? raw.map(r => r.json || r).filter(r => r['Date'] || r['Guest Message']) : [];
+
+    const now = new Date();
+    const weekStart = new Date(now); weekStart.setDate(now.getDate() - now.getDay());
+    weekStart.setHours(0,0,0,0);
+
+    const thisWeek = all.filter(r => {
+      const d = new Date(r['Date']); return !isNaN(d) && d >= weekStart;
+    });
+    const lastWeekStart = new Date(weekStart); lastWeekStart.setDate(weekStart.getDate() - 7);
+    const lastWeek = all.filter(r => {
+      const d = new Date(r['Date']); return !isNaN(d) && d >= lastWeekStart && d < weekStart;
+    });
+
+    const total = thisWeek.length;
+    const actionNeeded = thisWeek.filter(r => (r['Action Needed']||'').trim() !== '').length;
+    const autoHandled = total > 0 ? Math.round(((total - actionNeeded) / total) * 100) : 100;
+    const timeSavedMin = total * 5;
+    const timeSavedStr = timeSavedMin >= 60 ? (timeSavedMin/60).toFixed(1) + 'h' : timeSavedMin + 'm';
+    const lastTotal = lastWeek.length;
+    const diff = total - lastTotal;
+    const diffStr = diff > 0 ? `↑ ${diff} more than last week` : diff < 0 ? `↓ ${Math.abs(diff)} fewer than last week` : 'Same as last week';
+
+    document.getElementById('w-messages').textContent = total;
+    document.getElementById('w-messages-delta').textContent = diffStr;
+    document.getElementById('w-emma').textContent = autoHandled + '%';
+    document.getElementById('w-emma-delta').textContent = actionNeeded > 0 ? `${actionNeeded} needed your attention` : 'Emma handled everything';
+    document.getElementById('w-time').textContent = timeSavedStr;
+
+    // occupancy from DATA
+    const occ = document.getElementById('w-occ');
+    const occDelta = document.getElementById('w-occ-delta');
+    const tiles = document.querySelectorAll('.occ-row span:last-child');
+    if (tiles.length) { occ.textContent = tiles[0].textContent; }
+    else if (Object.keys(DATA).length) {
+      const days = [];
+      for (let i = 0; i < 7; i++) { const d = new Date(now); d.setDate(now.getDate() - now.getDay() + i); days.push(d.toISOString().substring(0,10)); }
+      let t2 = 0, occ2 = 0;
+      days.forEach(d => { if (DATA[d]) { t2 += 8; occ2 += DATA[d].rooms.filter(r => r.tileCls !== 'free').length; } });
+      occ.textContent = t2 > 0 ? Math.round(occ2/t2*100) + '%' : '—';
+    }
+
+    // bar chart by day of week (Mon=0..Sun=6)
+    const byDay = [0,0,0,0,0,0,0];
+    thisWeek.forEach(r => {
+      const d = new Date(r['Date']);
+      if (!isNaN(d)) { const day = (d.getDay() + 6) % 7; byDay[day]++; }
+    });
+    const maxVal = Math.max(...byDay, 1);
+    const days2 = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    document.getElementById('w-bars').innerHTML = byDay.map((v, i) => {
+      const pct = Math.max(Math.round((v / maxVal) * 100), 4);
+      const hi = v === Math.max(...byDay) && v > 0 ? ' hi' : '';
+      return `<div class="b-wrap"><div class="b${hi}" style="height:${pct}%"></div><div class="b-day">${days2[i]}</div></div>`;
+    }).join('');
+
+    // most asked — keyword categories
+    const categories = [
+      { label: 'Check-in / check-out times', keys: ['check-in','check-out','checkout','checkin','time','arrive','arrival','leave'] },
+      { label: 'Room rates & pricing',        keys: ['price','rate','cost','how much','fee','charge','weekly','nightly'] },
+      { label: 'Availability',                keys: ['available','availability','open','vacancy','booked','full'] },
+      { label: 'Pool & amenities',            keys: ['pool','heated','hot tub','jacuzzi','amenity','amenities','kitchen','wifi','parking'] },
+      { label: 'Beach & location',            keys: ['beach','far','distance','walk','nearby','close','minutes'] },
+      { label: 'Booking a room',              keys: ['book','reserve','reservation','want a room','make a reservation'] },
+      { label: 'Guests & occupancy',          keys: ['guests','people','persons','max','capacity','adults','children','kids'] },
+      { label: 'Cancellation & policies',     keys: ['cancel','refund','policy','policies','deposit'] },
+    ];
+    const counts = categories.map(c => {
+      const count = thisWeek.filter(r => {
+        const msg = (r['Guest Message']||'').toLowerCase();
+        return c.keys.some(k => msg.includes(k));
+      }).length;
+      return { label: c.label, count };
+    }).filter(c => c.count > 0).sort((a,b) => b.count - a.count).slice(0,5);
+
+    const faqEl = document.getElementById('w-faq');
+    if (counts.length) {
+      faqEl.innerHTML = counts.map((c,i) =>
+        `<div class="faq-row"><div class="faq-rank">${i+1}</div><div class="faq-text">${c.label}</div><div class="faq-count">${c.count}×</div></div>`
+      ).join('');
+    } else {
+      faqEl.innerHTML = `<div style="color:var(--muted);font-size:0.85rem;padding:1rem 0;">Not enough data yet — more conversations will populate this.</div>`;
+    }
+
+    weeklySummaryLoaded = true;
+  } catch(e) {
+    console.error('Weekly summary error:', e);
+    document.getElementById('w-messages').textContent = '—';
+    document.getElementById('w-faq').innerHTML = `<div style="color:var(--muted);font-size:0.85rem;">Could not load data.</div>`;
+  }
+}
+
 // ── TABS ──────────────────────────────────────────────────────────
 function showTab(tab, el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('today').style.display   = tab==='today'   ? 'block' : 'none';
   document.getElementById('metrics').style.display = tab==='metrics' ? 'block' : 'none';
+  if (tab === 'metrics') loadWeeklySummary();
 }
 
 // ── OCCUPANCY BAR ─────────────────────────────────────────────────
@@ -638,10 +735,8 @@ function updateOccupancyBar() {
   const pct = total > 0 ? Math.round(occupied / total * 100) : 0;
   document.querySelectorAll('.occ-row span:last-child').forEach(el => el.textContent = pct + '%');
   document.querySelectorAll('.occ-fill').forEach(el => el.style.width = pct + '%');
-  const metricOcc = document.querySelector('.metric-tile .m-val');
-  // update occupancy metric tile (3rd tile in weekly summary)
-  const tiles = document.querySelectorAll('.metric-tile .m-val');
-  if (tiles[2]) tiles[2].textContent = pct + '%';
+  const wOcc = document.getElementById('w-occ');
+  if (wOcc) wOcc.textContent = pct + '%';
 }
 
 // ── INIT ──────────────────────────────────────────────────────────

@@ -672,7 +672,6 @@ const wsp = n => `Hi ${n}! This is Sun Life Beach Hotel. Did you get a chance to
 
 let allData = [], currentFilter = 'todos';
 
-// Set date range label
 const now = new Date();
 const weekAgo = new Date(now); weekAgo.setDate(now.getDate() - 7);
 const fmt = d => d.toLocaleDateString('en-US', { month:'short', day:'numeric' });
@@ -687,8 +686,8 @@ async function loadData() {
   try {
     const res = await fetch(WEBHOOK);
     const raw = await res.json();
-    allData = Array.isArray(raw) ? raw.map(r=>r.json||r).filter(r=>r.fecha||r.consulta) : [];
-    allData.sort((a,b) => parseFecha(b.fecha,b.hora) - parseFecha(a.fecha,a.hora));
+    allData = Array.isArray(raw) ? raw.map(r=>r.json||r).filter(r=>r['Date']||r['Guest Message']) : [];
+    allData.sort((a,b) => parseFecha(b['Date'],b['Time']) - parseFecha(a['Date'],a['Time']));
     updateStats(); renderLeads();
   } catch(e) {
     document.getElementById('leads-list').innerHTML = `
@@ -702,23 +701,32 @@ async function loadData() {
 
 function parseFecha(f='', h='') {
   if (!f) return new Date(0);
-  try { const [d,m,y]=f.split('/'); const [hh,mm]=(h||'0:0').split(':'); return new Date(y,m-1,d,hh,mm); }
-  catch { return new Date(0); }
+  try {
+    const parts = f.split('/');
+    if (parts.length === 3) {
+      const [m,d,y] = parts;
+      const [hh,mm] = (h||'0:0').replace(' AM','').replace(' PM','').split(':');
+      return new Date(y, m-1, d, hh||0, mm||0);
+    }
+    return new Date(f);
+  } catch { return new Date(0); }
 }
 
 function isHot(r) {
-  const i=(r.intencion||'').toLowerCase(), e=(r.estado||'').toLowerCase();
-  return (i.includes('intencion_reserva')||i.includes('interesado')) && e!=='reservado' && e!=='cerrado';
+  const a = (r['Action Needed']||'').toLowerCase();
+  return a.includes('booking') || a.includes('review');
 }
 function isConfirmed(r) {
-  return (r.estado||'').toLowerCase()==='reservado' || (r.intencion||'').toLowerCase().includes('reserva_confirmada');
+  const a = (r['Action Needed']||'').toLowerCase();
+  return a.includes('confirmed');
 }
 function isInProgress(r) {
-  const e=(r.estado||'').toLowerCase(); return e==='en_proceso'||e==='interesado';
+  const a = (r['Action Needed']||'').toLowerCase();
+  return a.length > 0 && !isConfirmed(r);
 }
 
 function updateStats() {
-  const semana = allData.filter(r => (now - parseFecha(r.fecha)) / 86400000 <= 7);
+  const semana = allData.filter(r => (now - parseFecha(r['Date'])) / 86400000 <= 7);
   const total = semana.length;
   const confirmed = semana.filter(isConfirmed).length;
   const hot = semana.filter(isHot).length;
@@ -732,24 +740,24 @@ function updateStats() {
   document.getElementById('stat-proceso').textContent = proceso;
 }
 
-function intentBadge(intencion) {
-  const i=(intencion||'').toLowerCase();
-  if (i.includes('reserva_confirmada')) return `<span class="badge badge-confirm">✓ Confirmed</span>`;
-  if (i.includes('intencion_reserva')) return `<span class="badge badge-book">🔥 Wants to book</span>`;
-  if (i.includes('consulta_precio')) return `<span class="badge badge-price">💰 Pricing</span>`;
-  if (i.includes('consulta_disponibilidad')) return `<span class="badge badge-avail">📅 Availability</span>`;
-  if (i.includes('consulta_servicios')) return `<span class="badge badge-avail">🛎 Amenities</span>`;
-  if (i.includes('cancelacion')) return `<span class="badge badge-cancel">Cancellation</span>`;
-  return `<span class="badge badge-general">${intencion||'General'}</span>`;
+function intentBadge(r) {
+  const a = (r['Action Needed']||'').toLowerCase();
+  const msg = (r['Guest Message']||'').toLowerCase();
+  if (a.includes('booking')) return `<span class="badge badge-book">🔥 Wants to book</span>`;
+  if (a.includes('confirmed')) return `<span class="badge badge-confirm">✓ Confirmed</span>`;
+  if (msg.includes('price')||msg.includes('rate')||msg.includes('cost')||msg.includes('how much')) return `<span class="badge badge-price">💰 Pricing</span>`;
+  if (msg.includes('available')||msg.includes('availability')||msg.includes('open')) return `<span class="badge badge-avail">📅 Availability</span>`;
+  if (msg.includes('pool')||msg.includes('beach')||msg.includes('breakfast')||msg.includes('amenity')) return `<span class="badge badge-avail">🛎 Amenities</span>`;
+  if (msg.includes('cancel')) return `<span class="badge badge-cancel">Cancellation</span>`;
+  return `<span class="badge badge-general">General inquiry</span>`;
 }
 
-function statusPill(estado) {
-  const e=(estado||'').toLowerCase();
-  if (e==='reservado') return `<span class="status-pill pill-confirmed">Confirmed</span>`;
-  if (e==='interesado') return `<span class="status-pill pill-interested">Interested</span>`;
-  if (e==='en_proceso') return `<span class="status-pill pill-process">In progress</span>`;
-  if (e==='cerrado') return `<span class="status-pill pill-closed">Closed</span>`;
-  return `<span class="status-pill pill-new">${estado||'New'}</span>`;
+function statusPill(r) {
+  const a = (r['Action Needed']||'').toLowerCase();
+  if (a.includes('confirmed')) return `<span class="status-pill pill-confirmed">Confirmed</span>`;
+  if (a.includes('booking')||a.includes('review')) return `<span class="status-pill pill-interested">Needs review</span>`;
+  if (a.length > 0) return `<span class="status-pill pill-process">In progress</span>`;
+  return `<span class="status-pill pill-new">New</span>`;
 }
 
 function setFilter(f, btn) {
@@ -765,12 +773,12 @@ function renderLeads() {
     if (currentFilter==='hot') return isHot(r);
     if (currentFilter==='reservado') return isConfirmed(r);
     if (currentFilter==='en_proceso') return isInProgress(r);
-    if (currentFilter==='nuevo') return !(r.estado) || (r.estado||'').toLowerCase()==='nuevo';
+    if (currentFilter==='nuevo') return !isHot(r) && !isConfirmed(r) && !isInProgress(r);
     return true;
   });
   if (q) list = list.filter(r =>
-    (r.nombre_cliente||'').toLowerCase().includes(q) ||
-    (r.consulta||'').toLowerCase().includes(q)
+    (r['Name']||'').toLowerCase().includes(q) ||
+    (r['Guest Message']||'').toLowerCase().includes(q)
   );
 
   const el = document.getElementById('leads-list');
@@ -781,34 +789,33 @@ function renderLeads() {
 
   el.innerHTML = list.map(r => {
     const hot = isHot(r), conf = isConfirmed(r);
-    const nombre = r.nombre_cliente || 'Unknown guest';
-    const initials = nombre.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-    const tel = r.telefono_contacto || '';
-    const telClean = tel.replace(/\D/g,'');
-    const q2 = String(r.consulta||'').slice(0,100)+(String(r.consulta||'').length>100?'…':'');
-    const fecha = r.fecha||''; const hora = r.hora ? String(r.hora).slice(0,5) : '';
+    const nombre = r['Name'] || 'Guest';
+    const initials = nombre==='Guest' ? '?' : nombre.split(' ').filter(Boolean).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const fecha = r['Date']||'';
+    const hora = r['Time'] ? String(r['Time']).slice(0,8) : '';
+    const msg = String(r['Guest Message']||'');
+    const q2 = msg.slice(0,100)+(msg.length>100?'…':'');
     const idx = allData.indexOf(r);
-    const wspEnc = encodeURIComponent(wsp(nombre));
 
-    const stay = r.fecha_checkin
-      ? `<div style="font-size:0.78rem;font-weight:600;color:var(--text-primary);">${r.fecha_checkin}</div><div style="font-size:0.72rem;color:var(--text-muted);">${r.fecha_checkout?'→ '+r.fecha_checkout:''} ${r.tipo_habitacion?'· '+r.tipo_habitacion:''}</div>`
+    const actionNeeded = r['Action Needed'] || '';
+    const stayMatch = (r["Emma's Response"]||'').match(/Check-in[:\s]+([^\n/,]+)/i);
+    const stay = actionNeeded.includes('Booking')
+      ? `<div style="font-size:0.78rem;font-weight:600;color:var(--gold);">Booking request</div>`
       : `<span style="color:var(--text-muted);font-size:0.78rem;">—</span>`;
 
     return `<div class="guest-row ${hot?'hot':conf?'confirmed':''}" onclick="openDrawer(${idx})">
       <div style="display:flex;align-items:center;gap:10px;">
-        <div class="guest-avatar">${nombre==='Unknown guest'?'?':initials}</div>
+        <div class="guest-avatar">${initials}</div>
         <div class="guest-info">
           <div class="guest-name">${nombre}</div>
-          <div class="guest-meta">${tel||'No phone'} · ${fecha} ${hora}</div>
+          <div class="guest-meta">${r['Channel']||'Chat'} · ${fecha} ${hora}</div>
         </div>
       </div>
       <div class="question-text">${q2||'—'}</div>
-      <div>${intentBadge(r.intencion)}</div>
+      <div>${intentBadge(r)}</div>
       <div>${stay}</div>
-      <div>${statusPill(r.estado)}</div>
+      <div>${statusPill(r)}</div>
       <div class="row-actions" onclick="event.stopPropagation()">
-        ${telClean?`<a class="action-btn wsp" href="https://wa.me/${telClean}?text=${wspEnc}" target="_blank">💬 WA</a>`:''}
-        ${telClean?`<a class="action-btn call" href="tel:+${telClean}">📞</a>`:''}
         <button class="action-btn" onclick="openDrawer(${idx})">View →</button>
       </div>
     </div>`;
@@ -817,44 +824,38 @@ function renderLeads() {
 
 function openDrawer(idx) {
   const r = allData[idx]; if (!r) return;
-  const nombre = r.nombre_cliente||'Unknown guest';
-  const tel = r.telefono_contacto||'';
-  const telClean = tel.replace(/\D/g,'');
-  const wspEnc = encodeURIComponent(wsp(nombre));
+  const nombre = r['Name'] || 'Guest';
+  const emmaResponse = r["Emma's Response"] || '—';
 
-  const fields = [
-    {k:'Room type', v:r.tipo_habitacion},
-    {k:'Check-in', v:r.fecha_checkin},
-    {k:'Check-out', v:r.fecha_checkout},
-    {k:'Guests', v:r.cantidad_personas},
-    {k:'Special occasion', v:r.ocasion_especial}
-  ].map(f=>`<div class="drawer-row"><span class="drawer-key">${f.k}</span><span class="drawer-val">${f.v||'—'}</span></div>`).join('');
+  const bookingLines = emmaResponse.includes('Booking Request') ? emmaResponse.split('\n').filter(l=>l.trim()) : [];
+  const bookingBlock = bookingLines.length
+    ? bookingLines.map(l=>`<div class="drawer-row"><span class="drawer-val">${l}</span></div>`).join('')
+    : `<div class="drawer-row"><span class="drawer-val" style="color:var(--text-muted);">No booking details</span></div>`;
+
+  const anaNotes = r["Ana's Notes"] || '';
 
   document.getElementById('drawer-content').innerHTML = `
     <div class="drawer-name">${nombre}</div>
-    <div class="drawer-meta">${r.fecha||''} ${r.hora?'· '+r.hora.slice(0,5):''} · ${r.canal||'Chat'}</div>
-    <div class="drawer-actions">
-      ${telClean?`<a class="btn btn-outline wsp" style="color:#059669;border-color:#a7f3d0;" href="https://wa.me/${telClean}?text=${wspEnc}" target="_blank">💬 WhatsApp</a>`:''}
-      ${telClean?`<a class="btn btn-outline" href="tel:+${telClean}">📞 Call</a>`:''}
-    </div>
+    <div class="drawer-meta">${r['Date']||''} ${r['Time']?'· '+r['Time']:''} · ${r['Channel']||'Chat'}</div>
     <div class="drawer-section">
       <div class="drawer-section-label">Status</div>
-      <div class="drawer-row"><span class="drawer-key">Intent</span><span class="drawer-val">${intentBadge(r.intencion)}</span></div>
-      <div class="drawer-row"><span class="drawer-key">Status</span><span class="drawer-val">${statusPill(r.estado)}</span></div>
-      <div class="drawer-row"><span class="drawer-key">Follow-up</span><span class="drawer-val">${r.seguimiento||'Pending'}</span></div>
+      <div class="drawer-row"><span class="drawer-key">Intent</span><span class="drawer-val">${intentBadge(r)}</span></div>
+      <div class="drawer-row"><span class="drawer-key">Status</span><span class="drawer-val">${statusPill(r)}</span></div>
+      <div class="drawer-row"><span class="drawer-key">Action needed</span><span class="drawer-val">${r['Action Needed']||'None'}</span></div>
     </div>
     <div class="drawer-section">
       <div class="drawer-section-label">Booking details</div>
-      ${fields}
+      ${bookingBlock}
     </div>
     <div class="drawer-section">
-      <div class="drawer-section-label">Guest's question</div>
-      <div class="msg-box msg-guest">${r.consulta||'—'}</div>
+      <div class="drawer-section-label">Guest's message</div>
+      <div class="msg-box msg-guest">${r['Guest Message']||'—'}</div>
     </div>
     <div class="drawer-section">
       <div class="drawer-section-label">Emma's response</div>
-      <div class="msg-box msg-emma">${r.output_limpio||r.respuesta||'—'}</div>
-    </div>`;
+      <div class="msg-box msg-emma">${emmaResponse}</div>
+    </div>
+    ${anaNotes ? `<div class="drawer-section"><div class="drawer-section-label">Ana's notes</div><div class="msg-box">${anaNotes}</div></div>` : ''}`;
 
   document.getElementById('overlay').classList.add('open');
 }

@@ -637,6 +637,7 @@ footer {
   <div class="toolbar">
     <div class="filter-tabs">
       <button class="filter-btn active" onclick="setFilter('todos',this)">All guests</button>
+      <button class="filter-btn" onclick="setFilter('today',this)">Today</button>
       <button class="filter-btn" onclick="setFilter('hot',this)">🔥 Ready to book</button>
       <button class="filter-btn" onclick="setFilter('en_proceso',this)">In progress</button>
       <button class="filter-btn" onclick="setFilter('reservado',this)">✅ Confirmed</button>
@@ -790,7 +791,9 @@ function setFilter(f, btn) {
 
 function renderLeads() {
   const q = (document.getElementById('search-input').value||'').toLowerCase();
+  const todayStr = now.toLocaleDateString('en-US');
   let list = allData.filter(r => {
+    if (currentFilter==='today') return r['Date'] === todayStr;
     if (currentFilter==='hot') return isHot(r);
     if (currentFilter==='reservado') return isConfirmed(r);
     if (currentFilter==='en_proceso') return isInProgress(r);

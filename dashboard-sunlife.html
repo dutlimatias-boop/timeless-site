@@ -53,6 +53,9 @@ header {
 }
 .live-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; animation: pulse 2s infinite; }
 @keyframes pulse { 0%,100%{box-shadow:0 0 0 2px rgba(74,222,128,0.2)} 50%{box-shadow:0 0 0 4px rgba(74,222,128,0.1)} }
+.h-refresh { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.9); font-size: 0.75rem; font-weight: 600; padding: 0.35rem 0.85rem; border-radius: 100px; cursor: pointer; transition: background 0.15s; }
+.h-refresh:hover { background: rgba(255,255,255,0.25); }
+.h-refresh.spinning { opacity: 0.6; pointer-events: none; }
 
 /* MAIN */
 main { max-width: 1100px; margin: 0 auto; padding: 1.75rem 1.5rem 4rem; }
@@ -243,6 +246,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 1.75rem 1.5rem 4rem; }
   <div class="h-right">
     <div class="h-pill" id="header-date">—</div>
     <div class="h-pill"><span class="live-dot"></span> Emma is active</div>
+    <button class="h-refresh" onclick="refreshAll()" id="refresh-btn">↻ Refresh</button>
   </div>
 </header>
 
@@ -250,7 +254,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 1.75rem 1.5rem 4rem; }
 
   <div class="greeting">
     <h1 id="greeting-text">Good morning, Ana 👋</h1>
-    <p>Here's everything you need to manage Sun Life today.</p>
+    <p id="greeting-sub">Here's everything you need to manage Sun Life today.</p>
   </div>
 
   <!-- TABS -->
@@ -293,8 +297,8 @@ main { max-width: 1100px; margin: 0 auto; padding: 1.75rem 1.5rem 4rem; }
             <span>· Events</span>
           </div>
           <div class="occ-wrap">
-            <div class="occ-row"><span>This week's occupancy</span><span>87%</span></div>
-            <div class="occ-track"><div class="occ-fill" style="width:87%"></div></div>
+            <div class="occ-row"><span>This week's occupancy</span><span>—</span></div>
+            <div class="occ-track"><div class="occ-fill" style="width:0%"></div></div>
           </div>
         </div>
       </div>
@@ -739,16 +743,34 @@ function updateOccupancyBar() {
   if (wOcc) wOcc.textContent = pct + '%';
 }
 
+// ── REFRESH ───────────────────────────────────────────────────────
+function refreshAll() {
+  const btn = document.getElementById('refresh-btn');
+  if (btn) { btn.textContent = '↻ Refreshing…'; btn.classList.add('spinning'); }
+  weeklySummaryLoaded = false;
+  DATA = {}; EVENT_DAYS = new Set();
+  loadData().then(() => {
+    const activeTab = document.querySelector('.tab.active');
+    if (activeTab && activeTab.textContent.includes('Weekly')) loadWeeklySummary();
+    const now = new Date();
+    const sub = document.getElementById('greeting-sub');
+    if (sub) sub.textContent = `Last updated at ${now.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'})}`;
+    if (btn) { btn.textContent = '↻ Refresh'; btn.classList.remove('spinning'); }
+  });
+}
+
 // ── INIT ──────────────────────────────────────────────────────────
-// Header date
 const _hd = document.getElementById('header-date');
 if (_hd) _hd.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-// Greeting
 const _hour = new Date().getHours();
 const _greet = _hour < 12 ? 'Good morning' : _hour < 18 ? 'Good afternoon' : 'Good evening';
 const _greetEl = document.getElementById('greeting-text');
 if (_greetEl) _greetEl.textContent = `${_greet}, Ana 👋`;
-loadData();
+loadData().then(() => {
+  const now = new Date();
+  const sub = document.getElementById('greeting-sub');
+  if (sub) sub.textContent = `Last updated at ${now.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'})}`;
+});
 
 </script>
 </body>

@@ -304,6 +304,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 1.75rem 1.5rem 6rem; }
       <div>
         <strong>Emma's briefing</strong>
         <p id="briefing-text">Loading…</p>
+        <p id="briefing-tomorrow" style="margin-top:4px;font-size:0.75rem;color:rgba(255,255,255,0.65);"></p>
       </div>
     </div>
 
@@ -547,6 +548,22 @@ async function loadData() {
     DATA = buildDataFromReservations(unwrapped);
     EVENT_DAYS = new Set(Object.keys(DATA));
     renderUpcoming();
+    // Tomorrow preview in briefing
+    const _tmrw = addDays(new Date().toISOString().substring(0,10), 1);
+    const _td = DATA[_tmrw];
+    const _tel = document.getElementById('briefing-tomorrow');
+    if (_tel) {
+      if (_td) {
+        const _ins  = _td.tasks.filter(t=>t.cls==='checkin').length;
+        const _outs = _td.tasks.filter(t=>t.cls==='checkout').length;
+        const _parts = [];
+        if (_outs) _parts.push(`${_outs} check-out${_outs>1?'s':''}`);
+        if (_ins)  _parts.push(`${_ins} check-in${_ins>1?'s':''}`);
+        _tel.textContent = _parts.length ? `Tomorrow: ${_parts.join(', ')}.` : 'Tomorrow: no arrivals or departures.';
+      } else {
+        _tel.textContent = 'Tomorrow: no arrivals or departures.';
+      }
+    }
   } catch (err) {
     console.error('Dashboard load error:', err);
     if (briefingEl) briefingEl.textContent = 'Could not load live data — check your connection.';

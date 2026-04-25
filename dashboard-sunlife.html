@@ -705,7 +705,7 @@ function renderUpcoming() {
         <div class="ud-dow">${d.toLocaleDateString('en-US',{weekday:'short'})}</div>
       </div>
       <div class="upcoming-events">${tags.length ? tags.join('') : '<span style="color:var(--muted);font-size:0.78rem;">No arrivals or departures</span>'}</div>
-      <div class="upcoming-occ">${occ}/8 rooms</div>
+      <div class="upcoming-occ" style="color:${8-occ===0?'var(--red)':8-occ<=2?'var(--gold)':'var(--green)'};">${8-occ===0?'Full':`${8-occ} free`}</div>
     </div>`);
   }
   el.innerHTML = rows.length ? rows.join('') : '<div style="color:var(--muted);font-size:0.84rem;padding:0.5rem 0;">No events in the next 7 days.</div>';

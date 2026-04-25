@@ -479,6 +479,9 @@ async function loadData() {
     if (contentEl)  contentEl.innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div><strong>Connection error</strong><br>Could not reach the reservation system. Try refreshing.</div>';
   }
 
+  const _d = new Date(selectedKey + 'T12:00:00');
+  const _labelEl = document.getElementById('day-label-date');
+  if (_labelEl) _labelEl.textContent = _d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
   renderCal();
   renderDayContent(selectedKey);
 }

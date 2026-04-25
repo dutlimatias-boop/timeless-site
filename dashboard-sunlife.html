@@ -460,9 +460,9 @@ async function loadData() {
 
   try {
     const res = await fetch('https://matiasdutli22.app.n8n.cloud/webhook/sunlife-data', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({})
+      method: 'GET',
+
+
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const _text = await res.text();

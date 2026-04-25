@@ -803,11 +803,12 @@ function renderLeads() {
       ? `<div style="font-size:0.78rem;font-weight:600;color:var(--gold);">Booking request</div>`
       : `<span style="color:var(--text-muted);font-size:0.78rem;">—</span>`;
 
+    const isNew = (now - parseFecha(fecha)) / 3600000 < 24;
     return `<div class="guest-row ${hot?'hot':conf?'confirmed':''}" onclick="openDrawer(${idx})">
       <div style="display:flex;align-items:center;gap:10px;">
         <div class="guest-avatar">${initials}</div>
         <div class="guest-info">
-          <div class="guest-name">${nombre}</div>
+          <div class="guest-name">${nombre}${isNew ? ' <span style="font-size:0.6rem;font-weight:700;background:#dbeafe;color:#1d4ed8;padding:2px 6px;border-radius:100px;vertical-align:middle;">NEW</span>' : ''}</div>
           <div class="guest-meta">${r['Channel']||'Chat'} · ${fecha} ${hora}</div>
         </div>
       </div>

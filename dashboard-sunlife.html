@@ -444,6 +444,10 @@ function buildDataFromReservations(rows) {
       const isIn  = d === checkin;
       const isOut = d === checkout;
 
+      const fmtDate = s => { if (!s) return ''; const _d2 = new Date(s+'T12:00:00'); return _d2.toLocaleDateString('en-US',{month:'short',day:'numeric'}); };
+      const nights = checkin && checkout ? Math.round((new Date(checkout+'T12:00:00') - new Date(checkin+'T12:00:00')) / 86400000) : 0;
+      const nightsStr = nights > 0 ? `${nights} night${nights > 1 ? 's' : ''}` : '';
+
       if (isIn && isOut) {
         byDate[d].rooms[room] = { name, st: 'Same-day', stCls: 'st-cin', tileCls: 'cin' };
         byDate[d].tasks.push({ icon: '🏠', cls: 'checkout', title: `Check-out — ${name}`, sub: room, time: '11:00 AM' });
@@ -459,10 +463,6 @@ function buildDataFromReservations(rows) {
       } else {
         byDate[d].rooms[room] = { name, st: 'Occupied', stCls: 'st-occ', tileCls: 'occ' };
       }
-
-      const fmtDate = s => { if (!s) return ''; const d = new Date(s+'T12:00:00'); return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); };
-      const nights = checkin && checkout ? Math.round((new Date(checkout+'T12:00:00') - new Date(checkin+'T12:00:00')) / 86400000) : 0;
-      const nightsStr = nights > 0 ? `${nights} night${nights > 1 ? 's' : ''}` : '';
       let detail, btnCls, btnTxt;
       const extraDetail = [adults ? `${adults} guests` : '', nightsStr, channel ? `via ${channel}` : '', occasion ? `🎉 ${occasion}` : '', notes ? `📝 ${notes}` : ''].filter(Boolean).join(' · ');
       if (isIn && isOut) { detail = `${room} · Same-day stay${extraDetail ? ' · ' + extraDetail : ''}`;   btnCls = 'btn-in';   btnTxt = 'Check-in/out'; }

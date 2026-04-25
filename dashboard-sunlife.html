@@ -345,11 +345,15 @@ let DATA = {};
 let EVENT_DAYS = new Set();
 
 function parseDate(v) {
-  if (!v) return null;
-  v = String(v).trim();
+  if (v === null || v === undefined || v === '') return null;
+  v = String(v).trim(); if (!v) return null;
   if (/^\d{4}-\d{2}-\d{2}/.test(v)) return v.substring(0, 10);
-  const m = v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-  if (m) return `${m[3]}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`;
+  var mdy = v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if (mdy) return mdy[3]+'-'+mdy[1].padStart(2,'0')+'-'+mdy[2].padStart(2,'0');
+  var mdy2 = v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2})$/);
+  if (mdy2) { var yr = parseInt(mdy2[3])>50?'19'+mdy2[3]:'20'+mdy2[3]; return yr+'-'+mdy2[1].padStart(2,'0')+'-'+mdy2[2].padStart(2,'0'); }
+  if (/^\d+$/.test(v)) { var n=parseInt(v); if(n>40000&&n<55000){var d=new Date(Math.round((n-25569)*86400000));if(!isNaN(d))return d.toISOString().substring(0,10);} }
+  var nd = new Date(v); if (!isNaN(nd.getTime()) && nd.getFullYear()>2000) return nd.toISOString().substring(0,10);
   return null;
 }
 
@@ -374,7 +378,9 @@ function buildDataFromReservations(rows) {
 
   active.forEach((r, idx) => {
     const name    = r['col_2'] || r['NOMBRE_CLIENTE'] || r['Guest Name']    || 'Guest';
-    const room    = r['col_1'] || r['TIPO_HABITACION'] || r['Room']          || 'Room ?';
+    const _roomKey = Object.keys(r).find(k => !k.startsWith('col') && k !== 'row_number');
+    const _roomRaw = r[_roomKey] || r['col_1'] || r['Room'] || '';
+    const room = _roomRaw ? (/^\d+$/.test(String(_roomRaw)) ? 'Room '+_roomRaw : String(_roomRaw)) : 'Room ?';
     const adults  = r['col_6'] || r['CANTIDAD_PERSONAS'] || r['Adults']      || '';
     const checkin  = parseDate(r['col_3'] || r['FECHA_CHECKIN']  || r['Check-in Date']  || r['Llegada']);
     const checkout = parseDate(r['col_4'] || r['FECHA_CHECKOUT'] || r['Check-out Date'] || r['Salida']);
@@ -650,5 +656,7 @@ loadData();
 </script>
 </body>
 </html>
+
+
 
 

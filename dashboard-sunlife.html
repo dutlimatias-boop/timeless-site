@@ -96,6 +96,21 @@ main { max-width: 1100px; margin: 0 auto; padding: 1.75rem 1.5rem 4rem; }
   gap: 1.25rem;
   align-items: start;
 }
+@media (max-width: 768px) {
+  header { padding: 0.75rem 1rem; }
+  .h-sub, .h-pill:first-of-type { display: none; }
+  .h-name { font-size: 0.85rem; }
+  main { padding: 1rem 0.9rem 3rem; }
+  .greeting h1 { font-size: 1.2rem; }
+  .day-layout { grid-template-columns: 1fr; }
+  .cal-card { position: static; }
+  .room-grid { grid-template-columns: repeat(4,1fr); gap: 0.4rem; }
+  .r-type { font-size: 0.68rem; }
+  .metrics-grid { grid-template-columns: repeat(2,1fr); }
+  .two-col { grid-template-columns: 1fr; }
+  .tabs { gap: 4px; }
+  .tab { font-size: 0.78rem; padding: 0.5rem 0.9rem; }
+}
 
 /* CARD */
 .card {

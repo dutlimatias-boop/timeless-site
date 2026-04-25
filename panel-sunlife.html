@@ -572,10 +572,17 @@ footer {
 <!-- MAIN -->
 <main>
 
+  <!-- BOOKING ALERT BANNER -->
+  <div id="booking-alert" style="display:none;background:#fff7ed;border:1.5px solid #f59e0b;border-radius:12px;padding:0.85rem 1.1rem;margin-bottom:1rem;display:none;align-items:center;gap:10px;">
+    <span style="font-size:1.1rem;">🔥</span>
+    <span id="booking-alert-text" style="font-size:0.84rem;font-weight:600;color:#92400e;flex:1;"></span>
+    <button onclick="document.getElementById('booking-alert').style.display='none'" style="background:none;border:none;cursor:pointer;color:#92400e;font-size:1rem;padding:0 4px;">✕</button>
+  </div>
+
   <!-- PAGE HEADER -->
   <div class="page-header">
     <h1 class="page-title">Guest Insights</h1>
-    <p class="page-meta">Welcome back, Ana · <span id="date-range">Loading...</span></p>
+    <p class="page-meta">Welcome back, Ana · <span id="date-range">Loading...</span> · <span id="last-updated" style="color:var(--text-muted);">—</span></p>
   </div>
 
   <!-- STATS -->
@@ -688,7 +695,9 @@ async function loadData() {
     const raw = await res.json();
     allData = Array.isArray(raw) ? raw.map(r=>r.json||r).filter(r=>r['Date']||r['Guest Message']) : [];
     allData.sort((a,b) => parseFecha(b['Date'],b['Time']) - parseFecha(a['Date'],a['Time']));
-    updateStats(); renderLeads();
+    updateStats(); renderLeads(); showBookingAlert();
+    const lu = document.getElementById('last-updated');
+    if (lu) lu.textContent = `Updated ${new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}`;
   } catch(e) {
     document.getElementById('leads-list').innerHTML = `
       <div class="state-box">
@@ -864,7 +873,22 @@ function openDrawer(idx) {
 function closeDrawer(e) { if(e.target===document.getElementById('overlay')) closeDrawerPanel(); }
 function closeDrawerPanel() { document.getElementById('overlay').classList.remove('open'); }
 
+function showBookingAlert() {
+  const pending = allData.filter(r => isHot(r) && (now - parseFecha(r['Date'])) / 86400000 <= 7);
+  const banner = document.getElementById('booking-alert');
+  const txt = document.getElementById('booking-alert-text');
+  if (!banner || !txt) return;
+  if (pending.length) {
+    txt.textContent = `${pending.length} booking request${pending.length > 1 ? 's' : ''} this week need${pending.length === 1 ? 's' : ''} your review.`;
+    banner.style.display = 'flex';
+  } else {
+    banner.style.display = 'none';
+  }
+}
+
 loadData();
+// Auto-refresh every 2 minutes
+setInterval(loadData, 2 * 60 * 1000);
 </script>
 </body>
 </html>

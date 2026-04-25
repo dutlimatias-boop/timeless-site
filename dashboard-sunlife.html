@@ -63,7 +63,7 @@ header {
 .h-refresh.spinning { opacity: 0.6; pointer-events: none; }
 
 /* MAIN */
-main { max-width: 1100px; margin: 0 auto; padding: 1.75rem 1.5rem 4rem; }
+main { max-width: 1100px; margin: 0 auto; padding: 1.75rem 1.5rem 6rem; }
 
 /* GREETING */
 .greeting { margin-bottom: 1.5rem; }
@@ -897,6 +897,12 @@ setInterval(() => {
 }, 5 * 60 * 1000);
 
 </script>
+
+<nav style="position:fixed;bottom:0;left:0;right:0;background:rgba(255,252,248,0.95);backdrop-filter:blur(8px);border-top:1px solid #e0d8cc;display:flex;justify-content:center;gap:0;z-index:100;">
+  <a href="dashboard-sunlife.html" style="flex:1;max-width:120px;display:flex;flex-direction:column;align-items:center;padding:0.6rem 0.5rem;text-decoration:none;color:#0e7c7b;font-size:0.62rem;font-weight:700;border-bottom:2px solid #0e7c7b;">📋<span style="margin-top:3px;">Dashboard</span></a>
+  <a href="panel-sunlife.html"     style="flex:1;max-width:120px;display:flex;flex-direction:column;align-items:center;padding:0.6rem 0.5rem;text-decoration:none;color:#8a9080;font-size:0.62rem;font-weight:600;">👥<span style="margin-top:3px;">Guest Insights</span></a>
+  <a href="chat-sunlife.html"      style="flex:1;max-width:120px;display:flex;flex-direction:column;align-items:center;padding:0.6rem 0.5rem;text-decoration:none;color:#8a9080;font-size:0.62rem;font-weight:600;">💬<span style="margin-top:3px;">Emma Preview</span></a>
+</nav>
 </body>
 </html>
 

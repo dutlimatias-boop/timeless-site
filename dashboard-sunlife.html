@@ -646,7 +646,7 @@ function renderDayContent(k){
         <div class="task-title">${t.title}</div>
         <div class="task-sub">${t.sub}</div>
       </div>
-      ${t.time ? `<div class="task-time">${t.time}</div>` : `<span class="task-badge badge-new">Review</span>`}
+      ${t.time ? `<div class="task-time">${t.time}</div>` : t.cls === 'clean' ? `<span class="task-badge badge-new">To clean</span>` : `<span class="task-badge badge-new">To do</span>`}
     </div>`).join('');
 
   // Guests
@@ -874,6 +874,14 @@ loadData().then(() => {
   const now = new Date();
   const sub = document.getElementById('greeting-sub');
   if (sub) sub.textContent = `Last updated at ${now.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'})}`;
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.key === 'ArrowLeft')  changeMonth(-1);
+  if (e.key === 'ArrowRight') changeMonth(1);
+  if (e.key === 't' || e.key === 'T') goToToday();
 });
 
 // Auto-refresh every 5 minutes

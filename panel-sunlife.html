@@ -844,12 +844,16 @@ function openDrawer(idx) {
   const nombre = r['Name'] || 'Guest';
   const emmaResponse = r["Emma's Response"] || '—';
 
-  const bookingLines = emmaResponse.includes('Booking Request') ? emmaResponse.split('\n').filter(l=>l.trim()) : [];
+  const isBooking = emmaResponse.includes('Booking Request') || emmaResponse.includes('📋');
+  const bookingLines = isBooking ? emmaResponse.split('\n').filter(l=>l.trim()) : [];
   const bookingBlock = bookingLines.length
     ? bookingLines.map(l=>`<div class="drawer-row"><span class="drawer-val">${l}</span></div>`).join('')
     : `<div class="drawer-row"><span class="drawer-val" style="color:var(--text-muted);">No booking details</span></div>`;
 
   const anaNotes = r["Ana's Notes"] || '';
+  const copyBtn = isBooking
+    ? `<button onclick="copyBooking(${allData.indexOf(r)})" style="margin-top:0.6rem;width:100%;padding:0.55rem;background:var(--teal);color:#fff;border:none;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:pointer;" id="copy-btn-drawer">📋 Copy booking summary</button>`
+    : '';
 
   document.getElementById('drawer-content').innerHTML = `
     <div class="drawer-name">${nombre}</div>
@@ -863,6 +867,7 @@ function openDrawer(idx) {
     <div class="drawer-section">
       <div class="drawer-section-label">Booking details</div>
       ${bookingBlock}
+      ${copyBtn}
     </div>
     <div class="drawer-section">
       <div class="drawer-section-label">Guest's message</div>
@@ -875,6 +880,15 @@ function openDrawer(idx) {
     ${anaNotes ? `<div class="drawer-section"><div class="drawer-section-label">Ana's notes</div><div class="msg-box">${anaNotes}</div></div>` : ''}`;
 
   document.getElementById('overlay').classList.add('open');
+}
+
+function copyBooking(idx) {
+  const r = allData[idx]; if (!r) return;
+  const text = `Booking Request\nGuest: ${r['Name']||'—'}\nDate received: ${r['Date']||'—'}\n\n${r["Emma's Response"]||''}`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-btn-drawer');
+    if (btn) { btn.textContent = '✓ Copied!'; btn.style.background = '#16a34a'; setTimeout(() => { btn.textContent = '📋 Copy booking summary'; btn.style.background = 'var(--teal)'; }, 2000); }
+  });
 }
 
 function closeDrawer(e) { if(e.target===document.getElementById('overlay')) closeDrawerPanel(); }

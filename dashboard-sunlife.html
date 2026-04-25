@@ -419,7 +419,8 @@ function buildDataFromReservations(rows) {
     const _roomRaw = r[_roomKey] || r['col_1'] || r['Room'] || '';
     const room = _roomRaw ? (/^\d+$/.test(String(_roomRaw)) ? 'Room '+_roomRaw : String(_roomRaw)) : 'Room ?';
     const adults  = r['col_6'] || r['CANTIDAD_PERSONAS'] || r['Adults']      || '';
-    const occasion = r['col_8'] || r['Special Occasion'] || r['Ocasion']     || '';
+    const channel  = r['col_8'] || r['Channel']          || '';
+    const occasion = r['col_10'] || r['Special Occasion'] || r['Ocasion']    || '';
     const notes    = r['col_9'] || r['Notes']            || r['Notas']       || '';
     const checkin  = parseDate(r['col_3'] || r['FECHA_CHECKIN']  || r['Check-in Date']  || r['Llegada']);
     const checkout = parseDate(r['col_4'] || r['FECHA_CHECKOUT'] || r['Check-out Date'] || r['Salida']);
@@ -451,7 +452,7 @@ function buildDataFromReservations(rows) {
       }
 
       let detail, btnCls, btnTxt;
-      const extraDetail = [adults ? `${adults} guests` : '', occasion ? `🎉 ${occasion}` : '', notes ? `📝 ${notes}` : ''].filter(Boolean).join(' · ');
+      const extraDetail = [adults ? `${adults} guests` : '', channel ? `via ${channel}` : '', occasion ? `🎉 ${occasion}` : '', notes ? `📝 ${notes}` : ''].filter(Boolean).join(' · ');
       if (isIn && isOut) { detail = `${room} · Same-day stay${extraDetail ? ' · ' + extraDetail : ''}`;   btnCls = 'btn-in';   btnTxt = 'Check-in/out'; }
       else if (isIn)     { detail = `${room} · Check-in today${extraDetail ? ' · ' + extraDetail : ''}`; btnCls = 'btn-in';  btnTxt = 'Check-in'; }
       else if (isOut)    { detail = `${room} · Checking out${extraDetail ? ' · ' + extraDetail : ''}`;    btnCls = 'btn-out';  btnTxt = 'Check-out'; }

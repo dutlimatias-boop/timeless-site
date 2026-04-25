@@ -367,16 +367,17 @@ function getInitials(name) {
 function buildDataFromReservations(rows) {
   const byDate = {};
   const active = rows.filter(r => {
-    const s = (r['ESTADO'] || r['Status'] || r['status'] || '').toLowerCase();
-    return s !== 'cancelled' && s !== 'canceled' && s !== 'cancelado';
+    const s = (r['col_7'] || r['ESTADO'] || r['Status'] || r['status'] || '').toLowerCase();
+    const isHeader = (r['col_2'] === 'Guest Name' || r['col_1'] === 'Room');
+    return !isHeader && s !== 'cancelled' && s !== 'canceled' && s !== 'cancelado';
   });
 
   active.forEach((r, idx) => {
-    const name    = r['NOMBRE_CLIENTE']  || r['Guest Name']    || r['Nombre']    || 'Guest';
-    const room    = r['TIPO_HABITACION'] || r['Room']          || r['Habitacion']|| 'Room ?';
-    const adults  = r['CANTIDAD_PERSONAS'] || r['Adults']      || r['Huespedes'] || '';
-    const checkin  = parseDate(r['FECHA_CHECKIN']  || r['Check-in Date']  || r['Llegada']);
-    const checkout = parseDate(r['FECHA_CHECKOUT'] || r['Check-out Date'] || r['Salida']);
+    const name    = r['col_2'] || r['NOMBRE_CLIENTE'] || r['Guest Name']    || 'Guest';
+    const room    = r['col_1'] || r['TIPO_HABITACION'] || r['Room']          || 'Room ?';
+    const adults  = r['col_6'] || r['CANTIDAD_PERSONAS'] || r['Adults']      || '';
+    const checkin  = parseDate(r['col_3'] || r['FECHA_CHECKIN']  || r['Check-in Date']  || r['Llegada']);
+    const checkout = parseDate(r['col_4'] || r['FECHA_CHECKOUT'] || r['Check-out Date'] || r['Salida']);
     if (!checkin || !checkout || checkin > checkout) return;
 
     const av  = AV_COLORS[idx % AV_COLORS.length];

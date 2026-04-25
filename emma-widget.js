@@ -1,22 +1,23 @@
 // Emma Chat Widget - Sun Life Beach Hotel
 (function() {
-  var style = document.createElement('style');
-  style.innerHTML = [
-    ':root{',
-    '--chat--color-primary:#0e7c7b;',
-    '--chat--color-primary-shade-50:#0a5f5e;',
-    '--chat--color-primary-shade-100:#074d4c;',
-    '--chat--color-secondary:#b8720a;',
-    '--chat--color-background:#fdf9f4;',
-    '--chat--toggle--background:#0e7c7b;',
-    '--chat--toggle--hover--background:#0a5f5e;',
-    '}'
-  ].join('');
-  document.head.appendChild(style);
-
   var link = document.createElement('link');
   link.rel = 'stylesheet';
   link.href = 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css';
+  link.onload = function() {
+    var style = document.createElement('style');
+    style.innerHTML = [
+      ':root{',
+      '--chat--color-primary:#0e7c7b;',
+      '--chat--color-primary-shade-50:#0a5f5e;',
+      '--chat--color-primary-shade-100:#074d4c;',
+      '--chat--color-secondary:#b8720a;',
+      '--chat--color-background:#fdf9f4;',
+      '--chat--toggle--background:#0e7c7b;',
+      '--chat--toggle--hover--background:#0a5f5e;',
+      '}'
+    ].join('');
+    document.head.appendChild(style);
+  };
   document.head.appendChild(link);
 
   var script = document.createElement('script');

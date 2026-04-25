@@ -347,6 +347,8 @@ let EVENT_DAYS = new Set();
 function parseDate(v) {
   if (v === null || v === undefined || v === '') return null;
   v = String(v).trim(); if (!v) return null;
+  var ESP={ene:1,feb:2,mar:3,abr:4,may:5,jun:6,jul:7,ago:8,sep:9,oct:10,nov:11,dic:12};
+  var esp=v.match(/^(\w{3})\s+(\d{1,2}),?\s+(\d{4})/i); if(esp&&ESP[esp[1].toLowerCase()])return esp[3]+'-'+String(ESP[esp[1].toLowerCase()]).padStart(2,'0')+'-'+esp[2].padStart(2,'0');
   if (/^\d{4}-\d{2}-\d{2}/.test(v)) return v.substring(0, 10);
   var mdy = v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
   if (mdy) return mdy[3]+'-'+mdy[1].padStart(2,'0')+'-'+mdy[2].padStart(2,'0');

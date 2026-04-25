@@ -467,10 +467,10 @@ async function loadData() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const payload = await res.json();
     const rows = Array.isArray(payload) ? payload
-    console.log('[Dashboard] API response:', payload, '| rows parsed:', rows.length, rows.slice(0,2));
                : Array.isArray(payload.data) ? payload.data
                : Array.isArray(payload.rows) ? payload.rows
                : [payload];
+    console.log('[Dashboard] API response:', payload, '| rows parsed:', rows.length, rows.slice(0,2));
 
     DATA = buildDataFromReservations(rows);
     EVENT_DAYS = new Set(Object.keys(DATA));

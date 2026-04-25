@@ -488,11 +488,18 @@ function buildDataFromReservations(rows) {
     const checkins  = v.tasks.filter(t => t.cls === 'checkin').length;
     const checkouts = v.tasks.filter(t => t.cls === 'checkout').length;
     const occupied  = rooms.filter(r => r.tileCls !== 'free').length;
-    const parts = [];
-    if (checkins)  parts.push(`${checkins} check-in${checkins > 1 ? 's' : ''}`);
-    if (checkouts) parts.push(`${checkouts} check-out${checkouts > 1 ? 's' : ''}`);
-    if (!checkins && !checkouts) parts.push(`${occupied} room${occupied !== 1 ? 's' : ''} occupied`);
-    const briefing = (parts.join(' · ') || '0 rooms occupied') + '.';
+    const free      = 8 - occupied;
+    let briefing;
+    if (!checkins && !checkouts && occupied === 0) {
+      briefing = 'No reservations today. All 8 rooms available.';
+    } else if (!checkins && !checkouts) {
+      briefing = `${occupied} room${occupied !== 1 ? 's' : ''} occupied, ${free} available. No arrivals or departures today.`;
+    } else {
+      const parts = [];
+      if (checkouts) parts.push(`${checkouts} check-out${checkouts > 1 ? 's' : ''} at 11 AM`);
+      if (checkins)  parts.push(`${checkins} check-in${checkins > 1 ? 's' : ''} at 3 PM`);
+      briefing = parts.join(', ') + `. ${occupied}/8 rooms occupied.`;
+    }
 
     const tasks = v.tasks
       .filter((t, i, arr) => arr.findIndex(x => x.title === t.title) === i)

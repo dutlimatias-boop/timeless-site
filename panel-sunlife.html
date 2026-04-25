@@ -637,11 +637,11 @@ footer {
   <div class="toolbar">
     <div class="filter-tabs">
       <button class="filter-btn active" onclick="setFilter('todos',this)">All guests</button>
-      <button class="filter-btn" onclick="setFilter('today',this)">Today</button>
-      <button class="filter-btn" onclick="setFilter('hot',this)">🔥 Ready to book</button>
-      <button class="filter-btn" onclick="setFilter('en_proceso',this)">In progress</button>
-      <button class="filter-btn" onclick="setFilter('reservado',this)">✅ Confirmed</button>
-      <button class="filter-btn" onclick="setFilter('nuevo',this)">New</button>
+      <button class="filter-btn" id="fbtn-today"    onclick="setFilter('today',this)">Today</button>
+      <button class="filter-btn" id="fbtn-hot"      onclick="setFilter('hot',this)">🔥 Ready to book</button>
+      <button class="filter-btn" id="fbtn-proceso"  onclick="setFilter('en_proceso',this)">In progress</button>
+      <button class="filter-btn" id="fbtn-reservado" onclick="setFilter('reservado',this)">✅ Confirmed</button>
+      <button class="filter-btn" id="fbtn-nuevo"    onclick="setFilter('nuevo',this)">New</button>
     </div>
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
@@ -760,6 +760,16 @@ function updateStats() {
   document.getElementById('stat-reservados').textContent = confirmed;
   document.getElementById('stat-conversion').textContent = `${rate}% conversion rate`;
   document.getElementById('stat-proceso').textContent = proceso;
+
+  // Update filter button counters
+  const todayStr = now.toLocaleDateString('en-US');
+  const todayCount = allData.filter(r => r['Date'] === todayStr).length;
+  const newCount = allData.filter(r => !isHot(r) && !isConfirmed(r) && !isInProgress(r)).length;
+  const setBtn = (id, label) => { const b = document.getElementById(id); if (b) b.textContent = label; };
+  setBtn('fbtn-today',     todayCount > 0 ? `Today (${todayCount})` : 'Today');
+  setBtn('fbtn-hot',       hot > 0        ? `🔥 Ready to book (${hot})` : '🔥 Ready to book');
+  setBtn('fbtn-reservado', confirmed > 0  ? `✅ Confirmed (${confirmed})` : '✅ Confirmed');
+  setBtn('fbtn-nuevo',     newCount > 0   ? `New (${newCount})` : 'New');
 }
 
 function intentBadge(r) {

@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Activá tu asistente · Timeless</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f0e8;
+  --card: #ffffff;
+  --teal: #0e7c7b;
+  --teal-dark: #085f5e;
+  --teal-pale: #e4f2f1;
+  --teal-mid: #0a9e9c;
+  --text: #1a1a18;
+  --text-secondary: #4a5040;
+  --text-muted: #7a8070;
+  --border: #e5e0d8;
+  --border-dark: #ccc4b4;
+  --input-bg: #fafaf8;
+  --error: #dc2626;
+  --error-pale: #fef2f2;
+  --success: #16a34a;
+  --success-pale: #f0fdf4;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── HEADER ── */
+header {
+  background: #0a0a0a;
+  padding: 0 2rem;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #f8f6f2;
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+.logo span { color: #c8f060; }
+.header-badge {
+  font-size: 0.72rem;
+  color: #c8f060;
+  background: rgba(200,240,96,0.1);
+  border: 1px solid rgba(200,240,96,0.2);
+  padding: 3px 10px;
+  border-radius: 99px;
+  letter-spacing: 0.03em;
+}
+
+/* ── PROGRESS BAR ── */
+.progress-bar-wrap {
+  position: sticky;
+  top: 56px;
+  z-index: 100;
+  background: #0a0a0a;
+  padding: 0 2rem 10px;
+}
+.progress-steps {
+  display: flex;
+  gap: 6px;
+  max-width: 700px;
+  margin: 0 auto;
+  align-items: center;
+}
+.step-pill {
+  flex: 1;
+  height: 4px;
+  border-radius: 99px;
+  background: #222;
+  transition: background 0.4s ease;
+}
+.step-pill.active { background: #c8f060; }
+.step-pill.done { background: var(--teal); }
+.progress-label {
+  font-size: 0.7rem;
+  color: #666;
+  white-space: nowrap;
+  padding-left: 8px;
+}
+.progress-label span { color: #c8f060; }
+
+/* ── MAIN ── */
+main { max-width: 700px; margin: 0 auto; padding: 2.5rem 1.5rem 6rem; }
+
+/* ── STEP HEADER ── */
+.step-header { margin-bottom: 2rem; }
+.step-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--teal);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.4rem;
+}
+.step-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.03em;
+  margin-bottom: 0.35rem;
+}
+.step-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+/* ── STEP PANELS ── */
+.step-panel { display: none; }
+.step-panel.active { display: block; animation: fadeUp 0.25s ease; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── BUSINESS TYPE SELECTOR ── */
+.btype-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+.btype-card {
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 0.75rem;
+  cursor: pointer;
+  background: var(--card);
+  text-align: center;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+}
+.btype-card:hover { border-color: var(--teal); background: var(--teal-pale); }
+.btype-card.selected {
+  border-color: var(--teal);
+  background: var(--teal-pale);
+  box-shadow: 0 0 0 3px rgba(14,124,123,0.12);
+}
+.btype-icon { font-size: 1.5rem; margin-bottom: 6px; }
+.btype-name { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); }
+.btype-desc { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+
+/* ── FORM SECTIONS ── */
+.form-section {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  padding: 1.75rem;
+  margin-bottom: 1rem;
+}
+.section-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.section-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--teal);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+.section-title { font-size: 0.9rem; font-weight: 600; color: var(--text); }
+.section-desc { font-size: 0.76rem; color: var(--text-muted); margin-top: 2px; }
+
+/* ── FIELDS ── */
+.fields-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field-full { grid-column: 1 / -1; }
+label { font-size: 0.78rem; font-weight: 500; color: var(--text-secondary); }
+.req { color: var(--teal); }
+.opt { color: var(--text-muted); font-weight: 400; }
+
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="number"],
+select,
+textarea {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.575rem 0.75rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  color: var(--text);
+  background: var(--input-bg);
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  width: 100%;
+  outline: none;
+  appearance: none;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(14,124,123,0.1);
+  background: #fff;
+}
+input::placeholder, textarea::placeholder { color: #b5ad9e; font-size: 0.825rem; }
+textarea { resize: vertical; min-height: 80px; }
+
+.field input.valid, .field textarea.valid { border-color: #86efac; }
+.field input.invalid, .field textarea.invalid { border-color: var(--error); box-shadow: 0 0 0 3px rgba(220,38,38,0.08); }
+.field-error { font-size: 0.72rem; color: var(--error); margin-top: 2px; display: none; }
+.field.has-error .field-error { display: block; }
+
+/* ── AMENITIES ── */
+.amenities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.5rem;
+}
+.amenity-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  background: var(--input-bg);
+  user-select: none;
+}
+.amenity-item:hover { border-color: var(--teal); background: var(--teal-pale); }
+.amenity-item input[type="checkbox"] { accent-color: var(--teal); width: 14px; height: 14px; flex-shrink: 0; }
+.amenity-item span { font-size: 0.825rem; color: var(--text-secondary); }
+.amenity-item:has(input:checked) { border-color: var(--teal); background: var(--teal-pale); }
+
+/* ── SERVICE CARDS ── */
+.service-card, .faq-pair {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem;
+  margin-bottom: 0.75rem;
+  background: var(--input-bg);
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.card-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--teal);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+.faq-card-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+.remove-btn {
+  background: none;
+  border: none;
+  color: #b5ad9e;
+  cursor: pointer;
+  padding: 2px 8px;
+  font-size: 0.78rem;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+  font-family: 'Inter', sans-serif;
+}
+.remove-btn:hover { color: var(--error); background: var(--error-pale); }
+.add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: none;
+  border: 1.5px dashed var(--border-dark);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 1rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  width: 100%;
+  margin-top: 0.25rem;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  font-family: 'Inter', sans-serif;
+}
+.add-btn:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-pale); }
+
+/* ── NAV BUTTONS ── */
+.nav-area {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2rem;
+  gap: 1rem;
+}
+.btn-back {
+  background: none;
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius);
+  padding: 0.7rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.15s, background 0.15s;
+}
+.btn-back:hover { border-color: var(--teal); background: var(--teal-pale); color: var(--teal); }
+.btn-next {
+  background: var(--teal);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.8rem 2.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: background 0.15s, transform 0.1s;
+  box-shadow: 0 2px 8px rgba(14,124,123,0.25);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-next:hover { background: var(--teal-dark); transform: translateY(-1px); }
+.btn-next:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+/* ── SUBMIT AREA ── */
+.submit-area { margin-top: 2rem; }
+.trust-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.trust-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--teal);
+  flex-shrink: 0;
+}
+.submit-btn {
+  display: block;
+  width: 100%;
+  background: var(--teal);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: background 0.15s, transform 0.1s;
+  box-shadow: 0 2px 12px rgba(14,124,123,0.3);
+  text-align: center;
+}
+.submit-btn:hover:not(:disabled) { background: var(--teal-dark); transform: translateY(-1px); }
+.submit-btn:disabled { opacity: 0.75; cursor: not-allowed; transform: none; }
+.submit-note { font-size: 0.73rem; color: var(--text-muted); text-align: center; margin-top: 0.75rem; }
+
+/* ── SPINNER ── */
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.65s linear infinite;
+  vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── ERROR BOX ── */
+.error-box {
+  background: var(--error-pale);
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-sm);
+  padding: 0.875rem 1rem;
+  font-size: 0.8rem;
+  color: var(--error);
+  display: none;
+  margin-top: 1rem;
+  line-height: 1.7;
+}
+
+/* ── SUCCESS ── */
+.success-wrap {
+  display: none;
+  max-width: 500px;
+  margin: 4rem auto 0;
+  text-align: center;
+  padding: 3rem 2rem;
+  background: var(--card);
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.success-check {
+  width: 56px;
+  height: 56px;
+  background: var(--success-pale);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+  font-size: 1.5rem;
+}
+.success-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+.success-text { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.75; margin-bottom: 1.5rem; }
+.success-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+}
+.success-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+.success-step-num {
+  width: 20px;
+  height: 20px;
+  background: var(--teal-pale);
+  color: var(--teal);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ── VERIFICATION SCREEN ── */
+.verify-wrap {
+  display: none;
+  max-width: 560px;
+  margin: 3rem auto 0;
+}
+.verify-header { text-align: center; margin-bottom: 2rem; }
+.verify-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.4rem;
+}
+.verify-subtitle { font-size: 0.875rem; color: var(--text-muted); }
+
+.vloops-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+.vloop-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.2s;
+}
+.vloop-item:last-child { border-bottom: none; }
+.vloop-item.state-done { background: var(--success-pale); }
+.vloop-item.state-running { background: var(--teal-pale); }
+.vloop-item.state-error { background: var(--error-pale); }
+
+.vloop-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+}
+.state-done .vloop-icon { background: var(--success-pale); border-color: #86efac; }
+.state-running .vloop-icon { background: var(--teal-pale); border-color: var(--teal); animation: pulse 1.5s ease infinite; }
+.state-error .vloop-icon { background: var(--error-pale); border-color: #fca5a5; }
+@keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(14,124,123,0.3); } 50% { box-shadow: 0 0 0 6px rgba(14,124,123,0); } }
+
+.vloop-body { flex: 1; min-width: 0; }
+.vloop-name { font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.vloop-desc { font-size: 0.75rem; color: var(--text-muted); }
+.state-done .vloop-desc { color: var(--success); }
+.state-error .vloop-desc { color: var(--error); }
+
+.vloop-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 99px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.badge-pending { background: var(--bg); color: var(--text-muted); border: 1px solid var(--border); }
+.badge-running { background: var(--teal-pale); color: var(--teal); border: 1px solid var(--teal); }
+.badge-done { background: var(--success-pale); color: var(--success); border: 1px solid #86efac; }
+.badge-error { background: var(--error-pale); color: var(--error); border: 1px solid #fca5a5; }
+
+.verify-progress-bar { height: 3px; background: var(--border); border-radius: 99px; overflow: hidden; margin-bottom: 0.75rem; }
+.verify-progress-fill { height: 100%; background: var(--teal); border-radius: 99px; transition: width 0.6s ease; width: 0%; }
+.verify-pct { font-size: 0.72rem; color: var(--text-muted); text-align: right; margin-bottom: 1rem; }
+
+.verify-final {
+  display: none;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+.verify-final-icon { font-size: 2.25rem; margin-bottom: 1rem; }
+.verify-final-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+.verify-final-text { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.7; }
+
+.verify-error-actions { margin-top: 1.25rem; display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+.btn-retry {
+  background: var(--teal);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: background 0.15s;
+}
+.btn-retry:hover { background: var(--teal-dark); }
+.btn-contact {
+  background: none;
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 580px) {
+  header { padding: 0 1rem; }
+  .progress-bar-wrap { padding: 0 1rem 10px; }
+  main { padding: 1.5rem 1rem 5rem; }
+  .fields-grid { grid-template-columns: 1fr; }
+  .amenities-grid { grid-template-columns: 1fr 1fr; }
+  .btype-grid { grid-template-columns: 1fr 1fr; }
+  .step-title { font-size: 1.35rem; }
+  .nav-area { flex-direction: column-reverse; }
+  .btn-back, .btn-next { width: 100%; justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">Timeless<span>.</span></a>
+  <span class="header-badge">Tu asistente listo en minutos</span>
+</header>
+
+<div class="progress-bar-wrap">
+  <div class="progress-steps">
+    <div class="step-pill active" id="pill-1"></div>
+    <div class="step-pill" id="pill-2"></div>
+    <div class="step-pill" id="pill-3"></div>
+    <span class="progress-label" id="progress-label"><span>Paso 1</span> de 3</span>
+  </div>
+</div>
+
+<main>
+
+  <!-- PASO 1 -->
+  <div class="step-panel active" id="step-1">
+    <div class="step-header">
+      <div class="step-eyebrow">Paso 1 de 3</div>
+      <h1 class="step-title">Empecemos por lo básico</h1>
+      <p class="step-subtitle">Elegí el tipo de negocio y completá los datos principales. Todo lo demás se adapta a tu industria.</p>
+    </div>
+
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-dot"></div>
+        <div>
+          <div class="section-title">¿Qué tipo de negocio tenés?</div>
+          <div class="section-desc">Esto personaliza el formulario para vos</div>
+        </div>
+      </div>
+      <div class="btype-grid">
+        <div class="btype-card selected" data-type="hotel" onclick="selectType(this)">
+          <div class="btype-icon">🏨</div>
+          <div class="btype-name">Hotel / Hospedaje</div>
+          <div class="btype-desc">Cabañas, B&B, hostels</div>
+        </div>
+        <div class="btype-card" data-type="clinica" onclick="selectType(this)">
+          <div class="btype-icon">🏥</div>
+          <div class="btype-name">Clínica / Salud</div>
+          <div class="btype-desc">Médicos, dentistas, psicólogos</div>
+        </div>
+        <div class="btype-card" data-type="beauty" onclick="selectType(this)">
+          <div class="btype-icon">💅</div>
+          <div class="btype-name">Beauty Center</div>
+          <div class="btype-desc">Peluquería, spa, estética</div>
+        </div>
+        <div class="btype-card" data-type="restaurante" onclick="selectType(this)">
+          <div class="btype-icon">🍽️</div>
+          <div class="btype-name">Restaurante / Café</div>
+          <div class="btype-desc">Delivery, bar, catering</div>
+        </div>
+        <div class="btype-card" data-type="inmobiliaria" onclick="selectType(this)">
+          <div class="btype-icon">🏠</div>
+          <div class="btype-name">Inmobiliaria</div>
+          <div class="btype-desc">Venta, alquiler, tasaciones</div>
+        </div>
+        <div class="btype-card" data-type="otro" onclick="selectType(this)">
+          <div class="btype-icon">✦</div>
+          <div class="btype-name">Otro</div>
+          <div class="btype-desc">Cualquier negocio de servicio</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-dot"></div>
+        <div>
+          <div class="section-title">Información del negocio</div>
+          <div class="section-desc">Datos que tu asistente usará para identificarse</div>
+        </div>
+      </div>
+      <div class="fields-grid">
+        <div class="field field-full">
+          <label>Nombre del negocio <span class="req">*</span></label>
+          <input type="text" id="bizName" placeholder="Sun Life Beach Hotel" autocomplete="organization">
+          <span class="field-error">Ingresá el nombre de tu negocio.</span>
+        </div>
+        <div class="field">
+          <label>Email de contacto <span class="req">*</span></label>
+          <input type="email" id="email" placeholder="hola@tunegocio.com" autocomplete="email">
+          <span class="field-error">Ingresá un email válido.</span>
+        </div>
+        <div class="field">
+          <label>Sitio web <span class="req">*</span></label>
+          <input type="url" id="website" placeholder="https://tunegocio.com">
+          <span class="field-error">Ingresá la URL de tu sitio.</span>
+        </div>
+        <div class="field field-full">
+          <label>Dirección / Ubicación <span class="req">*</span></label>
+          <input type="text" id="address" placeholder="Av. Corrientes 1234, Buenos Aires" autocomplete="street-address">
+          <span class="field-error">Ingresá la dirección.</span>
+        </div>
+        <div class="field field-full">
+          <label>Descripción breve <span class="opt">(opcional)</span></label>
+          <textarea id="bizDesc" rows="2" placeholder="Hotel boutique frente al mar, abierto desde 2010..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-area" style="justify-content: flex-end;">
+      <button class="btn-next" onclick="goStep(2)">
+        Continuar <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0"><path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <div id="error-1" class="error-box"></div>
+  </div>
+
+
+  <!-- PASO 2 -->
+  <div class="step-panel" id="step-2">
+    <div class="step-header">
+      <div class="step-eyebrow">Paso 2 de 3</div>
+      <h1 class="step-title" id="s2-title">Tus servicios</h1>
+      <p class="step-subtitle" id="s2-subtitle">Agregá lo que ofrecés con precios y disponibilidad.</p>
+    </div>
+
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-dot"></div>
+        <div>
+          <div class="section-title" id="s2-servicios-title">Tipos de habitación / servicio</div>
+          <div class="section-desc" id="s2-servicios-desc">Agregá todas las categorías que ofrecés</div>
+        </div>
+      </div>
+      <div id="servicesList"></div>
+      <button type="button" class="add-btn" onclick="addService()" id="addServiceBtn">+ Agregar otro servicio</button>
+    </div>
+
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-dot"></div>
+        <div><div class="section-title" id="s2-horario-title">Horarios</div></div>
+      </div>
+      <div class="fields-grid" id="horario-fields"></div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-dot"></div>
+        <div>
+          <div class="section-title">Características disponibles</div>
+          <div class="section-desc">Seleccioná todo lo que aplica</div>
+        </div>
+      </div>
+      <div class="amenities-grid" id="amenitiesGrid"></div>
+      <div class="field" style="margin-top: 0.75rem; max-width: 360px;">
+        <label>Otra <span class="opt">(opcional)</span></label>
+        <input type="text" id="amenitiesOther" placeholder="Agregá características extra...">
+      </div>
+    </div>
+
+    <div class="nav-area">
+      <button class="btn-back" onclick="goStep(1)">← Atrás</button>
+      <button class="btn-next" onclick="goStep(3)">
+        Continuar <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0"><path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <div id="error-2" class="error-box"></div>
+  </div>
+
+
+  <!-- PASO 3 -->
+  <div class="step-panel" id="step-3">
+    <div class="step-header">
+      <div class="step-eyebrow">Paso 3 de 3</div>
+      <h1 class="step-title">Políticas y preguntas frecuentes</h1>
+      <p class="step-subtitle">Lo que tu asistente va a informar cuando los clientes pregunten sobre condiciones y políticas.</p>
+    </div>
+
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-dot"></div>
+        <div>
+          <div class="section-title">Políticas</div>
+          <div class="section-desc">Tu asistente las comunicará de manera clara y amigable</div>
+        </div>
+      </div>
+      <div class="fields-grid">
+        <div class="field field-full">
+          <label>Política de cancelación <span class="req">*</span></label>
+          <textarea id="cancellationPolicy" rows="3" placeholder="Cancelación gratuita hasta 48 hs antes..."></textarea>
+          <span class="field-error">Este campo es requerido.</span>
+        </div>
+        <div class="field field-full">
+          <label>Otras políticas <span class="opt">(opcional)</span></label>
+          <textarea id="otherPolicies" rows="3" placeholder="Política de mascotas, fumadores, pagos..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-dot"></div>
+        <div>
+          <div class="section-title">Preguntas frecuentes</div>
+          <div class="section-desc">Las consultas que más recibís y sus respuestas exactas</div>
+        </div>
+      </div>
+      <div id="faqList"></div>
+      <button type="button" class="add-btn" onclick="addFaq()">+ Agregar pregunta</button>
+    </div>
+
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-dot"></div>
+        <div>
+          <div class="section-title">Información adicional <span class="opt">(opcional)</span></div>
+          <div class="section-desc">Cualquier otra cosa que tu asistente debería saber</div>
+        </div>
+      </div>
+      <div class="field">
+        <textarea id="additionalInfo" rows="4" placeholder="Historia del negocio, premios, idiomas del equipo, zonas de cobertura..."></textarea>
+      </div>
+    </div>
+
+    <div class="submit-area">
+      <div class="trust-row">
+        <div class="trust-item"><div class="trust-dot"></div>Asistente activo en 24 hs</div>
+        <div class="trust-item"><div class="trust-dot"></div>Procesamiento seguro</div>
+        <div class="trust-item"><div class="trust-dot"></div>Sin tarjeta requerida</div>
+      </div>
+      <button type="button" id="submitBtn" class="submit-btn" onclick="handleSubmit()">
+        Activar mi asistente →
+      </button>
+      <p class="submit-note">Te enviamos el código de instalación al email ingresado.</p>
+      <div id="error-3" class="error-box"></div>
+    </div>
+
+    <div class="nav-area" style="margin-top: 1rem;">
+      <button class="btn-back" onclick="goStep(2)">← Atrás</button>
+      <span></span>
+    </div>
+  </div>
+
+
+  <!-- VERIFICATION SCREEN -->
+  <div class="verify-wrap" id="verifyWrap">
+    <div class="verify-header">
+      <div class="verify-title">Configurando tu asistente</div>
+      <div class="verify-subtitle">Verificamos cada etapa en tiempo real</div>
+    </div>
+
+    <div class="verify-progress-bar">
+      <div class="verify-progress-fill" id="verifyProgressFill"></div>
+    </div>
+    <div class="verify-pct" id="verifyPct">0%</div>
+
+    <div class="vloops-card">
+      <div class="vloop-item" id="loop-received">
+        <div class="vloop-icon" id="icon-received">📡</div>
+        <div class="vloop-body">
+          <div class="vloop-name">Recepción de datos</div>
+          <div class="vloop-desc" id="desc-received">Esperando confirmación del servidor...</div>
+        </div>
+        <span class="vloop-badge badge-pending" id="badge-received">Pendiente</span>
+      </div>
+      <div class="vloop-item" id="loop-ingestion">
+        <div class="vloop-icon" id="icon-ingestion">🧠</div>
+        <div class="vloop-body">
+          <div class="vloop-name">Ingestión al knowledge base</div>
+          <div class="vloop-desc" id="desc-ingestion">El texto de tu negocio se convierte en vectores para la IA</div>
+        </div>
+        <span class="vloop-badge badge-pending" id="badge-ingestion">Pendiente</span>
+      </div>
+      <div class="vloop-item" id="loop-smoketest">
+        <div class="vloop-icon" id="icon-smoketest">🔬</div>
+        <div class="vloop-body">
+          <div class="vloop-name">Smoke test del bot</div>
+          <div class="vloop-desc" id="desc-smoketest">Se envía una pregunta de prueba para validar que responde</div>
+        </div>
+        <span class="vloop-badge badge-pending" id="badge-smoketest">Pendiente</span>
+      </div>
+      <div class="vloop-item" id="loop-email">
+        <div class="vloop-icon" id="icon-email">📧</div>
+        <div class="vloop-body">
+          <div class="vloop-name">Envío de instrucciones</div>
+          <div class="vloop-desc" id="desc-email">Código de instalación enviado a tu email</div>
+        </div>
+        <span class="vloop-badge badge-pending" id="badge-email">Pendiente</span>
+      </div>
+    </div>
+
+    <div class="verify-final" id="verifySuccess">
+      <div class="verify-final-icon">✅</div>
+      <div class="verify-final-title">¡Tu asistente está activo!</div>
+      <p class="verify-final-text">
+        Todo verificado correctamente. Revisá tu email —<br>
+        ahí está el código para instalar el widget en tu sitio.
+      </p>
+    </div>
+
+    <div class="verify-final" id="verifyError">
+      <div class="verify-final-icon">⚠️</div>
+      <div class="verify-final-title">Algo salió mal</div>
+      <p class="verify-final-text" id="verifyErrorText">Uno de los pasos falló. Podés reintentar o contactarnos.</p>
+      <div class="verify-error-actions">
+        <button class="btn-retry" onclick="retryVerification()">Reintentar</button>
+        <button class="btn-contact" onclick="window.location.href='mailto:hola@timeless.ai'">Contactar soporte</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+const vocab = {
+  hotel: {
+    serviciosTitle: 'Tipos de habitación', serviciosDesc: 'Agregá todas las categorías con precio y capacidad',
+    servicioLabel: 'Habitación', addBtn: '+ Agregar otra habitación',
+    precioLabel: 'Precio por noche (USD)', precioPlaceholder: '150',
+    serviceNamePlaceholder: 'Suite Deluxe, Habitación Estándar...', serviceDescPlaceholder: 'Vista al mar, cama king, baño privado...',
+    extraFieldLabel: 'Capacidad máxima (huéspedes)',
+    horarioTitle: 'Horarios de check-in y check-out',
+    horarioFields: `<div class="field"><label>Check-in <span class="req">*</span></label><input type="text" id="h1" placeholder="3:00 PM"></div><div class="field"><label>Check-out <span class="req">*</span></label><input type="text" id="h2" placeholder="11:00 AM"></div>`,
+    amenities: [{v:'Piscina',e:'🏊'},{v:'Desayuno incluido',e:'🥐'},{v:'Estacionamiento',e:'🅿️'},{v:'Gimnasio',e:'💪'},{v:'WiFi gratuito',e:'📶'},{v:'Aire acondicionado',e:'❄️'},{v:'Admite mascotas',e:'🐾'},{v:'Traslados',e:'🚐'},{v:'Bar / Restaurante',e:'🍷'}],
+  },
+  clinica: {
+    serviciosTitle: 'Servicios médicos', serviciosDesc: 'Agregá todas las especialidades que ofrecés',
+    servicioLabel: 'Servicio', addBtn: '+ Agregar otro servicio',
+    precioLabel: 'Precio de consulta (USD)', precioPlaceholder: '60',
+    serviceNamePlaceholder: 'Consulta general, Odontología...', serviceDescPlaceholder: 'Duración, qué incluye...',
+    extraFieldLabel: 'Duración estimada (min)',
+    horarioTitle: 'Horario de atención',
+    horarioFields: `<div class="field"><label>Apertura <span class="req">*</span></label><input type="text" id="h1" placeholder="8:00 AM"></div><div class="field"><label>Cierre <span class="req">*</span></label><input type="text" id="h2" placeholder="6:00 PM"></div><div class="field field-full"><label>Días de atención</label><input type="text" id="h3" placeholder="Lunes a viernes"></div>`,
+    amenities: [{v:'Obra social',e:'🏥'},{v:'Prepaga',e:'💳'},{v:'Estacionamiento',e:'🅿️'},{v:'WiFi en sala de espera',e:'📶'},{v:'Accesibilidad',e:'♿'},{v:'Turno online',e:'💻'},{v:'Atención a domicilio',e:'🏠'},{v:'Urgencias',e:'🚨'}],
+  },
+  beauty: {
+    serviciosTitle: 'Servicios disponibles', serviciosDesc: 'Tratamientos, cortes, coloración, etc.',
+    servicioLabel: 'Servicio', addBtn: '+ Agregar otro servicio',
+    precioLabel: 'Precio (USD)', precioPlaceholder: '35',
+    serviceNamePlaceholder: 'Corte + brushing, Keratina...', serviceDescPlaceholder: 'Duración aproximada, qué incluye...',
+    extraFieldLabel: 'Duración estimada (min)',
+    horarioTitle: 'Horario de atención',
+    horarioFields: `<div class="field"><label>Apertura <span class="req">*</span></label><input type="text" id="h1" placeholder="9:00 AM"></div><div class="field"><label>Cierre <span class="req">*</span></label><input type="text" id="h2" placeholder="7:00 PM"></div><div class="field field-full"><label>Días de atención</label><input type="text" id="h3" placeholder="Lunes a sábado"></div>`,
+    amenities: [{v:'Turnos online',e:'💻'},{v:'WiFi',e:'📶'},{v:'Estacionamiento',e:'🅿️'},{v:'Productos premium',e:'✨'},{v:'Pago con tarjeta',e:'💳'},{v:'Gift cards',e:'🎁'},{v:'Accesibilidad',e:'♿'},{v:'Zona kids',e:'👶'}],
+  },
+  restaurante: {
+    serviciosTitle: 'Carta / Menú', serviciosDesc: 'Agregá platos, categorías o menús especiales',
+    servicioLabel: 'Plato / Categoría', addBtn: '+ Agregar otro ítem',
+    precioLabel: 'Precio (USD)', precioPlaceholder: '12',
+    serviceNamePlaceholder: 'Milanesa napolitana, Menú del día...', serviceDescPlaceholder: 'Ingredientes, opciones sin gluten...',
+    extraFieldLabel: null,
+    horarioTitle: 'Horario de atención',
+    horarioFields: `<div class="field"><label>Apertura <span class="req">*</span></label><input type="text" id="h1" placeholder="12:00 PM"></div><div class="field"><label>Cierre <span class="req">*</span></label><input type="text" id="h2" placeholder="11:00 PM"></div><div class="field field-full"><label>Días de atención</label><input type="text" id="h3" placeholder="Martes a domingo"></div>`,
+    amenities: [{v:'Delivery',e:'🛵'},{v:'Take away',e:'🥡'},{v:'Reservas',e:'📅'},{v:'WiFi',e:'📶'},{v:'Estacionamiento',e:'🅿️'},{v:'Menú vegano',e:'🥗'},{v:'Sin gluten',e:'🌾'},{v:'Pago con tarjeta',e:'💳'},{v:'Salón privado',e:'🎉'}],
+  },
+  inmobiliaria: {
+    serviciosTitle: 'Propiedades destacadas', serviciosDesc: 'Agregá ejemplos de propiedades o tipos de operación',
+    servicioLabel: 'Propiedad / Operación', addBtn: '+ Agregar otra propiedad',
+    precioLabel: 'Precio / rango (USD)', precioPlaceholder: '150000',
+    serviceNamePlaceholder: 'Dept 2 amb alquiler, Casa en venta...', serviceDescPlaceholder: 'Ubicación, m², amenities, estado...',
+    extraFieldLabel: null,
+    horarioTitle: 'Horario de atención',
+    horarioFields: `<div class="field"><label>Apertura <span class="req">*</span></label><input type="text" id="h1" placeholder="9:00 AM"></div><div class="field"><label>Cierre <span class="req">*</span></label><input type="text" id="h2" placeholder="6:00 PM"></div><div class="field field-full"><label>Días de atención</label><input type="text" id="h3" placeholder="Lunes a viernes"></div>`,
+    amenities: [{v:'Tasaciones',e:'📊'},{v:'Alquileres',e:'🔑'},{v:'Ventas',e:'🏡'},{v:'Propiedades comerciales',e:'🏢'},{v:'Financiación',e:'💰'},{v:'Asesoramiento legal',e:'⚖️'},{v:'Tours virtuales',e:'🎥'},{v:'Emprendimientos',e:'🏗️'}],
+  },
+  otro: {
+    serviciosTitle: 'Servicios que ofrecés', serviciosDesc: 'Describí tus servicios principales con precios',
+    servicioLabel: 'Servicio', addBtn: '+ Agregar otro servicio',
+    precioLabel: 'Precio (USD)', precioPlaceholder: '50',
+    serviceNamePlaceholder: 'Nombre del servicio...', serviceDescPlaceholder: 'Descripción breve...',
+    extraFieldLabel: null,
+    horarioTitle: 'Horario de atención',
+    horarioFields: `<div class="field"><label>Apertura <span class="req">*</span></label><input type="text" id="h1" placeholder="9:00 AM"></div><div class="field"><label>Cierre <span class="req">*</span></label><input type="text" id="h2" placeholder="6:00 PM"></div><div class="field field-full"><label>Días de atención</label><input type="text" id="h3" placeholder="Lunes a viernes"></div>`,
+    amenities: [{v:'WiFi',e:'📶'},{v:'Estacionamiento',e:'🅿️'},{v:'Pago con tarjeta',e:'💳'},{v:'Atención online',e:'💻'},{v:'Accesibilidad',e:'♿'},{v:'Facturación',e:'🧾'}],
+  }
+};
+
+const LOOPS = [
+  { id:'received',  icon:{pending:'📡',running:'📡',done:'✅',error:'❌'}, desc:{pending:'Esperando confirmación del servidor...',running:'Enviando datos al servidor...',done:'Datos recibidos correctamente',error:'El servidor no respondió. Verificá tu conexión.'} },
+  { id:'ingestion', icon:{pending:'🧠',running:'🧠',done:'✅',error:'❌'}, desc:{pending:'El texto de tu negocio se convierte en vectores para la IA',running:'Procesando chunks e insertando en Supabase...',done:'Knowledge base creado correctamente',error:'Error al guardar en la base de datos.'} },
+  { id:'smoketest', icon:{pending:'🔬',running:'🔬',done:'✅',error:'❌'}, desc:{pending:'Se enviará una pregunta de prueba para validar que responde',running:'Preguntando al bot: "¿Cuál es el nombre del negocio?"...',done:'El bot respondió correctamente — está listo',error:'El bot no respondió como se esperaba.'} },
+  { id:'email',     icon:{pending:'📧',running:'📧',done:'✅',error:'❌'}, desc:{pending:'Código de instalación enviado a tu email',running:'Enviando instrucciones de instalación...',done:'Email enviado — revisá tu bandeja de entrada',error:'No se pudo enviar el email.'} }
+];
+
+let currentStep = 1;
+let selectedType = 'hotel';
+let serviceCount = 0;
+let faqCount = 0;
+let lastSubmittedData = null;
+
+function selectType(el) {
+  document.querySelectorAll('.btype-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedType = el.dataset.type;
+}
+
+function goStep(n) {
+  const errBox = document.getElementById('error-' + currentStep);
+  if (errBox) errBox.style.display = 'none';
+  if (n > currentStep) {
+    const errors = validateStep(currentStep);
+    if (errors.length) {
+      if (errBox) { errBox.innerHTML = errors.map(e => `• ${e}`).join('<br>'); errBox.style.display = 'block'; errBox.scrollIntoView({behavior:'smooth',block:'center'}); }
+      return;
+    }
+  }
+  if (n === 2 && currentStep === 1) renderStep2();
+  document.getElementById('step-' + currentStep).classList.remove('active');
+  currentStep = n;
+  document.getElementById('step-' + currentStep).classList.add('active');
+  updateProgress();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateProgress() {
+  for (let i = 1; i <= 3; i++) {
+    const p = document.getElementById('pill-' + i);
+    p.className = 'step-pill';
+    if (i < currentStep) p.classList.add('done');
+    else if (i === currentStep) p.classList.add('active');
+  }
+  document.getElementById('progress-label').innerHTML = `<span>Paso ${currentStep}</span> de 3`;
+}
+
+function renderStep2() {
+  const v = vocab[selectedType];
+  document.getElementById('s2-title').textContent = v.serviciosTitle;
+  document.getElementById('s2-subtitle').textContent = 'Completá los datos de tus ' + v.serviciosTitle.toLowerCase() + '. Tu asistente los usará para responder consultas.';
+  document.getElementById('s2-servicios-title').textContent = v.serviciosTitle;
+  document.getElementById('s2-servicios-desc').textContent = v.serviciosDesc;
+  document.getElementById('addServiceBtn').textContent = v.addBtn;
+  document.getElementById('s2-horario-title').textContent = v.horarioTitle;
+  document.getElementById('horario-fields').innerHTML = v.horarioFields;
+  document.getElementById('amenitiesGrid').innerHTML = v.amenities.map(a =>
+    `<label class="amenity-item"><input type="checkbox" class="amenity-cb" value="${a.v}"><span>${a.e} ${a.v}</span></label>`
+  ).join('');
+  document.getElementById('servicesList').innerHTML = '';
+  serviceCount = 0;
+  addService();
+}
+
+function addService() {
+  serviceCount++;
+  const v = vocab[selectedType];
+  const div = document.createElement('div');
+  div.className = 'service-card';
+  const extra = v.extraFieldLabel ? `<div class="field"><label>${v.extraFieldLabel}</label><input type="number" class="svc-extra" placeholder="${selectedType==='hotel'?'2':'30'}" min="1"></div>` : '';
+  div.innerHTML = `
+    <div class="card-header">
+      <span class="card-label">${v.servicioLabel} ${serviceCount}</span>
+      ${serviceCount > 1 ? '<button type="button" class="remove-btn" onclick="this.closest(\'.service-card\').remove()">✕ quitar</button>' : ''}
+    </div>
+    <div class="fields-grid">
+      <div class="field"><label>Nombre${serviceCount===1?' <span class="req">*</span>':''}</label><input type="text" class="svc-name" placeholder="${v.serviceNamePlaceholder}"></div>
+      <div class="field"><label>${v.precioLabel}</label><input type="number" class="svc-price" placeholder="${v.precioPlaceholder}" min="0"></div>
+      <div class="field field-full"><label>Descripción</label><textarea class="svc-desc" rows="2" placeholder="${v.serviceDescPlaceholder}"></textarea></div>
+      ${extra}
+    </div>`;
+  document.getElementById('servicesList').appendChild(div);
+}
+
+function addFaq() {
+  faqCount++;
+  const div = document.createElement('div');
+  div.className = 'faq-pair';
+  div.innerHTML = `
+    <div class="card-header">
+      <span class="faq-card-label">Pregunta ${faqCount}</span>
+      <button type="button" class="remove-btn" onclick="this.closest('.faq-pair').remove()">✕ quitar</button>
+    </div>
+    <div class="fields-grid">
+      <div class="field field-full"><label>Pregunta</label><input type="text" class="faq-q" placeholder="¿Aceptan pagos con tarjeta?"></div>
+      <div class="field field-full"><label>Respuesta</label><textarea class="faq-a" rows="2" placeholder="Sí, aceptamos todas las tarjetas..."></textarea></div>
+    </div>`;
+  document.getElementById('faqList').appendChild(div);
+}
+
+function validateStep(step) {
+  const errs = [];
+  if (step === 1) {
+    const name = document.getElementById('bizName').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const website = document.getElementById('website').value.trim();
+    const address = document.getElementById('address').value.trim();
+    if (!name) { errs.push('El nombre del negocio es requerido.'); markInvalid('bizName'); } else markValid('bizName');
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { errs.push('El email no es válido.'); markInvalid('email'); } else markValid('email');
+    if (!website) { errs.push('La URL del sitio web es requerida.'); markInvalid('website'); } else markValid('website');
+    if (!address) { errs.push('La dirección es requerida.'); markInvalid('address'); } else markValid('address');
+  }
+  if (step === 2) {
+    const firstSvc = document.querySelector('.svc-name');
+    if (!firstSvc || !firstSvc.value.trim()) errs.push(`Ingresá el nombre de al menos un ${vocab[selectedType].servicioLabel.toLowerCase()}.`);
+    const h1 = document.getElementById('h1'), h2 = document.getElementById('h2');
+    if (h1 && !h1.value.trim()) errs.push('El horario de apertura es requerido.');
+    if (h2 && !h2.value.trim()) errs.push('El horario de cierre es requerido.');
+  }
+  if (step === 3) {
+    const pol = document.getElementById('cancellationPolicy').value.trim();
+    if (!pol) { errs.push('La política de cancelación es requerida.'); markInvalid('cancellationPolicy'); } else markValid('cancellationPolicy');
+  }
+  return errs;
+}
+
+function markInvalid(id) { const el = document.getElementById(id); if (!el) return; el.classList.add('invalid'); el.classList.remove('valid'); el.closest('.field').classList.add('has-error'); }
+function markValid(id) { const el = document.getElementById(id); if (!el) return; el.classList.add('valid'); el.classList.remove('invalid'); el.closest('.field').classList.remove('has-error'); }
+
+document.addEventListener('blur', function(e) {
+  const el = e.target;
+  if (!['INPUT','TEXTAREA'].includes(el.tagName)) return;
+  if (el.id === 'bizName' && currentStep === 1) { el.value.trim() ? markValid('bizName') : markInvalid('bizName'); }
+  if (el.id === 'email' && currentStep === 1) { /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim()) ? markValid('email') : markInvalid('email'); }
+  if (el.id === 'website' && currentStep === 1) { el.value.trim() ? markValid('website') : markInvalid('website'); }
+  if (el.id === 'address' && currentStep === 1) { el.value.trim() ? markValid('address') : markInvalid('address'); }
+  if (el.id === 'cancellationPolicy') { el.value.trim() ? markValid('cancellationPolicy') : markInvalid('cancellationPolicy'); }
+}, true);
+
+function collectData() {
+  const services = [];
+  document.querySelectorAll('.service-card').forEach(c => {
+    services.push({ name: c.querySelector('.svc-name')?.value.trim(), description: c.querySelector('.svc-desc')?.value.trim(), price: parseFloat(c.querySelector('.svc-price')?.value)||null, extra: parseInt(c.querySelector('.svc-extra')?.value)||null });
+  });
+  const amenities = Array.from(document.querySelectorAll('.amenity-cb:checked')).map(cb => cb.value);
+  const faq = [];
+  document.querySelectorAll('.faq-pair').forEach(p => { const q=p.querySelector('.faq-q')?.value.trim(), a=p.querySelector('.faq-a')?.value.trim(); if(q||a) faq.push({question:q,answer:a}); });
+  const h1=document.getElementById('h1')?.value.trim()||'', h2=document.getElementById('h2')?.value.trim()||'', h3=document.getElementById('h3')?.value.trim()||'';
+  return {
+    business_type: selectedType,
+    business_name: document.getElementById('bizName').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    website: document.getElementById('website').value.trim(),
+    address: document.getElementById('address').value.trim(),
+    business_description: document.getElementById('bizDesc').value.trim(),
+    services, schedule:{open:h1,close:h2,days:h3}, amenities,
+    amenities_other: document.getElementById('amenitiesOther').value.trim(),
+    cancellation_policy: document.getElementById('cancellationPolicy').value.trim(),
+    other_policies: document.getElementById('otherPolicies').value.trim(),
+    faq,
+    additional_info: document.getElementById('additionalInfo').value.trim()
+  };
+}
+
+function setLoopState(id, state) {
+  const loop = LOOPS.find(l => l.id === id);
+  if (!loop) return;
+  const item = document.getElementById('loop-' + id);
+  item.className = 'vloop-item state-' + state;
+  document.getElementById('icon-' + id).textContent = loop.icon[state];
+  document.getElementById('desc-' + id).textContent = loop.desc[state];
+  const badge = document.getElementById('badge-' + id);
+  badge.className = 'vloop-badge badge-' + state;
+  badge.textContent = {pending:'Pendiente',running:'Procesando...',done:'Listo ✓',error:'Error'}[state];
+}
+
+function setProgress(pct) {
+  document.getElementById('verifyProgressFill').style.width = pct + '%';
+  document.getElementById('verifyPct').textContent = Math.round(pct) + '%';
+}
+
+const STATUS_URL = 'https://matiasdutli22.app.n8n.cloud/webhook/onboarding-status';
+
+async function pollStep(jobId, field, loopId, progressTarget) {
+  const MAX_POLLS = 40; // ~2.5 min con intervalos de 4s
+  for (let i = 0; i < MAX_POLLS; i++) {
+    await delay(4000);
+    try {
+      const res = await fetch(`${STATUS_URL}?job_id=${encodeURIComponent(jobId)}`);
+      if (!res.ok) continue;
+      const json = await res.json();
+      const status = json.steps?.[field] || 'pending';
+      setLoopState(loopId, status === 'processing' ? 'running' : status);
+      if (status === 'done')  { setProgress(progressTarget); return true; }
+      if (status === 'error') { setProgress(progressTarget); return false; }
+    } catch { /* reintento en próximo ciclo */ }
+  }
+  setLoopState(loopId, 'error');
+  return false;
+}
+
+async function runVerification(data) {
+  document.getElementById('step-3').style.display = 'none';
+  document.getElementById('verifyWrap').style.display = 'block';
+  document.querySelector('.progress-bar-wrap').style.display = 'none';
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  setProgress(0);
+
+  // Loop 1: envío real al webhook
+  setLoopState('received', 'running');
+  let jobId = data.job_id;
+  try {
+    const res = await fetch('https://matiasdutli22.app.n8n.cloud/webhook/onboarding-hotel', {
+      method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data)
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const json = await res.json().catch(() => ({}));
+    jobId = json.job_id || jobId;
+    setLoopState('received', 'done');
+    setProgress(25);
+  } catch(err) {
+    setLoopState('received', 'error');
+    document.getElementById('verifyErrorText').textContent = 'No pudimos conectar con el servidor. Verificá tu conexión.';
+    document.getElementById('verifyError').style.display = 'block';
+    return;
+  }
+
+  // Loop 2: ingestion — polling real
+  setLoopState('ingestion', 'running');
+  const ingestionOk = await pollStep(jobId, 'ingestion', 'ingestion', 50);
+  if (!ingestionOk) {
+    document.getElementById('verifyErrorText').textContent = 'Error al procesar los datos del negocio. Revisá los logs en n8n.';
+    document.getElementById('verifyError').style.display = 'block';
+    return;
+  }
+
+  await delay(400);
+
+  // Loop 3: smoke test — polling real
+  setLoopState('smoketest', 'running');
+  const smokeOk = await pollStep(jobId, 'smoketest', 'smoketest', 75);
+  if (!smokeOk) {
+    document.getElementById('verifyErrorText').textContent = 'El bot no pasó la prueba automática. Te contactaremos para revisarlo.';
+    document.getElementById('verifyError').style.display = 'block';
+    return;
+  }
+
+  await delay(400);
+
+  // Loop 4: email — polling real
+  setLoopState('email', 'running');
+  await pollStep(jobId, 'email', 'email', 100);
+
+  await delay(500);
+  document.getElementById('verifySuccess').style.display = 'block';
+}
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+async function handleSubmit() {
+  const errors = validateStep(3);
+  const errBox = document.getElementById('error-3');
+  errBox.style.display = 'none';
+  if (errors.length) {
+    errBox.innerHTML = errors.map(e => `• ${e}`).join('<br>');
+    errBox.style.display = 'block';
+    errBox.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Activando...';
+  const jobId = 'job_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+  lastSubmittedData = { ...collectData(), job_id: jobId };
+  await runVerification(lastSubmittedData);
+}
+
+async function retryVerification() {
+  document.getElementById('verifyError').style.display = 'none';
+  document.getElementById('verifySuccess').style.display = 'none';
+  LOOPS.forEach(l => setLoopState(l.id, 'pending'));
+  setProgress(0);
+  if (lastSubmittedData) await runVerification(lastSubmittedData);
+}
+
+document.addEventListener('DOMContentLoaded', () => { addFaq(); addFaq(); });
+</script>
+</body>
+</html>

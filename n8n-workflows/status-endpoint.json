@@ -1,0 +1,77 @@
+{
+  "name": "Timeless — Status Endpoint",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "onboarding-status",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "se-node-001",
+      "name": "GET /onboarding-status",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "b1a2c3d4-e5f6-7890-abcd-000000000099"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "documentId": { "__rl": true, "value": "19zhVrGNzv9ti9qaR2JHpcSwWbkV-UQOSnqrbFXH57xI", "mode": "id" },
+        "sheetName": { "__rl": true, "value": "onboarding_status", "mode": "name" },
+        "returnAll": true,
+        "options": {}
+      },
+      "id": "se-node-002",
+      "name": "Sheets — Leer todas las filas",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [460, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": { "id": "0uNp6g1Sebhvcwic", "name": "Google Sheets OAuth2 API" }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const jobId = $('GET /onboarding-status').first().json.query.job_id;\nconst rows = $input.all();\nconst row = rows.find(r => r.json.job_id === jobId);\n\nif (!row) {\n  return [{ json: {\n    found: false,\n    job_id: jobId,\n    steps: { received: 'pending', ingestion: 'pending', smoketest: 'pending', email: 'pending' }\n  }}];\n}\n\nreturn [{ json: {\n  found: true,\n  job_id: row.json.job_id,\n  steps: {\n    received:  row.json.received  || 'pending',\n    ingestion: row.json.ingestion || 'pending',\n    smoketest: row.json.smoketest || 'pending',\n    email:     row.json.email_sent || 'pending'\n  }\n}}];"
+      },
+      "id": "se-node-003",
+      "name": "Code — Filtrar por job_id",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "*" },
+              { "name": "Content-Type", "value": "application/json" }
+            ]
+          }
+        }
+      },
+      "id": "se-node-004",
+      "name": "Respond — Devolver estado",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [900, 300]
+    }
+  ],
+  "connections": {
+    "GET /onboarding-status":      { "main": [[{ "node": "Sheets — Leer todas las filas", "type": "main", "index": 0 }]] },
+    "Sheets — Leer todas las filas": { "main": [[{ "node": "Code — Filtrar por job_id",    "type": "main", "index": 0 }]] },
+    "Code — Filtrar por job_id":   { "main": [[{ "node": "Respond — Devolver estado",      "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "versionId": "se-version-002",
+  "meta": { "instanceId": "timeless" },
+  "id": "timeless-status-endpoint-v2",
+  "tags": [{ "id": "42QVlkfDz7eIOqFv", "name": "Timeless" }]
+}

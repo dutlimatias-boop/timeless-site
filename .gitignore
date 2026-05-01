@@ -1,0 +1,17 @@
+# Claves y secretos
+apikey*.txt
+*.key
+*.env
+.env*
+secrets/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+*.swp
+
+# n8n exports con credenciales reales (usar los de n8n-workflows/ que tienen placeholders)
+*credentials*.json

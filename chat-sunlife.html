@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chat with Emma · Sun Life Beach Hotel</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f5f0e8;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* HEADER */
+header {
+  background: linear-gradient(135deg, #085f5e 0%, #0e7c7b 60%, #0e9e7a 100%);
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 2px 20px rgba(8,95,94,0.35);
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.logo-icon {
+  width: 40px; height: 40px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.hotel-info { flex: 1; }
+.hotel-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+.hotel-location {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.65);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+.online-badge {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 0.3rem 0.7rem;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.85);
+  font-weight: 500;
+}
+.online-dot {
+  width: 6px; height: 6px;
+  background: #4ade80;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(74,222,128,0.3);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(74,222,128,0.2); }
+  50% { box-shadow: 0 0 0 4px rgba(74,222,128,0.1); }
+}
+
+/* EMMA SUB-HEADER */
+.emma-bar {
+  background: #fdf9f4;
+  border-bottom: 1px solid #e0d8cc;
+  padding: 0.65rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.emma-avatar {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, #e4f2f1, #b8dcdc);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+  border: 2px solid #c8e0e0;
+}
+
+.emma-info { flex: 1; }
+.emma-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1a1a18;
+  line-height: 1.2;
+}
+.emma-role {
+  font-size: 0.7rem;
+  color: #8a9080;
+  margin-top: 1px;
+}
+
+.emma-status {
+  font-size: 0.7rem;
+  color: #059669;
+  font-weight: 500;
+  display: flex; align-items: center; gap: 5px;
+}
+.emma-status::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: #22c55e;
+  border-radius: 50%;
+}
+
+/* CHAT AREA */
+.chat-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #fdf9f4;
+}
+
+/* ── n8n chat overrides ── */
+#n8n-chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+/* Hide n8n's own header/branding since we have ours */
+#n8n-chat .chat-window,
+#n8n-chat > div {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  background: #fdf9f4 !important;
+  font-family: 'Inter', sans-serif !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Kill the dark blue header - try every possible selector */
+#n8n-chat .chat-window-header,
+#n8n-chat [class*="header"],
+#n8n-chat [class*="Header"],
+#n8n-chat [class*="title"],
+#n8n-chat [class*="Title"] {
+  display: none !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+#n8n-chat .chat-messages-list {
+  background: #fdf9f4 !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+#n8n-chat .chat-message-from-bot .chat-message-bubble {
+  background: #ffffff !important;
+  border: 1px solid #e0d8cc !important;
+  color: #1a1a18 !important;
+  font-family: 'Inter', sans-serif !important;
+  box-shadow: 0 1px 4px rgba(100,80,40,0.06) !important;
+}
+
+#n8n-chat .chat-message-from-user .chat-message-bubble {
+  background: #0e7c7b !important;
+  color: #ffffff !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+#n8n-chat .chat-input {
+  background: #fdf9f4 !important;
+  border-top: 1px solid #e0d8cc !important;
+}
+
+#n8n-chat .chat-input textarea,
+#n8n-chat .chat-input input {
+  background: #ffffff !important;
+  border: 1px solid #e0d8cc !important;
+  border-radius: 10px !important;
+  font-family: 'Inter', sans-serif !important;
+  color: #1a1a18 !important;
+}
+
+#n8n-chat .chat-input textarea:focus,
+#n8n-chat .chat-input input:focus {
+  border-color: #0e7c7b !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(14,124,123,0.1) !important;
+}
+
+#n8n-chat .chat-input-send-button {
+  background: #0e7c7b !important;
+  border-radius: 8px !important;
+}
+
+#n8n-chat .chat-input-send-button:hover {
+  background: #085f5e !important;
+}
+
+/* Welcome screen button */
+#n8n-chat .chat-get-started button {
+  background: #0e7c7b !important;
+  font-family: 'Inter', sans-serif !important;
+  border-radius: 10px !important;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 0.65rem;
+  font-size: 0.68rem;
+  color: #a09880;
+  border-top: 1px solid #e0d8cc;
+  background: #f5f0e8;
+  flex-shrink: 0;
+}
+footer a { color: #0e7c7b; text-decoration: none; font-weight: 500; }
+
+@media (max-width: 640px) {
+  header { padding: 0.75rem 1rem; }
+  .emma-bar { padding: 0.5rem 1rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo-icon">🏖️</div>
+  <div class="hotel-info">
+    <div class="hotel-name">Sun Life Beach Hotel</div>
+    <div class="hotel-location">Englewood, Florida · Suites and Efficiencies</div>
+  </div>
+  <div class="online-badge">
+    <span class="online-dot"></span>
+    Emma is online
+  </div>
+</header>
+
+<!-- EMMA BAR -->
+<div class="emma-bar">
+  <div class="emma-avatar">👩‍💼</div>
+  <div class="emma-info">
+    <div class="emma-name">Emma</div>
+    <div class="emma-role">Virtual Front Desk · Ask about rooms, rates, availability or nearby activities</div>
+  </div>
+  <div class="emma-status">Online now</div>
+</div>
+
+<!-- CHAT AREA -->
+<div class="chat-area">
+  <div id="n8n-chat"></div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  Sun Life Beach Hotel · 1225 S McCall Rd, Englewood FL 34223 · <a href="mailto:ana@sunlifebeachhotel.com">ana@sunlifebeachhotel.com</a>
+</footer>
+
+<script type="module">
+  import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+  createChat({
+    webhookUrl: 'https://matiasdutli22.app.n8n.cloud/webhook/7927dcd1-6b79-4a42-9661-22e85347a85f/chat',
+    mode: 'fullscreen',
+    target: '#n8n-chat',
+    showWelcomeScreen: false,
+    initialMessages: [
+      "Hi! I'm Emma, your virtual assistant at Sun Life Beach Hotel 🏖️",
+      "Feel free to ask me about our rooms, rates, availability, or anything else — I'm here 24/7!"
+    ],
+    i18n: {
+      en: {
+        title: 'Emma',
+        subtitle: 'Virtual Front Desk',
+        inputPlaceholder: 'Type your message...',
+        getStarted: 'Start chatting with Emma',
+        closeButtonTooltip: 'Close',
+      }
+    }
+  });
+</script>
+
+<nav style="position:fixed;bottom:0;left:0;right:0;background:rgba(255,252,248,0.95);backdrop-filter:blur(8px);border-top:1px solid #e0d8cc;display:flex;justify-content:center;gap:0;z-index:100;">
+  <a href="dashboard-sunlife.html" style="flex:1;max-width:120px;display:flex;flex-direction:column;align-items:center;padding:0.6rem 0.5rem;text-decoration:none;color:#8a9080;font-size:0.62rem;font-weight:600;">📋<span style="margin-top:3px;">Dashboard</span></a>
+  <a href="panel-sunlife.html"     style="flex:1;max-width:120px;display:flex;flex-direction:column;align-items:center;padding:0.6rem 0.5rem;text-decoration:none;color:#8a9080;font-size:0.62rem;font-weight:600;">👥<span style="margin-top:3px;">Guest Insights</span></a>
+  <a href="chat-sunlife.html"      style="flex:1;max-width:120px;display:flex;flex-direction:column;align-items:center;padding:0.6rem 0.5rem;text-decoration:none;color:#0e7c7b;font-size:0.62rem;font-weight:700;border-bottom:2px solid #0e7c7b;">💬<span style="margin-top:3px;">Emma Preview</span></a>
+</nav>
+</body>
+</html>

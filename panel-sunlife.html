@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0e7c7b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Sun Life Panel">
+<link rel="manifest" href="manifest.json">
+<title>Guest Insights · Sun Life Beach Hotel</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --teal: #0e7c7b;
+  --teal-dark: #085f5e;
+  --teal-light: #12957a;
+  --teal-pale: #e4f2f1;
+  --gold: #b8720a;
+  --gold-pale: #fdf1dc;
+  --green: #1a7a4a;
+  --green-pale: #e6f4ed;
+  --red-pale: #fde8e8;
+  --red: #c0392b;
+  --bg: #f5f0e8;
+  --bg-card: #fdf9f4;
+  --white: #fdf9f4;
+  --text-primary: #1a1a18;
+  --text-secondary: #4a5040;
+  --text-muted: #8a9080;
+  --border: #e0d8cc;
+  --border-dark: #ccc4b4;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow: 0 4px 12px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.08), 0 4px 10px rgba(0,0,0,0.05);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c8b89a' fill-opacity='0.07'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ─── HEADER ─── */
+header {
+  background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 60%, #0e9e7a 100%);
+  border-bottom: none;
+  padding: 0 2rem;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 20px rgba(8,95,94,0.35);
+}
+
+.header-left { display: flex; align-items: center; gap: 12px; }
+
+.hotel-logo {
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, var(--teal), var(--teal-light));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(13,115,119,0.3);
+}
+
+.hotel-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+.hotel-subtitle {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.65);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+.header-right { display: flex; align-items: center; gap: 10px; }
+
+.status-dot {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.78rem; color: rgba(255,255,255,0.75); font-weight: 500;
+}
+.dot-live {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 2px rgba(34,197,94,0.2);
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(34,197,94,0.2); }
+  50% { box-shadow: 0 0 0 4px rgba(34,197,94,0.1); }
+}
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem; font-weight: 500;
+  cursor: pointer; border: none;
+  font-family: inherit;
+  transition: all 0.15s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn-outline {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.9);
+}
+.btn-outline:hover { background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.5); color: white; }
+
+.btn-teal {
+  background: var(--teal);
+  color: white;
+  box-shadow: 0 2px 6px rgba(13,115,119,0.25);
+}
+.btn-teal:hover { background: var(--teal-dark); box-shadow: 0 4px 10px rgba(13,115,119,0.3); }
+
+/* ─── MAIN ─── */
+main { max-width: 1280px; margin: 0 auto; padding: 2rem 2rem 6rem; }
+
+/* ─── PAGE HEADER ─── */
+.page-header {
+  margin-bottom: 1.75rem;
+}
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+.page-meta {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+  font-weight: 400;
+}
+.page-meta span { color: var(--teal); font-weight: 500; }
+
+/* ─── STATS GRID ─── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.stat-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.4rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(100,80,40,0.08);
+  transition: box-shadow 0.2s, transform 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.stat-card:hover { box-shadow: 0 6px 18px rgba(100,80,40,0.12); transform: translateY(-2px); }
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--border);
+}
+.stat-card.teal::before { background: linear-gradient(90deg, var(--teal), var(--teal-light)); }
+.stat-card.gold::before { background: linear-gradient(90deg, var(--gold), #e8a820); }
+.stat-card.green::before { background: linear-gradient(90deg, var(--green), #27ae60); }
+.stat-card.orange::before { background: linear-gradient(90deg, #e67e22, #f39c12); }
+
+.stat-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.stat-label-icon {
+  width: 20px; height: 20px;
+  border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem;
+}
+.stat-label-icon.teal { background: var(--teal-pale); }
+.stat-label-icon.gold { background: var(--gold-pale); }
+.stat-label-icon.green { background: var(--green-pale); }
+.stat-label-icon.orange { background: #fef3e0; }
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+.stat-number.teal { color: var(--teal); }
+.stat-number.gold { color: var(--gold); }
+.stat-number.green { color: var(--green); }
+.stat-number.orange { color: #d35400; }
+
+.stat-sub {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* ─── TOOLBAR ─── */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.filter-btn {
+  padding: 0.4rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  color: var(--text-muted);
+  background: transparent;
+  transition: all 0.15s;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.filter-btn:hover { color: var(--text-primary); background: var(--bg); }
+.filter-btn.active {
+  background: var(--teal);
+  color: white;
+  box-shadow: 0 1px 4px rgba(13,115,119,0.3);
+}
+
+.search-wrap {
+  position: relative;
+}
+.search-icon {
+  position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+  color: var(--text-muted); font-size: 0.85rem; pointer-events: none;
+}
+.search-box {
+  background: var(--white);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 0.45rem 0.9rem 0.45rem 2rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.83rem;
+  font-family: inherit;
+  outline: none;
+  width: 260px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-shadow: var(--shadow-sm);
+}
+.search-box::placeholder { color: var(--text-muted); }
+.search-box:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(13,115,119,0.1); }
+
+/* ─── TABLE ─── */
+.table-wrap {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2px 8px rgba(100,80,40,0.08);
+  overflow: hidden;
+}
+
+.table-head {
+  display: grid;
+  grid-template-columns: 200px 1fr 160px 160px 120px 180px;
+  gap: 0;
+  padding: 0.75rem 1.25rem;
+  background: #ede8df;
+  border-bottom: 1px solid var(--border);
+}
+.th {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.table-body { display: flex; flex-direction: column; }
+
+.guest-row {
+  display: grid;
+  grid-template-columns: 200px 1fr 160px 160px 120px 180px;
+  gap: 0;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.12s;
+  position: relative;
+}
+.guest-row:last-child { border-bottom: none; }
+.guest-row:hover { background: #fafbfc; }
+.guest-row.hot { border-left: 3px solid var(--gold); }
+.guest-row.confirmed { border-left: 3px solid var(--green); }
+
+.guest-avatar {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, var(--teal-pale), #c8e6e6);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; font-weight: 700; color: var(--teal);
+  flex-shrink: 0;
+  margin-right: 10px;
+  float: left;
+}
+
+.guest-info { overflow: hidden; }
+.guest-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.guest-meta {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.question-text {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  padding-right: 1rem;
+}
+
+/* ─── BADGES ─── */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 0.22rem 0.6rem;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+.badge-book { background: #fff8ed; color: var(--gold); border: 1px solid #fde8b8; }
+.badge-avail { background: var(--teal-pale); color: var(--teal); border: 1px solid #b8dede; }
+.badge-price { background: #f0f4ff; color: #3b5bdb; border: 1px solid #c5d0fa; }
+.badge-confirm { background: var(--green-pale); color: var(--green); border: 1px solid #b8deca; }
+.badge-cancel { background: var(--red-pale); color: var(--red); border: 1px solid #f5c0bc; }
+.badge-general { background: var(--bg); color: var(--text-muted); border: 1px solid var(--border); }
+
+.status-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.73rem;
+  font-weight: 500;
+}
+.status-pill::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+}
+.pill-new { background: var(--bg); color: var(--text-muted); }
+.pill-new::before { background: var(--text-muted); }
+.pill-interested { background: #eff6ff; color: #1d4ed8; }
+.pill-interested::before { background: #3b82f6; }
+.pill-process { background: var(--gold-pale); color: var(--gold); }
+.pill-process::before { background: var(--gold); }
+.pill-confirmed { background: var(--green-pale); color: var(--green); }
+.pill-confirmed::before { background: var(--green); }
+.pill-closed { background: var(--bg); color: #aaa; }
+.pill-closed::before { background: #ccc; }
+
+/* ─── ACTIONS ─── */
+.row-actions {
+  display: flex; gap: 5px; flex-wrap: wrap;
+}
+.action-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 0.28rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.74rem; font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  background: var(--white);
+  text-decoration: none;
+  transition: all 0.15s;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.action-btn:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-pale); }
+.action-btn.wsp { color: #059669; border-color: #a7f3d0; }
+.action-btn.wsp:hover { background: #ecfdf5; }
+.action-btn.call { color: #2563eb; border-color: #bfdbfe; }
+.action-btn.call:hover { background: #eff6ff; }
+
+/* ─── EMPTY / LOADING ─── */
+.state-box {
+  text-align: center;
+  padding: 5rem 2rem;
+  color: var(--text-muted);
+}
+.state-icon { font-size: 2.5rem; margin-bottom: 0.75rem; opacity: 0.4; }
+.state-title { font-size: 0.95rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.3rem; }
+.state-sub { font-size: 0.82rem; }
+
+.spinner {
+  display: inline-flex; gap: 5px; margin-bottom: 1rem;
+}
+.spinner-dot {
+  width: 8px; height: 8px;
+  background: var(--teal);
+  border-radius: 50%;
+  animation: bounce 1.2s infinite;
+  opacity: 0.3;
+}
+.spinner-dot:nth-child(2) { animation-delay: 0.2s; }
+.spinner-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce {
+  0%, 80%, 100% { opacity: 0.3; transform: scale(0.9); }
+  40% { opacity: 1; transform: scale(1.1); }
+}
+
+/* ─── DETAIL PANEL ─── */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(15,25,35,0.4);
+  backdrop-filter: blur(3px);
+  z-index: 200; display: none;
+  align-items: flex-start; justify-content: flex-end;
+}
+.overlay.open { display: flex; }
+
+.detail-drawer {
+  background: var(--white);
+  border-left: 1px solid var(--border);
+  width: 460px; height: 100vh;
+  overflow-y: auto;
+  padding: 1.5rem;
+  animation: slideIn 0.22s ease;
+  box-shadow: -8px 0 40px rgba(0,0,0,0.1);
+}
+@keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+.drawer-close {
+  background: var(--bg); border: 1px solid var(--border);
+  color: var(--text-muted); width: 30px; height: 30px;
+  border-radius: 7px; cursor: pointer; font-size: 0.9rem;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.25rem; transition: all 0.15s;
+}
+.drawer-close:hover { background: var(--teal); color: white; border-color: var(--teal); }
+
+.drawer-name {
+  font-size: 1.35rem; font-weight: 800;
+  color: var(--text-primary); letter-spacing: -0.03em;
+  margin-bottom: 0.2rem;
+}
+.drawer-meta { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 1.25rem; }
+
+.drawer-actions { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+
+.drawer-section { margin-bottom: 1.5rem; }
+.drawer-section-label {
+  font-size: 0.68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--teal); margin-bottom: 0.75rem;
+  display: flex; align-items: center; gap: 6px;
+}
+.drawer-section-label::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+.drawer-row {
+  display: flex; justify-content: space-between;
+  align-items: flex-start;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid #f1f5f9;
+  gap: 1rem;
+}
+.drawer-row:last-child { border-bottom: none; }
+.drawer-key { font-size: 0.78rem; color: var(--text-muted); flex-shrink: 0; }
+.drawer-val { font-size: 0.83rem; color: var(--text-primary); text-align: right; font-weight: 500; word-break: break-word; }
+
+.msg-box {
+  border-radius: 10px; padding: 1rem;
+  font-size: 0.83rem; line-height: 1.75;
+}
+.msg-guest { background: var(--bg); color: var(--text-secondary); border: 1px solid var(--border); }
+.msg-emma { background: var(--teal-pale); color: var(--teal-dark); border: 1px solid #b8dcdc; }
+
+/* ─── FOOTER ─── */
+footer {
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.73rem;
+  color: var(--text-muted);
+  margin-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .table-head { display: none; }
+  .guest-row { grid-template-columns: 1fr; gap: 0.5rem; padding: 0.9rem 1rem; }
+  .guest-row > div:nth-child(4), .guest-row > div:nth-child(5) { display: none; }
+}
+@media (max-width: 640px) {
+  main { padding: 0.85rem; }
+  .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+  .stat-card { padding: 0.9rem 1rem; }
+  .stat-number { font-size: 2rem; }
+  .detail-drawer { width: 100vw; right: 0; border-radius: 0; }
+  .search-box { width: 100%; }
+  .toolbar { flex-direction: column; align-items: stretch; gap: 0.6rem; }
+  .filter-group { overflow-x: auto; padding-bottom: 4px; }
+  .hotel-name { font-size: 0.95rem; }
+  .hotel-subtitle { display: none; }
+  .page-title { font-size: 1.3rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <div class="hotel-logo">🏖️</div>
+    <div>
+      <div class="hotel-name">Sun Life Beach Hotel</div>
+      <div class="hotel-subtitle">Englewood, Florida</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="status-dot">
+      <span class="dot-live"></span>
+      Live data
+    </div>
+    <button class="btn btn-outline" onclick="loadData()">
+      ↻ Refresh
+    </button>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main>
+
+  <!-- BOOKING ALERT BANNER -->
+  <div id="booking-alert" style="display:none;background:#fff7ed;border:1.5px solid #f59e0b;border-radius:12px;padding:0.85rem 1.1rem;margin-bottom:1rem;display:none;align-items:center;gap:10px;">
+    <span style="font-size:1.1rem;">🔥</span>
+    <span id="booking-alert-text" style="font-size:0.84rem;font-weight:600;color:#92400e;flex:1;"></span>
+    <button onclick="document.getElementById('booking-alert').style.display='none'" style="background:none;border:none;cursor:pointer;color:#92400e;font-size:1rem;padding:0 4px;">✕</button>
+  </div>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <h1 class="page-title">Guest Insights</h1>
+    <p class="page-meta">Welcome back, Ana · <span id="date-range">Loading...</span> · <span id="last-updated" style="color:var(--text-muted);">—</span></p>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-grid">
+    <div class="stat-card teal">
+      <div class="stat-label">
+        <span class="stat-label-icon teal">💬</span>
+        This week
+      </div>
+      <div class="stat-number teal" id="stat-total">—</div>
+      <div class="stat-sub" id="stat-total-sub">total conversations</div>
+    </div>
+    <div class="stat-card gold">
+      <div class="stat-label">
+        <span class="stat-label-icon gold">🔥</span>
+        Ready to book
+      </div>
+      <div class="stat-number gold" id="stat-hot">—</div>
+      <div class="stat-sub">showing booking intent</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">
+        <span class="stat-label-icon green">✅</span>
+        Confirmed
+      </div>
+      <div class="stat-number green" id="stat-reservados">—</div>
+      <div class="stat-sub" id="stat-conversion">conversion rate</div>
+    </div>
+    <div class="stat-card orange">
+      <div class="stat-label">
+        <span class="stat-label-icon orange">⏳</span>
+        Follow up
+      </div>
+      <div class="stat-number orange" id="stat-proceso">—</div>
+      <div class="stat-sub">need your attention</div>
+    </div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="filter-tabs">
+      <button class="filter-btn active" onclick="setFilter('todos',this)">All guests</button>
+      <button class="filter-btn" id="fbtn-today"    onclick="setFilter('today',this)">Today</button>
+      <button class="filter-btn" id="fbtn-hot"      onclick="setFilter('hot',this)">🔥 Ready to book</button>
+      <button class="filter-btn" id="fbtn-proceso"  onclick="setFilter('en_proceso',this)">In progress</button>
+      <button class="filter-btn" id="fbtn-reservado" onclick="setFilter('reservado',this)">✅ Confirmed</button>
+      <button class="filter-btn" id="fbtn-nuevo"    onclick="setFilter('nuevo',this)">New</button>
+    </div>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-box" type="text" placeholder="Search guests or questions..." id="search-input" oninput="renderLeads()">
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <div class="table-head">
+      <div class="th">Guest</div>
+      <div class="th">Question</div>
+      <div class="th">Intent</div>
+      <div class="th">Stay dates</div>
+      <div class="th">Status</div>
+      <div class="th">Actions</div>
+    </div>
+    <div class="table-body" id="leads-list">
+      <div class="state-box">
+        <div class="spinner">
+          <div class="spinner-dot"></div>
+          <div class="spinner-dot"></div>
+          <div class="spinner-dot"></div>
+        </div>
+        <div class="state-title">Loading conversations...</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  Sun Life Beach Hotel · Englewood, Florida 34223 · Guest Insights Dashboard
+</footer>
+
+<!-- DETAIL DRAWER -->
+<div class="overlay" id="overlay" onclick="closeDrawer(event)">
+  <div class="detail-drawer">
+    <button class="drawer-close" onclick="closeDrawerPanel()">✕</button>
+    <div id="drawer-content"></div>
+  </div>
+</div>
+
+<script>
+const WEBHOOK = 'https://matiasdutli22.app.n8n.cloud/webhook/sunlife-conversations';
+const wsp = n => `Hi ${n}! This is Sun Life Beach Hotel. Did you get a chance to complete your booking?`;
+
+let allData = [], currentFilter = 'todos';
+
+const now = new Date();
+const weekAgo = new Date(now); weekAgo.setDate(now.getDate() - 7);
+const fmt = d => d.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+document.getElementById('date-range').textContent = `${fmt(weekAgo)} – ${fmt(now)}`;
+
+async function loadData() {
+  document.getElementById('leads-list').innerHTML = `
+    <div class="state-box">
+      <div class="spinner"><div class="spinner-dot"></div><div class="spinner-dot"></div><div class="spinner-dot"></div></div>
+      <div class="state-title">Refreshing...</div>
+    </div>`;
+  try {
+    const res = await fetch(WEBHOOK);
+    const raw = await res.json();
+    allData = Array.isArray(raw) ? raw.map(r=>r.json||r).filter(r=>r['Date']||r['Guest Message']) : [];
+    allData.sort((a,b) => parseFecha(b['Date'],b['Time']) - parseFecha(a['Date'],a['Time']));
+    updateStats(); renderLeads(); showBookingAlert();
+    const lu = document.getElementById('last-updated');
+    if (lu) lu.textContent = `Updated ${new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}`;
+  } catch(e) {
+    document.getElementById('leads-list').innerHTML = `
+      <div class="state-box">
+        <div class="state-icon">⚠️</div>
+        <div class="state-title">Could not load data</div>
+        <div class="state-sub">Check your connection and try refreshing.</div>
+      </div>`;
+  }
+}
+
+function parseFecha(f='', h='') {
+  if (!f) return new Date(0);
+  try {
+    const parts = f.split('/');
+    if (parts.length === 3) {
+      const [m,d,y] = parts;
+      const [hh,mm] = (h||'0:0').replace(' AM','').replace(' PM','').split(':');
+      return new Date(y, m-1, d, hh||0, mm||0);
+    }
+    return new Date(f);
+  } catch { return new Date(0); }
+}
+
+function isHot(r) {
+  const a = (r['Action Needed']||'').toLowerCase();
+  return a.includes('booking') || a.includes('review');
+}
+function isConfirmed(r) {
+  const a = (r['Action Needed']||'').toLowerCase();
+  return a.includes('confirmed');
+}
+function isInProgress(r) {
+  const a = (r['Action Needed']||'').toLowerCase();
+  return a.length > 0 && !isConfirmed(r);
+}
+
+function updateStats() {
+  const semana = allData.filter(r => (now - parseFecha(r['Date'])) / 86400000 <= 7);
+  const total = semana.length;
+  const confirmed = semana.filter(isConfirmed).length;
+  const hot = semana.filter(isHot).length;
+  const proceso = semana.filter(isInProgress).length;
+  const rate = total > 0 ? ((confirmed/total)*100).toFixed(0) : 0;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-total-sub').textContent = `${allData.length} total conversations`;
+  document.getElementById('stat-hot').textContent = hot;
+  document.getElementById('stat-reservados').textContent = confirmed;
+  document.getElementById('stat-conversion').textContent = `${rate}% conversion rate`;
+  document.getElementById('stat-proceso').textContent = proceso;
+
+  // Update filter button counters
+  const todayStr = now.toLocaleDateString('en-US');
+  const todayCount = allData.filter(r => r['Date'] === todayStr).length;
+  const newCount = allData.filter(r => !isHot(r) && !isConfirmed(r) && !isInProgress(r)).length;
+  const setBtn = (id, label) => { const b = document.getElementById(id); if (b) b.textContent = label; };
+  setBtn('fbtn-today',     todayCount > 0 ? `Today (${todayCount})` : 'Today');
+  setBtn('fbtn-hot',       hot > 0        ? `🔥 Ready to book (${hot})` : '🔥 Ready to book');
+  setBtn('fbtn-reservado', confirmed > 0  ? `✅ Confirmed (${confirmed})` : '✅ Confirmed');
+  setBtn('fbtn-nuevo',     newCount > 0   ? `New (${newCount})` : 'New');
+}
+
+function intentBadge(r) {
+  const a = (r['Action Needed']||'').toLowerCase();
+  const msg = (r['Guest Message']||'').toLowerCase();
+  if (a.includes('booking')) return `<span class="badge badge-book">🔥 Wants to book</span>`;
+  if (a.includes('confirmed')) return `<span class="badge badge-confirm">✓ Confirmed</span>`;
+  if (msg.includes('price')||msg.includes('rate')||msg.includes('cost')||msg.includes('how much')) return `<span class="badge badge-price">💰 Pricing</span>`;
+  if (msg.includes('available')||msg.includes('availability')||msg.includes('open')) return `<span class="badge badge-avail">📅 Availability</span>`;
+  if (msg.includes('pool')||msg.includes('beach')||msg.includes('breakfast')||msg.includes('amenity')) return `<span class="badge badge-avail">🛎 Amenities</span>`;
+  if (msg.includes('cancel')) return `<span class="badge badge-cancel">Cancellation</span>`;
+  return `<span class="badge badge-general">General inquiry</span>`;
+}
+
+function statusPill(r) {
+  const a = (r['Action Needed']||'').toLowerCase();
+  if (a.includes('confirmed')) return `<span class="status-pill pill-confirmed">Confirmed</span>`;
+  if (a.includes('booking')||a.includes('review')) return `<span class="status-pill pill-interested">Needs review</span>`;
+  if (a.length > 0) return `<span class="status-pill pill-process">In progress</span>`;
+  return `<span class="status-pill pill-new">New</span>`;
+}
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderLeads();
+}
+
+function renderLeads() {
+  const q = (document.getElementById('search-input').value||'').toLowerCase();
+  const todayStr = now.toLocaleDateString('en-US');
+  let list = allData.filter(r => {
+    if (currentFilter==='today') return r['Date'] === todayStr;
+    if (currentFilter==='hot') return isHot(r);
+    if (currentFilter==='reservado') return isConfirmed(r);
+    if (currentFilter==='en_proceso') return isInProgress(r);
+    if (currentFilter==='nuevo') return !isHot(r) && !isConfirmed(r) && !isInProgress(r);
+    return true;
+  });
+  if (q) list = list.filter(r =>
+    (r['Name']||'').toLowerCase().includes(q) ||
+    (r['Guest Message']||'').toLowerCase().includes(q)
+  );
+
+  const el = document.getElementById('leads-list');
+  if (!list.length) {
+    el.innerHTML = `<div class="state-box"><div class="state-icon">🔍</div><div class="state-title">No results</div><div class="state-sub">Try a different filter or search term.</div></div>`;
+    return;
+  }
+
+  el.innerHTML = list.map(r => {
+    const hot = isHot(r), conf = isConfirmed(r);
+    const nombre = r['Name'] || 'Guest';
+    const initials = nombre==='Guest' ? '?' : nombre.split(' ').filter(Boolean).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const fecha = r['Date']||'';
+    const hora = r['Time'] ? String(r['Time']).slice(0,8) : '';
+    const msg = String(r['Guest Message']||'');
+    const q2 = msg.slice(0,100)+(msg.length>100?'…':'');
+    const idx = allData.indexOf(r);
+
+    const actionNeeded = r['Action Needed'] || '';
+    const stayMatch = (r["Emma's Response"]||'').match(/Check-in[:\s]+([^\n/,]+)/i);
+    const stay = actionNeeded.includes('Booking')
+      ? `<div style="font-size:0.78rem;font-weight:600;color:var(--gold);">Booking request</div>`
+      : `<span style="color:var(--text-muted);font-size:0.78rem;">—</span>`;
+
+    const isNew = (now - parseFecha(fecha)) / 3600000 < 24;
+    return `<div class="guest-row ${hot?'hot':conf?'confirmed':''}" onclick="openDrawer(${idx})">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="guest-avatar">${initials}</div>
+        <div class="guest-info">
+          <div class="guest-name">${nombre}${isNew ? ' <span style="font-size:0.6rem;font-weight:700;background:#dbeafe;color:#1d4ed8;padding:2px 6px;border-radius:100px;vertical-align:middle;">NEW</span>' : ''}</div>
+          <div class="guest-meta">${r['Channel']||'Chat'} · ${fecha} ${hora}</div>
+        </div>
+      </div>
+      <div class="question-text">${q2||'—'}</div>
+      <div>${intentBadge(r)}</div>
+      <div>${stay}</div>
+      <div>${statusPill(r)}</div>
+      <div class="row-actions" onclick="event.stopPropagation()">
+        <button class="action-btn" onclick="openDrawer(${idx})">View →</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openDrawer(idx) {
+  const r = allData[idx]; if (!r) return;
+  const nombre = r['Name'] || 'Guest';
+  const emmaResponse = r["Emma's Response"] || '—';
+
+  const isBooking = emmaResponse.includes('Booking Request') || emmaResponse.includes('📋');
+  const bookingLines = isBooking ? emmaResponse.split('\n').filter(l=>l.trim()) : [];
+  const bookingBlock = bookingLines.length
+    ? bookingLines.map(l=>`<div class="drawer-row"><span class="drawer-val">${l}</span></div>`).join('')
+    : `<div class="drawer-row"><span class="drawer-val" style="color:var(--text-muted);">No booking details</span></div>`;
+
+  const anaNotes = r["Ana's Notes"] || '';
+  const copyBtn = isBooking
+    ? `<button onclick="copyBooking(${allData.indexOf(r)})" style="margin-top:0.6rem;width:100%;padding:0.55rem;background:var(--teal);color:#fff;border:none;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:pointer;" id="copy-btn-drawer">📋 Copy booking summary</button>`
+    : '';
+
+  document.getElementById('drawer-content').innerHTML = `
+    <div class="drawer-name">${nombre}</div>
+    <div class="drawer-meta">${r['Date']||''} ${r['Time']?'· '+r['Time']:''} · ${r['Channel']||'Chat'}</div>
+    <div class="drawer-section">
+      <div class="drawer-section-label">Status</div>
+      <div class="drawer-row"><span class="drawer-key">Intent</span><span class="drawer-val">${intentBadge(r)}</span></div>
+      <div class="drawer-row"><span class="drawer-key">Status</span><span class="drawer-val">${statusPill(r)}</span></div>
+      <div class="drawer-row"><span class="drawer-key">Action needed</span><span class="drawer-val">${r['Action Needed']||'None'}</span></div>
+    </div>
+    <div class="drawer-section">
+      <div class="drawer-section-label">Booking details</div>
+      ${bookingBlock}
+      ${copyBtn}
+    </div>
+    <div class="drawer-section">
+      <div class="drawer-section-label">Guest's message</div>
+      <div class="msg-box msg-guest">${r['Guest Message']||'—'}</div>
+    </div>
+    <div class="drawer-section">
+      <div class="drawer-section-label">Emma's response</div>
+      <div class="msg-box msg-emma">${emmaResponse}</div>
+    </div>
+    ${anaNotes ? `<div class="drawer-section"><div class="drawer-section-label">Ana's notes</div><div class="msg-box">${anaNotes}</div></div>` : ''}`;
+
+  document.getElementById('overlay').classList.add('open');
+}
+
+function copyBooking(idx) {
+  const r = allData[idx]; if (!r) return;
+  const text = `Booking Request\nGuest: ${r['Name']||'—'}\nDate received: ${r['Date']||'—'}\n\n${r["Emma's Response"]||''}`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-btn-drawer');
+    if (btn) { btn.textContent = '✓ Copied!'; btn.style.background = '#16a34a'; setTimeout(() => { btn.textContent = '📋 Copy booking summary'; btn.style.background = 'var(--teal)'; }, 2000); }
+  });
+}
+
+function closeDrawer(e) { if(e.target===document.getElementById('overlay')) closeDrawerPanel(); }
+function closeDrawerPanel() { document.getElementById('overlay').classList.remove('open'); }
+
+function showBookingAlert() {
+  const pending = allData.filter(r => isHot(r) && (now - parseFecha(r['Date'])) / 86400000 <= 7);
+  const banner = document.getElementById('booking-alert');
+  const txt = document.getElementById('booking-alert-text');
+  if (!banner || !txt) return;
+  if (pending.length) {
+    txt.textContent = `${pending.length} booking request${pending.length > 1 ? 's' : ''} this week need${pending.length === 1 ? 's' : ''} your review.`;
+    banner.style.display = 'flex';
+  } else {
+    banner.style.display = 'none';
+  }
+}
+
+loadData();
+// Auto-refresh every 2 minutes
+setInterval(loadData, 2 * 60 * 1000);
+</script>
+
+<nav style="position:fixed;bottom:0;left:0;right:0;background:rgba(255,252,248,0.95);backdrop-filter:blur(8px);border-top:1px solid #e0d8cc;display:flex;justify-content:center;gap:0;z-index:100;">
+  <a href="dashboard-sunlife.html" style="flex:1;max-width:120px;display:flex;flex-direction:column;align-items:center;padding:0.6rem 0.5rem;text-decoration:none;color:#8a9080;font-size:0.62rem;font-weight:600;">📋<span style="margin-top:3px;">Dashboard</span></a>
+  <a href="panel-sunlife.html"     style="flex:1;max-width:120px;display:flex;flex-direction:column;align-items:center;padding:0.6rem 0.5rem;text-decoration:none;color:#0e7c7b;font-size:0.62rem;font-weight:700;border-bottom:2px solid #0e7c7b;">👥<span style="margin-top:3px;">Guest Insights</span></a>
+  <a href="chat-sunlife.html"      style="flex:1;max-width:120px;display:flex;flex-direction:column;align-items:center;padding:0.6rem 0.5rem;text-decoration:none;color:#8a9080;font-size:0.62rem;font-weight:600;">💬<span style="margin-top:3px;">Emma Preview</span></a>
+</nav>
+</body>
+</html>

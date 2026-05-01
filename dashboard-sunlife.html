@@ -1,0 +1,934 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0e7c7b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Sun Life">
+<link rel="manifest" href="manifest.json">
+<title>Sun Life · Emma</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #f5f0e8;
+  --card: #fdf9f4;
+  --teal: #0e7c7b;
+  --teal-dark: #085f5e;
+  --teal-light: #e4f2f1;
+  --gold: #b8720a;
+  --gold-light: #fef3e2;
+  --text: #1a1a18;
+  --muted: #8a9080;
+  --border: #e0d8cc;
+  --green: #16a34a;
+  --green-light: #f0fdf4;
+  --red: #dc2626;
+  --red-light: #fef2f2;
+  --blue: #2563eb;
+  --blue-light: #eff6ff;
+}
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  color: var(--text);
+}
+
+/* HEADER */
+header {
+  background: linear-gradient(135deg, #085f5e 0%, #0e7c7b 60%, #0e9e7a 100%);
+  padding: 1rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 2px 20px rgba(8,95,94,0.3);
+}
+.h-left { display: flex; align-items: center; gap: 12px; }
+.h-logo { width: 38px; height: 38px; background: rgba(255,255,255,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; border: 1px solid rgba(255,255,255,0.2); }
+.h-name { font-size: 0.95rem; font-weight: 700; color: #fff; }
+.h-sub  { font-size: 0.7rem; color: rgba(255,255,255,0.6); margin-top: 1px; }
+.h-right { display: flex; align-items: center; gap: 8px; }
+.h-pill {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+  padding: 0.35rem 0.85rem; border-radius: 100px;
+  font-size: 0.75rem; color: rgba(255,255,255,0.85); font-weight: 500;
+}
+.live-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{box-shadow:0 0 0 2px rgba(74,222,128,0.2)} 50%{box-shadow:0 0 0 4px rgba(74,222,128,0.1)} }
+.h-refresh { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.9); font-size: 0.75rem; font-weight: 600; padding: 0.35rem 0.85rem; border-radius: 100px; cursor: pointer; transition: background 0.15s; }
+.h-refresh:hover { background: rgba(255,255,255,0.25); }
+.h-refresh.spinning { opacity: 0.6; pointer-events: none; }
+
+/* MAIN */
+main { max-width: 1100px; margin: 0 auto; padding: 1.75rem 1.5rem 6rem; }
+
+/* GREETING */
+.greeting { margin-bottom: 1.5rem; }
+.greeting h1 { font-size: 1.5rem; font-weight: 800; color: var(--text); letter-spacing: -0.03em; }
+.greeting p  { font-size: 0.82rem; color: var(--muted); margin-top: 4px; }
+
+/* TABS */
+.tabs {
+  display: flex; gap: 6px; margin-bottom: 1.5rem;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 5px; width: fit-content;
+}
+.tab {
+  padding: 0.5rem 1.25rem; border-radius: 8px;
+  font-size: 0.82rem; font-weight: 600;
+  cursor: pointer; border: none; background: transparent; color: var(--muted);
+  transition: all 0.2s;
+}
+.tab.active { background: var(--teal); color: #fff; box-shadow: 0 2px 8px rgba(14,124,123,0.25); }
+
+/* EMMA BRIEFING */
+.briefing {
+  background: var(--teal); border-radius: 16px;
+  padding: 1.1rem 1.4rem; margin-bottom: 1.25rem;
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.briefing-av { width: 38px; height: 38px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+.briefing strong { font-size: 0.85rem; font-weight: 700; color: #fff; display: block; margin-bottom: 3px; }
+.briefing p { font-size: 0.8rem; color: rgba(255,255,255,0.9); line-height: 1.5; }
+
+/* TWO COLUMN LAYOUT */
+.day-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 1.25rem;
+  align-items: start;
+}
+@media (max-width: 768px) {
+  header { padding: 0.75rem 1rem; }
+  .h-sub, .h-pill:first-of-type { display: none; }
+  .h-name { font-size: 0.85rem; }
+  main { padding: 1rem 0.9rem 3rem; }
+  .greeting h1 { font-size: 1.2rem; }
+  .day-layout { grid-template-columns: 1fr; }
+  .cal-card { position: static; }
+  .room-grid { grid-template-columns: repeat(4,1fr); gap: 0.4rem; }
+  .r-type { font-size: 0.68rem; }
+  .metrics-grid { grid-template-columns: repeat(2,1fr); }
+  .two-col { grid-template-columns: 1fr; }
+  .tabs { gap: 4px; }
+  .tab { font-size: 0.78rem; padding: 0.5rem 0.9rem; }
+}
+
+/* CARD */
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.25rem; margin-bottom: 1.1rem;
+}
+.card-title {
+  font-size: 0.72rem; font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 1rem;
+}
+
+/* TASKS */
+.task {
+  display: flex; align-items: center; gap: 12px;
+  padding: 0.7rem 0; border-bottom: 1px solid var(--border);
+}
+.task:last-child { border-bottom: none; padding-bottom: 0; }
+.task:first-of-type { padding-top: 0; }
+.task-icon { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0; }
+.task-icon.checkout { background: var(--red-light); }
+.task-icon.checkin  { background: var(--green-light); }
+.task-icon.clean    { background: var(--gold-light); }
+.task-icon.msg      { background: var(--blue-light); }
+.task-info { flex: 1; }
+.task-title { font-size: 0.84rem; font-weight: 600; color: var(--text); }
+.task-sub   { font-size: 0.71rem; color: var(--muted); margin-top: 2px; }
+.task-time  { font-size: 0.75rem; font-weight: 600; color: var(--teal); white-space: nowrap; }
+.task-badge { font-size: 0.65rem; font-weight: 700; padding: 3px 8px; border-radius: 100px; }
+.badge-new  { background: var(--blue-light); color: var(--blue); }
+
+/* GUESTS */
+.guest-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 0.9rem 1.1rem; margin-bottom: 0.6rem;
+  display: flex; align-items: center; gap: 10px;
+}
+.guest-av { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; color: #fff; flex-shrink: 0; }
+.av-teal   { background: var(--teal); }
+.av-gold   { background: var(--gold); }
+.av-blue   { background: var(--blue); }
+.av-purple { background: #7c3aed; }
+.guest-info { flex: 1; }
+.guest-name   { font-size: 0.84rem; font-weight: 600; color: var(--text); }
+.guest-detail { font-size: 0.71rem; color: var(--muted); margin-top: 2px; }
+.guest-btn { font-size: 0.7rem; font-weight: 700; padding: 5px 10px; border-radius: 8px; border: none; cursor: pointer; }
+.btn-out  { background: var(--red-light); color: var(--red); }
+.btn-in   { background: var(--green-light); color: var(--green); }
+.btn-stay { background: var(--teal-light); color: var(--teal); }
+
+/* ROOMS GRID */
+.room-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; }
+.room-tile { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 0.8rem 0.9rem; border-top-width: 3px; }
+.room-tile.occ  { border-top-color: var(--teal); }
+.room-tile.free { border-top-color: #d1d5db; }
+.room-tile.cout { border-top-color: var(--gold); }
+.room-tile.cin  { border-top-color: var(--green); }
+.r-num  { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); }
+.r-type { font-size: 0.77rem; font-weight: 600; color: var(--text); margin-top: 3px; line-height: 1.3; }
+.r-st   { font-size: 0.67rem; margin-top: 5px; font-weight: 500; }
+.st-occ  { color: var(--teal); }
+.st-free { color: #9ca3af; }
+.st-cout { color: var(--gold); }
+.st-cin  { color: var(--green); }
+
+/* CALENDAR CARD */
+.cal-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.25rem; position: sticky; top: 1rem; }
+.cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.9rem; }
+.cal-nav-title { font-size: 0.88rem; font-weight: 700; color: var(--text); }
+.cal-nav button { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 1rem; padding: 2px 6px; border-radius: 6px; }
+.cal-nav button:hover { background: var(--bg); }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.cal-dn { font-size: 0.58rem; font-weight: 700; color: var(--muted); text-align: center; padding: 3px 0; text-transform: uppercase; }
+.cal-d {
+  font-size: 0.74rem; font-weight: 500; color: var(--text);
+  text-align: center; padding: 6px 2px; border-radius: 7px;
+  cursor: pointer; position: relative; transition: background 0.15s;
+}
+.cal-d:hover { background: var(--bg); }
+.cal-d.today    { background: var(--teal); color: #fff; font-weight: 800; }
+.cal-d.selected { background: var(--teal-light); color: var(--teal); font-weight: 700; outline: 2px solid var(--teal); outline-offset: -1px; }
+.cal-d.today.selected { background: var(--teal); color: #fff; outline: none; }
+.cal-d.has-event::after { content:''; width: 4px; height: 4px; background: var(--gold); border-radius: 50%; position: absolute; bottom: 1px; left: 50%; transform: translateX(-50%); }
+.cal-d.today.has-event::after { background: rgba(255,255,255,0.7); }
+.cal-d.dim { color: var(--muted); opacity: 0.3; cursor: default; }
+.cal-d.dim:hover { background: none; }
+
+.cal-legend { display: flex; gap: 10px; margin-top: 0.85rem; font-size: 0.63rem; color: var(--muted); }
+.cal-legend span { display: flex; align-items: center; gap: 4px; }
+.leg { width: 7px; height: 7px; border-radius: 2px; display: inline-block; }
+
+/* OCC BAR */
+.occ-wrap { margin-top: 1.1rem; padding-top: 1.1rem; border-top: 1px solid var(--border); }
+.occ-row { display: flex; justify-content: space-between; font-size: 0.72rem; margin-bottom: 5px; }
+.occ-row span:first-child { color: var(--muted); font-weight: 500; }
+.occ-row span:last-child  { color: var(--teal); font-weight: 800; }
+.occ-track { background: var(--border); border-radius: 100px; height: 6px; overflow: hidden; }
+.occ-fill  { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--teal), #0e9e7a); }
+
+/* SELECTED DAY LABEL */
+.day-label { font-size: 1rem; font-weight: 800; color: var(--text); letter-spacing: -0.02em; margin-bottom: 1rem; }
+.day-label span { color: var(--teal); }
+
+/* EMPTY */
+.empty { text-align: center; padding: 2.5rem 1rem; color: var(--muted); font-size: 0.82rem; }
+.empty-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+
+/* UPCOMING */
+.upcoming-row { display:flex; align-items:center; gap:12px; padding:0.6rem 0; border-bottom:1px solid var(--border); }
+.upcoming-row:last-child { border-bottom:none; }
+.upcoming-date { min-width:54px; text-align:center; background:var(--bg); border-radius:10px; padding:5px 6px; }
+.upcoming-date .ud-day { font-size:1rem; font-weight:800; color:var(--text); line-height:1; }
+.upcoming-date .ud-dow { font-size:0.6rem; font-weight:700; color:var(--muted); text-transform:uppercase; margin-top:2px; }
+.upcoming-events { flex:1; display:flex; flex-wrap:wrap; gap:6px; }
+.upcoming-tag { font-size:0.72rem; font-weight:600; padding:3px 9px; border-radius:100px; }
+.tag-in  { background:var(--green-light); color:var(--green); }
+.tag-out { background:var(--red-light); color:var(--red); }
+.tag-occ { background:var(--teal-light); color:var(--teal); }
+.upcoming-occ { font-size:0.72rem; font-weight:700; color:var(--muted); white-space:nowrap; }
+
+/* METRICS TAB */
+.metrics-section { display: none; }
+.metrics-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-bottom: 1.25rem; }
+.metric-tile { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.25rem; }
+.m-icon  { font-size: 1.4rem; margin-bottom: 0.5rem; }
+.m-val   { font-size: 1.8rem; font-weight: 800; color: var(--text); letter-spacing: -0.04em; line-height: 1; }
+.m-lbl   { font-size: 0.75rem; color: var(--muted); margin-top: 4px; font-weight: 500; }
+.m-delta { font-size: 0.7rem; font-weight: 600; color: var(--green); margin-top: 5px; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+.chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.25rem; }
+.chart-lbl { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 1rem; }
+.bars { display: flex; align-items: flex-end; gap: 6px; height: 90px; }
+.b-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; justify-content: flex-end; }
+.b { width: 100%; border-radius: 5px 5px 0 0; background: var(--teal-light); }
+.b.hi { background: var(--teal); }
+.b-day { font-size: 0.62rem; color: var(--muted); font-weight: 500; text-transform: uppercase; }
+.faq-row { display: flex; align-items: center; gap: 10px; padding: 0.6rem 0; border-bottom: 1px solid var(--border); font-size: 0.81rem; }
+.faq-row:last-child { border-bottom: none; }
+.faq-rank { width: 22px; height: 22px; background: var(--teal-light); color: var(--teal); border-radius: 6px; font-size: 0.68rem; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.faq-text { flex: 1; color: var(--text); font-weight: 500; }
+.faq-count { font-size: 0.72rem; color: var(--muted); font-weight: 600; }
+
+@media (max-width: 768px) {
+  .day-layout { grid-template-columns: 1fr; }
+  .room-grid { grid-template-columns: repeat(2, 1fr); }
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+  .two-col { grid-template-columns: 1fr; }
+  header { padding: 0.85rem 1rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="h-left">
+    <div class="h-logo">🏖️</div>
+    <div>
+      <div class="h-name">Sun Life Beach Hotel</div>
+      <div class="h-sub">Englewood, Florida</div>
+    </div>
+  </div>
+  <div class="h-right">
+    <div class="h-pill" id="header-date">—</div>
+    <div class="h-pill"><span class="live-dot"></span> Emma is active</div>
+    <button class="h-refresh" onclick="refreshAll()" id="refresh-btn">↻ Refresh</button>
+  </div>
+</header>
+
+<main>
+
+  <div class="greeting">
+    <h1 id="greeting-text">Good morning, Ana 👋</h1>
+    <p id="greeting-sub">Here's everything you need to manage Sun Life today.</p>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('today', this)">📋 My Day</button>
+    <button class="tab" onclick="showTab('metrics', this)">📊 Weekly Summary</button>
+  </div>
+
+  <!-- ═══════ TAB 1: MY DAY ═══════ -->
+  <div id="today">
+
+    <div class="briefing">
+      <div class="briefing-av">👩‍💼</div>
+      <div>
+        <strong>Emma's briefing</strong>
+        <p id="briefing-text">Loading…</p>
+        <p id="briefing-tomorrow" style="margin-top:4px;font-size:0.75rem;color:rgba(255,255,255,0.65);"></p>
+      </div>
+    </div>
+
+    <div class="day-layout">
+
+      <!-- LEFT: DAY INFO -->
+      <div>
+        <div class="day-label" id="day-label">Today — <span id="day-label-date">—</span></div>
+        <div id="day-content"><!-- filled by JS --></div>
+      </div>
+
+      <!-- RIGHT: CALENDAR -->
+      <div>
+        <div class="cal-card">
+          <div class="cal-nav">
+            <button onclick="changeMonth(-1)">‹</button>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div class="cal-nav-title" id="cal-title"></div>
+              <button id="today-btn" onclick="goToToday()" style="display:none;font-size:0.62rem;font-weight:700;padding:2px 8px;background:var(--teal-light);color:var(--teal);border:none;border-radius:100px;cursor:pointer;">Today</button>
+            </div>
+            <button onclick="changeMonth(1)">›</button>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
+          <div class="cal-legend">
+            <span><span class="leg" style="background:var(--teal)"></span>Today</span>
+            <span><span class="leg" style="background:var(--teal-light);outline:2px solid var(--teal);outline-offset:-1px;border-radius:2px;"></span>Selected</span>
+            <span>· Events</span>
+          </div>
+          <div class="occ-wrap">
+            <div class="occ-row"><span>This week's occupancy</span><span>—</span></div>
+            <div class="occ-track"><div class="occ-fill" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- UPCOMING 7 DAYS -->
+    <div class="card" id="upcoming-card" style="margin-top:1.25rem;">
+      <div class="card-title">Upcoming — Next 7 Days</div>
+      <div id="upcoming-list"><div style="color:var(--muted);font-size:0.84rem;">Loading…</div></div>
+    </div>
+
+  </div>
+
+  <!-- ═══════ TAB 2: WEEKLY SUMMARY ═══════ -->
+  <div class="metrics-section" id="metrics">
+
+    <div class="metrics-grid">
+      <div class="metric-tile"><div class="m-icon">💬</div><div class="m-val" id="w-messages">—</div><div class="m-lbl">Guest messages</div><div class="m-delta" id="w-messages-delta">Loading…</div></div>
+      <div class="metric-tile"><div class="m-icon">🤖</div><div class="m-val" id="w-emma">—</div><div class="m-lbl">Answered by Emma</div><div class="m-delta" id="w-emma-delta">Loading…</div></div>
+      <div class="metric-tile"><div class="m-icon">🏨</div><div class="m-val" id="w-occ">—</div><div class="m-lbl">Occupancy</div><div class="m-delta" id="w-occ-delta">This week</div></div>
+      <div class="metric-tile"><div class="m-icon">⏱️</div><div class="m-val" id="w-time">—</div><div class="m-lbl">Time saved</div><div class="m-delta">Est. 5 min per message</div></div>
+    </div>
+
+    <div class="two-col">
+      <div class="chart-card">
+        <div class="chart-lbl">Messages per day</div>
+        <div class="bars" id="w-bars">
+          <div class="b-wrap"><div class="b" style="height:4px"></div><div class="b-day">Mon</div></div>
+          <div class="b-wrap"><div class="b" style="height:4px"></div><div class="b-day">Tue</div></div>
+          <div class="b-wrap"><div class="b" style="height:4px"></div><div class="b-day">Wed</div></div>
+          <div class="b-wrap"><div class="b" style="height:4px"></div><div class="b-day">Thu</div></div>
+          <div class="b-wrap"><div class="b" style="height:4px"></div><div class="b-day">Fri</div></div>
+          <div class="b-wrap"><div class="b" style="height:4px"></div><div class="b-day">Sat</div></div>
+          <div class="b-wrap"><div class="b" style="height:4px"></div><div class="b-day">Sun</div></div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-lbl">Most asked this week</div>
+        <div id="w-faq"><div style="color:var(--muted);font-size:0.85rem;padding:1rem 0;">Loading…</div></div>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────
+let DATA = {};
+let EVENT_DAYS = new Set();
+
+function parseDate(v) {
+  if (v === null || v === undefined || v === '') return null;
+  v = String(v).trim(); if (!v) return null;
+  var ESP={ene:1,feb:2,mar:3,abr:4,may:5,jun:6,jul:7,ago:8,sep:9,oct:10,nov:11,dic:12};
+  var esp=v.match(/^(\w{3})\s+(\d{1,2}),?\s+(\d{4})/i); if(esp&&ESP[esp[1].toLowerCase()])return esp[3]+'-'+String(ESP[esp[1].toLowerCase()]).padStart(2,'0')+'-'+esp[2].padStart(2,'0');
+  if (/^\d{4}-\d{2}-\d{2}/.test(v)) return v.substring(0, 10);
+  var mdy = v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if (mdy) return mdy[3]+'-'+mdy[1].padStart(2,'0')+'-'+mdy[2].padStart(2,'0');
+  var mdy2 = v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2})$/);
+  if (mdy2) { var yr = parseInt(mdy2[3])>50?'19'+mdy2[3]:'20'+mdy2[3]; return yr+'-'+mdy2[1].padStart(2,'0')+'-'+mdy2[2].padStart(2,'0'); }
+  if (/^\d+$/.test(v)) { var n=parseInt(v); if(n>40000&&n<55000){var d=new Date(Math.round((n-25569)*86400000));if(!isNaN(d))return d.toISOString().substring(0,10);} }
+  var nd = new Date(v); if (!isNaN(nd.getTime()) && nd.getFullYear()>2000) return nd.toISOString().substring(0,10);
+  return null;
+}
+
+function addDays(dateStr, n) {
+  const d = new Date(dateStr + 'T12:00:00');
+  d.setDate(d.getDate() + n);
+  return d.toISOString().substring(0, 10);
+}
+
+const AV_COLORS = ['av-teal', 'av-gold', 'av-blue', 'av-purple'];
+function getInitials(name) {
+  return name.split(' ').filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('');
+}
+
+function buildDataFromReservations(rows) {
+  const byDate = {};
+  const active = rows.filter(r => {
+    const s = (r['col_7'] || r['ESTADO'] || r['Status'] || r['status'] || '').toLowerCase();
+    const isHeader = (r['col_2'] === 'Guest Name' || r['col_1'] === 'Room');
+    return !isHeader && s !== 'cancelled' && s !== 'canceled' && s !== 'cancelado';
+  });
+
+  active.forEach((r, idx) => {
+    const name    = r['col_2'] || r['NOMBRE_CLIENTE'] || r['Guest Name']    || 'Guest';
+    const _roomKey = Object.keys(r).find(k => !k.startsWith('col') && k !== 'row_number');
+    const _roomRaw = r[_roomKey] || r['col_1'] || r['Room'] || '';
+    const room = _roomRaw ? (/^\d+$/.test(String(_roomRaw)) ? 'Room '+_roomRaw : String(_roomRaw)) : 'Room ?';
+    const adults  = r['col_6'] || r['CANTIDAD_PERSONAS'] || r['Adults']      || '';
+    const channel  = r['col_8'] || r['Channel']          || '';
+    const occasion = r['col_10'] || r['Special Occasion'] || r['Ocasion']    || '';
+    const notes    = r['col_9'] || r['Notes']            || r['Notas']       || '';
+    const checkin  = parseDate(r['col_3'] || r['FECHA_CHECKIN']  || r['Check-in Date']  || r['Llegada']);
+    const checkout = parseDate(r['col_4'] || r['FECHA_CHECKOUT'] || r['Check-out Date'] || r['Salida']);
+    if (!checkin || !checkout || checkin > checkout) return;
+
+    const av  = AV_COLORS[idx % AV_COLORS.length];
+    const ini = getInitials(name);
+
+    let d = checkin;
+    while (d <= checkout) {
+      if (!byDate[d]) byDate[d] = { tasks: [], guests: [], rooms: {} };
+      const isIn  = d === checkin;
+      const isOut = d === checkout;
+
+      const fmtDate = s => { if (!s) return ''; const _d2 = new Date(s+'T12:00:00'); return _d2.toLocaleDateString('en-US',{month:'short',day:'numeric'}); };
+      const nights = checkin && checkout ? Math.round((new Date(checkout+'T12:00:00') - new Date(checkin+'T12:00:00')) / 86400000) : 0;
+      const nightsStr = nights > 0 ? `${nights} night${nights > 1 ? 's' : ''}` : '';
+
+      if (isIn && isOut) {
+        byDate[d].rooms[room] = { name, st: 'Same-day', stCls: 'st-cin', tileCls: 'cin' };
+        byDate[d].tasks.push({ icon: '🏠', cls: 'checkout', title: `Check-out — ${name}`, sub: room, time: '11:00 AM' });
+        byDate[d].tasks.push({ icon: '🏠', cls: 'checkin',  title: `Check-in — ${name}`,  sub: room, time: '3:00 PM' });
+      } else if (isIn) {
+        byDate[d].rooms[room] = { name, st: 'Check-in', stCls: 'st-cin', tileCls: 'cin' };
+        byDate[d].tasks.push({ icon: '🏠', cls: 'checkin', title: `Check-in — ${name}`, sub: [room, adults ? `${adults} guests` : '', nightsStr, occasion ? `🎉 ${occasion}` : ''].filter(Boolean).join(' · '), time: '3:00 PM' });
+        byDate[d].tasks.push({ icon: '🧹', cls: 'clean',   title: `Prepare — ${room}`,  sub: 'Room preparation before 3 PM', time: '' });
+      } else if (isOut) {
+        byDate[d].rooms[room] = { name, st: 'Check-out', stCls: 'st-cout', tileCls: 'cout' };
+        byDate[d].tasks.push({ icon: '🏠', cls: 'checkout', title: `Check-out — ${name}`, sub: room, time: '11:00 AM' });
+        byDate[d].tasks.push({ icon: '🧹', cls: 'clean',    title: `Clean — ${room}`,     sub: 'After 11 AM checkout', time: '' });
+      } else {
+        byDate[d].rooms[room] = { name, st: 'Occupied', stCls: 'st-occ', tileCls: 'occ' };
+      }
+      let detail, btnCls, btnTxt;
+      const extraDetail = [adults ? `${adults} guests` : '', nightsStr, channel ? `via ${channel}` : '', occasion ? `🎉 ${occasion}` : '', notes ? `📝 ${notes}` : ''].filter(Boolean).join(' · ');
+      if (isIn && isOut) { detail = `${room} · Same-day stay${extraDetail ? ' · ' + extraDetail : ''}`;   btnCls = 'btn-in';   btnTxt = 'Check-in/out'; }
+      else if (isIn)     { detail = `${room} · Check-in today${extraDetail ? ' · ' + extraDetail : ''}`; btnCls = 'btn-in';  btnTxt = 'Check-in'; }
+      else if (isOut)    { detail = `${room} · Checking out${extraDetail ? ' · ' + extraDetail : ''}`;    btnCls = 'btn-out';  btnTxt = 'Check-out'; }
+      else               { detail = `${room} · Staying · out ${fmtDate(checkout)}${extraDetail ? ' · ' + extraDetail : ''}`; btnCls = 'btn-stay'; btnTxt = 'Staying'; }
+      byDate[d].guests.push({ initials: ini, av, name, detail, btnCls, btnTxt });
+
+      if (d >= checkout) break;
+      d = addDays(d, 1);
+    }
+  });
+
+  const ROOMS = ['Room 1','Room 2','Room 3','Room 4','Room 5','Room 6','Room 7','Room 8'];
+  const taskOrder = { checkout: 0, checkin: 1, clean: 2, msg: 3 };
+  const result = {};
+
+  for (const [date, v] of Object.entries(byDate)) {
+    const rooms = ROOMS.map(rn => {
+      if (v.rooms[rn]) {
+        const { name, st, stCls, tileCls } = v.rooms[rn];
+        return { num: rn, type: name, st, stCls, tileCls };
+      }
+      return { num: rn, type: 'Available', st: 'Available', stCls: 'st-free', tileCls: 'free' };
+    });
+
+    const checkins  = v.tasks.filter(t => t.cls === 'checkin').length;
+    const checkouts = v.tasks.filter(t => t.cls === 'checkout').length;
+    const occupied  = rooms.filter(r => r.tileCls !== 'free').length;
+    const free      = 8 - occupied;
+    let briefing;
+    if (!checkins && !checkouts && occupied === 0) {
+      briefing = 'No reservations today. All 8 rooms available.';
+    } else if (!checkins && !checkouts) {
+      briefing = `${occupied} room${occupied !== 1 ? 's' : ''} occupied, ${free} available. No arrivals or departures today.`;
+    } else {
+      const parts = [];
+      if (checkouts) parts.push(`${checkouts} check-out${checkouts > 1 ? 's' : ''} at 11 AM`);
+      if (checkins)  parts.push(`${checkins} check-in${checkins > 1 ? 's' : ''} at 3 PM`);
+      briefing = parts.join(', ') + `. ${occupied}/8 rooms occupied.`;
+    }
+
+    const tasks = v.tasks
+      .filter((t, i, arr) => arr.findIndex(x => x.title === t.title) === i)
+      .sort((a, b) => (taskOrder[a.cls] ?? 9) - (taskOrder[b.cls] ?? 9));
+
+    result[date] = {
+      briefing,
+      tasks: tasks.length ? tasks : [{ icon: '🌴', cls: 'msg', title: 'No scheduled tasks', sub: 'Quiet day at Sun Life', time: '' }],
+      guests: v.guests,
+      rooms
+    };
+  }
+  return result;
+}
+
+async function loadData() {
+  const briefingEl = document.getElementById('briefing-text');
+  const contentEl  = document.getElementById('day-content');
+  if (briefingEl) briefingEl.textContent = 'Loading reservations from Google Sheets…';
+  if (contentEl)  contentEl.innerHTML = '<div class="empty"><div class="empty-icon">⏳</div><strong>Loading…</strong><br>Fetching live data from Ana\'s sheet.</div>';
+
+  try {
+    const res = await fetch('https://matiasdutli22.app.n8n.cloud/webhook/sunlife-data', {
+      method: 'GET',
+
+
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const _text = await res.text();
+    console.log('[Dashboard] Raw response (first 300 chars):', _text.substring(0, 300));
+    if (!_text || _text.trim() === '' || _text.trim() === '[]') {
+      throw new Error('n8n returned empty — check the Respond to Webhook node in Panel API workflow returns the sheet data');
+    }
+    const payload = JSON.parse(_text);
+    const rows = Array.isArray(payload) ? payload
+               : Array.isArray(payload.data) ? payload.data
+               : Array.isArray(payload.rows) ? payload.rows
+               : [payload];
+    const unwrapped = rows.map(r => r.json || r);
+    console.log('[Dashboard] First row sample:', JSON.stringify(unwrapped[0]).substring(0,400));
+
+    DATA = buildDataFromReservations(unwrapped);
+    EVENT_DAYS = new Set(Object.keys(DATA));
+    renderUpcoming();
+    // Tomorrow preview in briefing
+    const _tmrw = addDays(new Date().toISOString().substring(0,10), 1);
+    const _td = DATA[_tmrw];
+    const _tel = document.getElementById('briefing-tomorrow');
+    if (_tel) {
+      if (_td) {
+        const _ins  = _td.tasks.filter(t=>t.cls==='checkin').length;
+        const _outs = _td.tasks.filter(t=>t.cls==='checkout').length;
+        const _parts = [];
+        if (_outs) _parts.push(`${_outs} check-out${_outs>1?'s':''}`);
+        if (_ins)  _parts.push(`${_ins} check-in${_ins>1?'s':''}`);
+        _tel.textContent = _parts.length ? `Tomorrow: ${_parts.join(', ')}.` : 'Tomorrow: no arrivals or departures.';
+      } else {
+        _tel.textContent = 'Tomorrow: no arrivals or departures.';
+      }
+    }
+  } catch (err) {
+    console.error('Dashboard load error:', err);
+    if (briefingEl) briefingEl.textContent = 'Could not load live data — check your connection.';
+    if (contentEl)  contentEl.innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div><strong>Connection error</strong><br>Could not reach the reservation system. Try refreshing.</div>';
+  }
+
+  const _d = new Date(selectedKey + 'T12:00:00');
+  const _labelEl = document.getElementById('day-label-date');
+  if (_labelEl) _labelEl.textContent = _d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  updateOccupancyBar();
+  renderCal();
+  renderDayContent(selectedKey);
+}
+
+// ── CALENDAR ──────────────────────────────────────────────────────
+let curYear = new Date().getFullYear(), curMonth = new Date().getMonth();
+let selectedKey = key(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DAYS   = ['S','M','T','W','T','F','S'];
+function pad(n){ return String(n).padStart(2,'0'); }
+function key(y,m,d){ return `${y}-${pad(m+1)}-${pad(d)}`; }
+
+function renderCal(){
+  const grid = document.getElementById('cal-grid');
+  document.getElementById('cal-title').textContent = `${MONTHS[curMonth]} ${curYear}`;
+  grid.innerHTML = '';
+  DAYS.forEach(d => { const el=document.createElement('div'); el.className='cal-dn'; el.textContent=d; grid.appendChild(el); });
+  const firstDay = new Date(curYear,curMonth,1).getDay();
+  const daysInMonth = new Date(curYear,curMonth+1,0).getDate();
+  const prevDays = new Date(curYear,curMonth,0).getDate();
+  const today = new Date();
+  const todayKey = key(today.getFullYear(), today.getMonth(), today.getDate());
+  for(let i=firstDay-1;i>=0;i--){ const el=document.createElement('div'); el.className='cal-d dim'; el.textContent=prevDays-i; grid.appendChild(el); }
+  for(let d=1;d<=daysInMonth;d++){
+    const k=key(curYear,curMonth,d);
+    const el=document.createElement('div');
+    let cls='cal-d';
+    if(k===todayKey) cls+=' today';
+    if(k===selectedKey) cls+=' selected';
+    if(EVENT_DAYS.has(k)) cls+=' has-event';
+    el.className=cls; el.textContent=d;
+    el.onclick=()=>selectDay(k,d);
+    grid.appendChild(el);
+  }
+  const total=firstDay+daysInMonth;
+  const rem=total%7===0?0:7-(total%7);
+  for(let i=1;i<=rem;i++){ const el=document.createElement('div'); el.className='cal-d dim'; el.textContent=i; grid.appendChild(el); }
+}
+
+function goToToday(){
+  const now = new Date();
+  curYear = now.getFullYear(); curMonth = now.getMonth();
+  renderCal();
+  selectDay(now.toISOString().substring(0,10), now.getDate());
+  const btn = document.getElementById('today-btn');
+  if (btn) btn.style.display = 'none';
+}
+
+function changeMonth(dir){
+  curMonth+=dir;
+  if(curMonth>11){curMonth=0;curYear++;}
+  if(curMonth<0){curMonth=11;curYear--;}
+  renderCal();
+  const now = new Date();
+  const btn = document.getElementById('today-btn');
+  if (btn) btn.style.display = (curYear !== now.getFullYear() || curMonth !== now.getMonth()) ? 'inline-block' : 'none';
+}
+
+function selectDay(k, d){
+  selectedKey=k;
+  renderCal();
+  const dateObj = new Date(k+'T12:00:00');
+  const label = dateObj.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  document.getElementById('day-label-date').textContent = label;
+  renderDayContent(k);
+}
+
+// ── DAY CONTENT ───────────────────────────────────────────────────
+function renderDayContent(k){
+  const data = DATA[k];
+  const content = document.getElementById('day-content');
+  const briefingEl = document.getElementById('briefing-text');
+
+  if(!data){
+    briefingEl.textContent = 'No events on this day — everything is calm. 🌴';
+    content.innerHTML = `<div class="empty"><div class="empty-icon">🌴</div><strong>No tasks for this day</strong><br>Nothing to do — enjoy the calm.</div>`;
+    return;
+  }
+
+  briefingEl.textContent = data.briefing;
+
+  // Tasks
+  const tasksHTML = data.tasks.map(t=>`
+    <div class="task">
+      <div class="task-icon ${t.cls}">${t.icon}</div>
+      <div class="task-info">
+        <div class="task-title">${t.title}</div>
+        <div class="task-sub">${t.sub}</div>
+      </div>
+      ${t.time ? `<div class="task-time">${t.time}</div>` : t.cls === 'clean' ? `<span class="task-badge badge-new">To clean</span>` : `<span class="task-badge badge-new">To do</span>`}
+    </div>`).join('');
+
+  // Guests
+  const guestsHTML = data.guests.map(g=>`
+    <div class="guest-card">
+      <div class="guest-av ${g.av}">${g.initials}</div>
+      <div class="guest-info">
+        <div class="guest-name">${g.name}</div>
+        <div class="guest-detail">${g.detail}</div>
+      </div>
+      <button class="guest-btn ${g.btnCls}">${g.btnTxt}</button>
+    </div>`).join('');
+
+  // Rooms
+  const roomsHTML = data.rooms.map(r=>`
+    <div class="room-tile ${r.tileCls}">
+      <div class="r-num">${r.num}</div>
+      <div class="r-type">${r.type}</div>
+      <div class="r-st ${r.stCls}">${r.st}</div>
+    </div>`).join('');
+
+  content.innerHTML = `
+    <div class="card">
+      <div class="card-title">Tasks</div>
+      ${tasksHTML}
+    </div>
+    <div class="card-title" style="margin-bottom:0.75rem;">Guests</div>
+    ${guestsHTML}
+    <div style="display:flex;align-items:center;justify-content:space-between;margin:1.1rem 0 0.75rem;">
+      <div class="card-title" style="margin:0;">Room status</div>
+      <div style="font-size:0.72rem;font-weight:600;color:var(--muted);">
+        ${data.rooms.filter(r=>r.tileCls!=='free').length} occupied &nbsp;·&nbsp;
+        <span style="color:var(--green);">${data.rooms.filter(r=>r.tileCls==='free').length} available</span>
+      </div>
+    </div>
+    <div class="room-grid">${roomsHTML}</div>
+  `;
+}
+
+// ── UPCOMING 7 DAYS ───────────────────────────────────────────────
+function renderUpcoming() {
+  const el = document.getElementById('upcoming-list');
+  if (!el) return;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const rows = [];
+  for (let i = 1; i <= 7; i++) {
+    const d = new Date(today); d.setDate(today.getDate() + i);
+    const key = d.toISOString().substring(0,10);
+    const data = DATA[key];
+    if (!data) continue;
+    const ins  = data.tasks.filter(t => t.cls === 'checkin').map(t => t.title.replace('Check-in — ',''));
+    const outs = data.tasks.filter(t => t.cls === 'checkout').map(t => t.title.replace('Check-out — ','').replace(' — don\'t sell',''));
+    const occ  = data.rooms.filter(r => r.tileCls !== 'free').length;
+    const tags = [
+      ...ins.map(n  => `<span class="upcoming-tag tag-in">↓ ${n}</span>`),
+      ...outs.map(n => `<span class="upcoming-tag tag-out">↑ ${n}</span>`)
+    ];
+    if (!tags.length && occ === 0) continue;
+    rows.push(`<div class="upcoming-row">
+      <div class="upcoming-date">
+        <div class="ud-day">${d.getDate()}</div>
+        <div class="ud-dow">${d.toLocaleDateString('en-US',{weekday:'short'})}</div>
+      </div>
+      <div class="upcoming-events">${tags.length ? tags.join('') : '<span style="color:var(--muted);font-size:0.78rem;">No arrivals or departures</span>'}</div>
+      <div class="upcoming-occ" style="color:${8-occ===0?'var(--red)':8-occ<=2?'var(--gold)':'var(--green)'};">${8-occ===0?'Full':`${8-occ} free`}</div>
+    </div>`);
+  }
+  el.innerHTML = rows.length ? rows.join('') : '<div style="color:var(--muted);font-size:0.84rem;padding:0.5rem 0;">No events in the next 7 days.</div>';
+}
+
+// ── WEEKLY SUMMARY ────────────────────────────────────────────────
+let weeklySummaryLoaded = false;
+
+async function loadWeeklySummary() {
+  if (weeklySummaryLoaded) return;
+  try {
+    const res = await fetch('https://matiasdutli22.app.n8n.cloud/webhook/sunlife-conversations');
+    const raw = await res.json();
+    const all = Array.isArray(raw) ? raw.map(r => r.json || r).filter(r => r['Date'] || r['Guest Message']) : [];
+
+    const now = new Date();
+    const weekStart = new Date(now); weekStart.setDate(now.getDate() - now.getDay());
+    weekStart.setHours(0,0,0,0);
+
+    const thisWeek = all.filter(r => {
+      const d = new Date(r['Date']); return !isNaN(d) && d >= weekStart;
+    });
+    const lastWeekStart = new Date(weekStart); lastWeekStart.setDate(weekStart.getDate() - 7);
+    const lastWeek = all.filter(r => {
+      const d = new Date(r['Date']); return !isNaN(d) && d >= lastWeekStart && d < weekStart;
+    });
+
+    const total = thisWeek.length;
+    const bookingReqs = thisWeek.filter(r => (r['Action Needed']||'').toLowerCase().includes('booking')).length;
+    const actionNeeded = thisWeek.filter(r => (r['Action Needed']||'').trim() !== '').length;
+    const autoHandled = total > 0 ? Math.round(((total - actionNeeded) / total) * 100) : 100;
+    const timeSavedMin = total * 5;
+    const timeSavedStr = timeSavedMin >= 60 ? (timeSavedMin/60).toFixed(1) + 'h' : timeSavedMin + 'm';
+    const lastTotal = lastWeek.length;
+    const diff = total - lastTotal;
+    const diffStr = diff > 0 ? `↑ ${diff} more than last week` : diff < 0 ? `↓ ${Math.abs(diff)} fewer than last week` : 'Same as last week';
+
+    document.getElementById('w-messages').textContent = total;
+    document.getElementById('w-messages-delta').textContent = diffStr;
+    document.getElementById('w-emma').textContent = autoHandled + '%';
+    document.getElementById('w-emma-delta').textContent = bookingReqs > 0
+      ? `🔥 ${bookingReqs} booking request${bookingReqs > 1 ? 's' : ''} this week`
+      : actionNeeded > 0 ? `${actionNeeded} needed attention` : 'Emma handled everything';
+    document.getElementById('w-time').textContent = timeSavedStr;
+
+    // occupancy from DATA
+    const occ = document.getElementById('w-occ');
+    const occDelta = document.getElementById('w-occ-delta');
+    const tiles = document.querySelectorAll('.occ-row span:last-child');
+    if (tiles.length) { occ.textContent = tiles[0].textContent; }
+    else if (Object.keys(DATA).length) {
+      const days = [];
+      for (let i = 0; i < 7; i++) { const d = new Date(now); d.setDate(now.getDate() - now.getDay() + i); days.push(d.toISOString().substring(0,10)); }
+      let t2 = 0, occ2 = 0;
+      days.forEach(d => { if (DATA[d]) { t2 += 8; occ2 += DATA[d].rooms.filter(r => r.tileCls !== 'free').length; } });
+      occ.textContent = t2 > 0 ? Math.round(occ2/t2*100) + '%' : '—';
+    }
+
+    // bar chart by day of week (Mon=0..Sun=6)
+    const byDay = [0,0,0,0,0,0,0];
+    thisWeek.forEach(r => {
+      const d = new Date(r['Date']);
+      if (!isNaN(d)) { const day = (d.getDay() + 6) % 7; byDay[day]++; }
+    });
+    const maxVal = Math.max(...byDay, 1);
+    const days2 = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    document.getElementById('w-bars').innerHTML = byDay.map((v, i) => {
+      const pct = Math.max(Math.round((v / maxVal) * 100), 4);
+      const hi = v === Math.max(...byDay) && v > 0 ? ' hi' : '';
+      return `<div class="b-wrap"><div class="b${hi}" style="height:${pct}%"></div><div class="b-day">${days2[i]}</div></div>`;
+    }).join('');
+
+    // most asked — keyword categories
+    const categories = [
+      { label: 'Check-in / check-out times', keys: ['check-in','check-out','checkout','checkin','time','arrive','arrival','leave'] },
+      { label: 'Room rates & pricing',        keys: ['price','rate','cost','how much','fee','charge','weekly','nightly'] },
+      { label: 'Availability',                keys: ['available','availability','open','vacancy','booked','full'] },
+      { label: 'Pool & amenities',            keys: ['pool','heated','hot tub','jacuzzi','amenity','amenities','kitchen','wifi','parking'] },
+      { label: 'Beach & location',            keys: ['beach','far','distance','walk','nearby','close','minutes'] },
+      { label: 'Booking a room',              keys: ['book','reserve','reservation','want a room','make a reservation'] },
+      { label: 'Guests & occupancy',          keys: ['guests','people','persons','max','capacity','adults','children','kids'] },
+      { label: 'Cancellation & policies',     keys: ['cancel','refund','policy','policies','deposit'] },
+    ];
+    const counts = categories.map(c => {
+      const count = thisWeek.filter(r => {
+        const msg = (r['Guest Message']||'').toLowerCase();
+        return c.keys.some(k => msg.includes(k));
+      }).length;
+      return { label: c.label, count };
+    }).filter(c => c.count > 0).sort((a,b) => b.count - a.count).slice(0,5);
+
+    const faqEl = document.getElementById('w-faq');
+    if (counts.length) {
+      faqEl.innerHTML = counts.map((c,i) =>
+        `<div class="faq-row"><div class="faq-rank">${i+1}</div><div class="faq-text">${c.label}</div><div class="faq-count">${c.count}×</div></div>`
+      ).join('');
+    } else {
+      faqEl.innerHTML = `<div style="color:var(--muted);font-size:0.85rem;padding:1rem 0;">Not enough data yet — more conversations will populate this.</div>`;
+    }
+
+    weeklySummaryLoaded = true;
+  } catch(e) {
+    console.error('Weekly summary error:', e);
+    document.getElementById('w-messages').textContent = '—';
+    document.getElementById('w-faq').innerHTML = `<div style="color:var(--muted);font-size:0.85rem;">Could not load data.</div>`;
+  }
+}
+
+// ── TABS ──────────────────────────────────────────────────────────
+function showTab(tab, el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('today').style.display   = tab==='today'   ? 'block' : 'none';
+  document.getElementById('metrics').style.display = tab==='metrics' ? 'block' : 'none';
+  if (tab === 'metrics') loadWeeklySummary();
+}
+
+// ── OCCUPANCY BAR ─────────────────────────────────────────────────
+function updateOccupancyBar() {
+  if (!Object.keys(DATA).length) return;
+  const today = new Date();
+  const days = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - today.getDay() + i);
+    days.push(d.toISOString().substring(0, 10));
+  }
+  let total = 0, occupied = 0;
+  days.forEach(d => {
+    if (DATA[d]) {
+      total += 8;
+      occupied += DATA[d].rooms.filter(r => r.tileCls !== 'free').length;
+    }
+  });
+  const pct = total > 0 ? Math.round(occupied / total * 100) : 0;
+  document.querySelectorAll('.occ-row span:last-child').forEach(el => el.textContent = pct + '%');
+  document.querySelectorAll('.occ-fill').forEach(el => el.style.width = pct + '%');
+  const wOcc = document.getElementById('w-occ');
+  if (wOcc) wOcc.textContent = pct + '%';
+}
+
+// ── REFRESH ───────────────────────────────────────────────────────
+function refreshAll() {
+  const btn = document.getElementById('refresh-btn');
+  if (btn) { btn.textContent = '↻ Refreshing…'; btn.classList.add('spinning'); }
+  weeklySummaryLoaded = false;
+  DATA = {}; EVENT_DAYS = new Set();
+  loadData().then(() => {
+    const activeTab = document.querySelector('.tab.active');
+    if (activeTab && activeTab.textContent.includes('Weekly')) loadWeeklySummary();
+    const now = new Date();
+    const sub = document.getElementById('greeting-sub');
+    if (sub) sub.textContent = `Last updated at ${now.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'})}`;
+    if (btn) { btn.textContent = '↻ Refresh'; btn.classList.remove('spinning'); }
+  });
+}
+
+// ── INIT ──────────────────────────────────────────────────────────
+const _hd = document.getElementById('header-date');
+if (_hd) _hd.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+const _hour = new Date().getHours();
+const _greet = _hour < 12 ? 'Good morning' : _hour < 18 ? 'Good afternoon' : 'Good evening';
+const _greetEl = document.getElementById('greeting-text');
+if (_greetEl) _greetEl.textContent = `${_greet}, Ana 👋`;
+loadData().then(() => {
+  const now = new Date();
+  const sub = document.getElementById('greeting-sub');
+  if (sub) sub.textContent = `Last updated at ${now.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'})}`;
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.key === 'ArrowLeft')  changeMonth(-1);
+  if (e.key === 'ArrowRight') changeMonth(1);
+  if (e.key === 't' || e.key === 'T') goToToday();
+});
+
+// Auto-refresh every 5 minutes
+setInterval(() => {
+  weeklySummaryLoaded = false;
+  DATA = {}; EVENT_DAYS = new Set();
+  loadData().then(() => {
+    const sub = document.getElementById('greeting-sub');
+    if (sub) sub.textContent = `Last updated at ${new Date().toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'})}`;
+    const activeTab = document.querySelector('.tab.active');
+    if (activeTab && activeTab.textContent.includes('Weekly')) loadWeeklySummary();
+  });
+}, 5 * 60 * 1000);
+
+</script>
+
+<nav style="position:fixed;bottom:0;left:0;right:0;background:rgba(255,252,248,0.95);backdrop-filter:blur(8px);border-top:1px solid #e0d8cc;display:flex;justify-content:center;gap:0;z-index:100;">
+  <a href="dashboard-sunlife.html" style="flex:1;max-width:120px;display:flex;flex-direction:column;align-items:center;padding:0.6rem 0.5rem;text-decoration:none;color:#0e7c7b;font-size:0.62rem;font-weight:700;border-bottom:2px solid #0e7c7b;">📋<span style="margin-top:3px;">Dashboard</span></a>
+  <a href="panel-sunlife.html"     style="flex:1;max-width:120px;display:flex;flex-direction:column;align-items:center;padding:0.6rem 0.5rem;text-decoration:none;color:#8a9080;font-size:0.62rem;font-weight:600;">👥<span style="margin-top:3px;">Guest Insights</span></a>
+  <a href="chat-sunlife.html"      style="flex:1;max-width:120px;display:flex;flex-direction:column;align-items:center;padding:0.6rem 0.5rem;text-decoration:none;color:#8a9080;font-size:0.62rem;font-weight:600;">💬<span style="margin-top:3px;">Emma Preview</span></a>
+</nav>
+</body>
+</html>
+
+
+
+

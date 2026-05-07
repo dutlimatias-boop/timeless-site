@@ -121,12 +121,22 @@
     .hero {
       min-height: 100vh;
       display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
+      align-items: center; justify-content: flex-start;
       text-align: center;
-      padding: 9rem 1.5rem 5rem;
+      padding: 9rem 1.5rem 6rem;
       position: relative;
       overflow: hidden;
     }
+
+    .hero-demo {
+      width: 100%;
+      max-width: 1000px;
+      margin-top: 2.5rem;
+      text-align: left;
+    }
+    .hero-demo .vert-tabs { justify-content: center; margin: 0 0 2rem; }
+    /* Inside hero the panel needs a bit less gap */
+    .hero-demo .vert-panel.active { gap: 3rem; }
 
     /* ─── GLOBAL SPACE CANVAS (fixed, behind everything) ─── */
     #starfield {
@@ -1083,7 +1093,7 @@
   <a href="#" class="nav-logo">TIMELESS<span>.</span></a>
   <div class="nav-links">
     <a href="#como-funciona">How It Works</a>
-    <a href="#negocios">For My Business</a>
+    <a href="#solucion">How Emma Works</a>
     <a href="#precios">Pricing</a>
     <a href="https://timeless-site.pages.dev/onboarding.html" class="nav-cta">Get Started</a>
   </div>
@@ -1093,47 +1103,161 @@
 <section class="hero" id="inicio">
   <div class="hero-badge reveal">
     <span class="badge-dot"></span>
-    AI Front Desk — Hotels · Restaurants · Clinics
+    Live Demo
   </div>
 
   <h1 class="hero-h1 reveal d1">
-    Your guest sends a message<br>at 2 AM.<br>
-    <em>Emma answers.</em>
+    Choose your business.<br>
+    <em>Talk to Emma.</em>
   </h1>
 
   <p class="hero-sub reveal d2">
-    A virtual assistant with your name, your personality, and your knowledge — answering guests, capturing leads and sending reports while you sleep.
+    Emma adapts to every type of business. Try it yourself — ask anything you'd expect a guest to ask.
   </p>
 
-  <div class="hero-btns reveal d3">
-    <a href="https://timeless-site.pages.dev/onboarding.html" class="btn-primary">
-      Create Your Assistant →
-    </a>
-    <a href="#como-funciona" class="btn-ghost">See How It Works</a>
-  </div>
+  <!-- Interactive business type selector + live chat -->
+  <div class="hero-demo reveal d3">
+    <div class="vert-tabs">
+      <button class="vert-tab active" data-vert="hotel">🏨 Hotel</button>
+      <button class="vert-tab" data-vert="restaurant">🍽️ Restaurant</button>
+      <button class="vert-tab" data-vert="clinic">🏥 Clinic</button>
+    </div>
 
-  <!-- Emma chat widget -->
-  <div class="hero-chat reveal d4">
-    <div class="chat-header">
-      <div class="chat-avatar">E</div>
-      <div>
-        <div class="chat-name">Emma</div>
-        <div class="chat-status">
-          <span class="status-dot"></span>
-          Virtual Front Desk · Sun Life Beach Hotel
+    <!-- HOTEL -->
+    <div class="vert-panel active" id="vert-hotel">
+      <div class="vert-chat">
+        <div class="vc-header">
+          <div class="vc-avatar">E</div>
+          <div>
+            <div class="vc-name">Emma — Ocean View Hotel</div>
+            <div class="vc-role">Virtual Front Desk</div>
+          </div>
+          <div class="vc-online"><span class="status-dot"></span> Online · responds in seconds</div>
+        </div>
+        <div class="vc-msgs">
+          <div class="vm u">
+            <div class="vm-av">👤</div>
+            <div class="vm-b">Hi! Is breakfast included? We arrive Friday evening.</div>
+          </div>
+          <div class="vm a">
+            <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">E</div>
+            <div class="vm-b">Good news! 🌅 Breakfast is included for all guests — served 7–10 AM on our garden terrace. Check-in is from 3 PM. Shall I check availability for your dates?</div>
+          </div>
+          <div class="vm u">
+            <div class="vm-av">👤</div>
+            <div class="vm-b">Yes please! July 11–14, 2 adults, oceanview if possible.</div>
+          </div>
+          <div class="vm a">
+            <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">E</div>
+            <div class="vm-b">Great choice! 🏖️ Our Oceanview Suite is available those dates at $189/night — private balcony with sea view. Want me to hold it while you decide?</div>
+          </div>
         </div>
       </div>
-      <div class="chat-time">2:47 AM</div>
-    </div>
-    <div class="chat-messages" id="chat-demo">
-      <div class="msg guest">
-        <div class="msg-avatar">👤</div>
-        <div class="msg-bubble">Hi! Do you have any rooms available for July 4th weekend? 2 adults.</div>
+      <div class="vert-info">
+        <span class="label" style="margin-bottom:0.75rem;">Ocean View Hotel</span>
+        <h3 class="vert-title">Emma knows your hotel<br>inside out.</h3>
+        <p class="vert-desc">From room rates and availability to pet policies and check-in times — Emma learns everything about your property and answers guests instantly, with warmth and precision.</p>
+        <div class="vert-bullets">
+          <div class="vert-bullet">Answers availability and rate questions 24/7</div>
+          <div class="vert-bullet">Captures lead data: dates, room type, special occasions</div>
+          <div class="vert-bullet">Sends pre-arrival and post-stay messages automatically</div>
+          <div class="vert-bullet">Logs every conversation to your dashboard</div>
+        </div>
+        <a href="https://timeless-site.pages.dev/onboarding.html" class="btn-primary" style="margin-top:1.5rem; width:fit-content;">
+          Create My Emma →
+        </a>
       </div>
-      <div class="msg-meta" style="text-align:right; padding-right:32px;">2:47 AM</div>
-      <div class="msg emma" id="emma-typing">
-        <div class="msg-avatar" style="background: var(--green); color: var(--black); font-weight:700; font-size:0.6rem; border:none;">E</div>
-        <div class="typing"><span></span><span></span><span></span></div>
+    </div>
+
+    <!-- RESTAURANT -->
+    <div class="vert-panel" id="vert-restaurant">
+      <div class="vert-chat">
+        <div class="vc-header">
+          <div class="vc-avatar">S</div>
+          <div>
+            <div class="vc-name">Sofia — Table Reservations</div>
+            <div class="vc-role">Restaurant Assistant</div>
+          </div>
+          <div class="vc-online"><span class="status-dot"></span> Online · responds in seconds</div>
+        </div>
+        <div class="vc-msgs">
+          <div class="vm u">
+            <div class="vm-av">👤</div>
+            <div class="vm-b">Do you have a table for 6 on Saturday at 8 PM? It's a birthday dinner.</div>
+          </div>
+          <div class="vm a">
+            <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">S</div>
+            <div class="vm-b">Happy birthday! 🎂 Yes — our private terrace table is available Saturday at 8 PM, perfect for 6. Shall I reserve it under your name?</div>
+          </div>
+          <div class="vm u">
+            <div class="vm-av">👤</div>
+            <div class="vm-b">Perfect! Can you do a gluten-free menu for one guest?</div>
+          </div>
+          <div class="vm a">
+            <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">S</div>
+            <div class="vm-b">Absolutely! Our chef prepares a full gluten-free menu on request. I've noted it in the reservation. Confirmed ✅ — we'll send a reminder Friday!</div>
+          </div>
+        </div>
+      </div>
+      <div class="vert-info">
+        <span class="label" style="margin-bottom:0.75rem;">Restaurant</span>
+        <h3 class="vert-title">Sofia never misses<br>a reservation.</h3>
+        <p class="vert-desc">Never let a Saturday booking slip through a missed message again. Sofia takes reservations, handles special requests and confirms tables — even at 11 PM.</p>
+        <div class="vert-bullets">
+          <div class="vert-bullet">Takes and confirms reservations 24/7</div>
+          <div class="vert-bullet">Handles dietary requirements and special occasions</div>
+          <div class="vert-bullet">Sends booking confirmations and day-before reminders</div>
+          <div class="vert-bullet">Captures waitlist requests on fully booked nights</div>
+        </div>
+        <a href="https://timeless-site.pages.dev/onboarding.html" class="btn-primary" style="margin-top:1.5rem; width:fit-content;">
+          Create My Sofia →
+        </a>
+      </div>
+    </div>
+
+    <!-- CLINIC -->
+    <div class="vert-panel" id="vert-clinic">
+      <div class="vert-chat">
+        <div class="vc-header">
+          <div class="vc-avatar">V</div>
+          <div>
+            <div class="vc-name">Valentina — Patient Concierge</div>
+            <div class="vc-role">Clinic Assistant</div>
+          </div>
+          <div class="vc-online"><span class="status-dot"></span> Online · responds in seconds</div>
+        </div>
+        <div class="vc-msgs">
+          <div class="vm u">
+            <div class="vm-av">👤</div>
+            <div class="vm-b">Hi, do you accept new patients? I need a general checkup.</div>
+          </div>
+          <div class="vm a">
+            <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">V</div>
+            <div class="vm-b">Welcome! 👋 Yes — Dr. Martínez has availability this Thursday at 10 AM or Friday at 2 PM. Which works best for you?</div>
+          </div>
+          <div class="vm u">
+            <div class="vm-av">👤</div>
+            <div class="vm-b">Thursday at 10 AM works. Do I need to bring anything?</div>
+          </div>
+          <div class="vm a">
+            <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">V</div>
+            <div class="vm-b">Confirmed for Thursday 10 AM ✅ Please bring your ID and insurance card. You'll receive a reminder 24 hours before. We look forward to seeing you!</div>
+          </div>
+        </div>
+      </div>
+      <div class="vert-info">
+        <span class="label" style="margin-bottom:0.75rem;">Clinic</span>
+        <h3 class="vert-title">Valentina manages<br>your appointments.</h3>
+        <p class="vert-desc">Valentina handles appointment requests, pre-consultation questions and patient intake — so your receptionist can focus on the patients already in the waiting room.</p>
+        <div class="vert-bullets">
+          <div class="vert-bullet">Schedules and confirms appointments automatically</div>
+          <div class="vert-bullet">Answers service, insurance and location questions</div>
+          <div class="vert-bullet">Sends 24-hour appointment reminders</div>
+          <div class="vert-bullet">Captures new patient information before first visit</div>
+        </div>
+        <a href="https://timeless-site.pages.dev/onboarding.html" class="btn-primary" style="margin-top:1.5rem; width:fit-content;">
+          Create My Valentina →
+        </a>
       </div>
     </div>
   </div>
@@ -1329,149 +1453,6 @@
         <div class="feat-body">
           <strong>On your website in minutes</strong>
           <p>One line of code via Google Tag Manager. Works on any website — GoDaddy, Wix, WordPress — without any tech skills.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── VERTICALS ── -->
-<section class="verticals-section section-full" id="negocios" style="border-top: 1px solid var(--border);">
-  <div class="section-inner">
-    <span class="label reveal">Built for your industry</span>
-    <h2 class="display reveal d1" style="max-width: 560px;">One platform,<br>three <em>verticals.</em></h2>
-
-    <div class="vert-tabs reveal d2">
-      <button class="vert-tab active" data-vert="hotel">🏨 Hotel</button>
-      <button class="vert-tab" data-vert="restaurant">🍽️ Restaurant</button>
-      <button class="vert-tab" data-vert="clinic">🏥 Clinic</button>
-    </div>
-
-    <!-- HOTEL -->
-    <div class="vert-panel active" id="vert-hotel">
-      <div class="vert-chat">
-        <div class="vc-header">
-          <div class="vc-avatar">E</div>
-          <div>
-            <div class="vc-name">Emma — Virtual Front Desk</div>
-            <div class="vc-role">Boutique Hotel Assistant</div>
-          </div>
-          <div class="vc-online"><span class="status-dot"></span> Online</div>
-        </div>
-        <div class="vc-msgs">
-          <div class="vm u">
-            <div class="vm-av">👤</div>
-            <div class="vm-b">Hi! Is breakfast included? We arrive Friday evening.</div>
-          </div>
-          <div class="vm a">
-            <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">E</div>
-            <div class="vm-b">Good news! 🌅 Breakfast is included for all guests — served from 7–10 AM in our garden terrace. For Friday arrivals, check-in is from 3 PM. Shall I check room availability for your dates?</div>
-          </div>
-          <div class="vm u">
-            <div class="vm-av">👤</div>
-            <div class="vm-b">Yes please! July 11–14, 2 adults, oceanview if possible.</div>
-          </div>
-          <div class="vm a">
-            <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">E</div>
-            <div class="vm-b">Great choice! 🏖️ We have our Oceanview Suite available those dates at $189/night. It includes a private balcony with sea view. Want me to hold it while you decide?</div>
-          </div>
-        </div>
-      </div>
-      <div class="vert-info">
-        <h3 class="vert-title">For boutique hotels</h3>
-        <p class="vert-desc">From the first inquiry to post-stay review requests — Emma handles the entire guest journey so your team can focus on the in-person experience.</p>
-        <div class="vert-bullets">
-          <div class="vert-bullet">Answers availability, pricing and amenity questions instantly</div>
-          <div class="vert-bullet">Captures lead data: name, dates, room type, special occasions</div>
-          <div class="vert-bullet">Sends pre-arrival and post-stay messages automatically</div>
-          <div class="vert-bullet">Logs every conversation to your dashboard</div>
-          <div class="vert-bullet">Works on your website, WhatsApp and Facebook</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- RESTAURANT -->
-    <div class="vert-panel" id="vert-restaurant">
-      <div class="vert-chat">
-        <div class="vc-header">
-          <div class="vc-avatar">S</div>
-          <div>
-            <div class="vc-name">Sofia — Table Reservations</div>
-            <div class="vc-role">Restaurant Assistant</div>
-          </div>
-          <div class="vc-online"><span class="status-dot"></span> Online</div>
-        </div>
-        <div class="vc-msgs">
-          <div class="vm u">
-            <div class="vm-av">👤</div>
-            <div class="vm-b">Do you have a table for 6 people on Saturday at 8 PM? It's a birthday dinner.</div>
-          </div>
-          <div class="vm a">
-            <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">S</div>
-            <div class="vm-b">Happy birthday to your group! 🎂 Yes, we have our private terrace table available for Saturday at 8 PM — perfect for 6. Shall I reserve it under your name?</div>
-          </div>
-          <div class="vm u">
-            <div class="vm-av">👤</div>
-            <div class="vm-b">Perfect! Can you do a gluten-free menu for one guest?</div>
-          </div>
-          <div class="vm a">
-            <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">S</div>
-            <div class="vm-b">Absolutely! Our chef prepares a full gluten-free menu on request. I've noted it in the reservation. Your table is confirmed ✅ — we'll send a reminder Friday!</div>
-          </div>
-        </div>
-      </div>
-      <div class="vert-info">
-        <h3 class="vert-title">For restaurants</h3>
-        <p class="vert-desc">Never let a Saturday reservation slip through a missed message again. Sofia takes bookings, handles special requests and confirms tables — even at 11 PM on a busy night.</p>
-        <div class="vert-bullets">
-          <div class="vert-bullet">Takes and confirms reservations 24/7</div>
-          <div class="vert-bullet">Handles dietary requirements and special occasions</div>
-          <div class="vert-bullet">Sends booking confirmations and day-before reminders</div>
-          <div class="vert-bullet">Answers menu, hours and parking questions</div>
-          <div class="vert-bullet">Captures waitlist requests on fully booked nights</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CLINIC -->
-    <div class="vert-panel" id="vert-clinic">
-      <div class="vert-chat">
-        <div class="vc-header">
-          <div class="vc-avatar">V</div>
-          <div>
-            <div class="vc-name">Valentina — Patient Concierge</div>
-            <div class="vc-role">Clinic Assistant</div>
-          </div>
-          <div class="vc-online"><span class="status-dot"></span> Online</div>
-        </div>
-        <div class="vc-msgs">
-          <div class="vm u">
-            <div class="vm-av">👤</div>
-            <div class="vm-b">Hi, do you accept new patients? I need a general checkup.</div>
-          </div>
-          <div class="vm a">
-            <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">V</div>
-            <div class="vm-b">Welcome! 👋 Yes, we're accepting new patients. Dr. Martínez has availability this Thursday at 10 AM or Friday at 2 PM. Which works best for you?</div>
-          </div>
-          <div class="vm u">
-            <div class="vm-av">👤</div>
-            <div class="vm-b">Thursday at 10 AM works. Do I need to bring anything?</div>
-          </div>
-          <div class="vm a">
-            <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">V</div>
-            <div class="vm-b">Confirmed for Thursday 10 AM ✅ Please bring your ID and insurance card if applicable. You'll receive a reminder 24 hours before. We look forward to seeing you!</div>
-          </div>
-        </div>
-      </div>
-      <div class="vert-info">
-        <h3 class="vert-title">For clinics</h3>
-        <p class="vert-desc">Valentina manages appointment requests, pre-consultation questions and patient intake — so your receptionist can focus on the patients already in the waiting room.</p>
-        <div class="vert-bullets">
-          <div class="vert-bullet">Schedules and confirms appointments automatically</div>
-          <div class="vert-bullet">Answers service, insurance and location questions</div>
-          <div class="vert-bullet">Sends 24-hour appointment reminders</div>
-          <div class="vert-bullet">Captures new patient information before first visit</div>
-          <div class="vert-bullet">Handles cancellations and reschedule requests</div>
         </div>
       </div>
     </div>
@@ -1688,22 +1669,6 @@
     });
   }, 100);
 
-  /* ── Hero chat animation ──
-     Theory: we simulate Emma typing then replying using setTimeout chains.
-     The typing indicator shows for a realistic delay, then gets replaced
-     by the actual message bubble. This makes the UI feel alive. */
-  function showEmmaReply() {
-    const typingEl = document.getElementById('emma-typing');
-    if (!typingEl) return;
-    setTimeout(() => {
-      typingEl.innerHTML = `
-        <div class="msg-avatar" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.6rem;border:none;">E</div>
-        <div class="msg-bubble" style="background:var(--green);color:var(--black);font-weight:500;border-radius:14px 14px 14px 4px;padding:9px 13px;font-size:0.82rem;line-height:1.45;max-width:230px;">
-          Hi! 🌟 Great timing — July 4th weekend we have 2 rooms left. Our Garden Suite sleeps 2 and has a stunning gulf view. Would you like me to check the rate and hold it for you?
-        </div>`;
-    }, 2400);
-  }
-  setTimeout(showEmmaReply, 1200);
 
   /* ── Vertical tabs ──
      Theory: we store the active panel ID in a variable and swap CSS classes.

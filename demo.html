@@ -942,8 +942,8 @@
       transform: translateY(-3px);
     }
     .price-card.featured {
-      border-color: rgba(200,240,96,0.35);
-      background: linear-gradient(160deg, rgba(200,240,96,0.05), transparent 60%);
+      border-color: rgba(200,145,43,0.4);
+      background: linear-gradient(160deg, rgba(200,145,43,0.06), transparent 60%);
     }
     .price-pill {
       position: absolute;
@@ -1179,6 +1179,95 @@
     }
     .footer-links a:hover { color: var(--white); }
     .footer-copy { font-size: 0.78rem; color: var(--muted); }
+
+    /* footer columns */
+    .footer-col { display: flex; flex-direction: column; gap: 0.5rem; }
+    .footer-tagline { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+    .footer-contact { font-size: 0.82rem; color: var(--muted); }
+    .footer-contact a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-contact a:hover { color: var(--white); }
+    .footer-social { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem; }
+    .footer-li-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 5px;
+      background: rgba(255,255,255,0.08);
+      font-size: 0.75rem; font-weight: 700; color: var(--white);
+      text-decoration: none; transition: background 0.2s;
+    }
+    .footer-li-icon:hover { background: rgba(200,145,43,0.25); }
+
+    /* inline lead capture */
+    .lead-section {
+      padding: 5rem 2rem;
+      text-align: center;
+      background: linear-gradient(180deg, transparent, rgba(200,145,43,0.03) 50%, transparent);
+      border-top: 1px solid var(--border);
+    }
+    .lead-section h2 {
+      font-family: var(--font-h);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 300;
+      color: var(--white);
+      margin: 0 0 0.75rem;
+    }
+    .lead-section h2 em { color: var(--green); font-style: italic; }
+    .lead-section p {
+      color: var(--muted);
+      font-size: 1rem;
+      margin: 0 auto 2.5rem;
+      max-width: 420px;
+      line-height: 1.6;
+    }
+    .lead-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    .lead-form input,
+    .lead-form select {
+      width: 100%;
+      padding: 13px 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--white);
+      font-family: var(--font-b);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+      appearance: none;
+    }
+    .lead-form input::placeholder { color: var(--muted); }
+    .lead-form input:focus,
+    .lead-form select:focus { border-color: rgba(200,145,43,0.5); }
+    .lead-form select option { background: #0d1218; color: var(--white); }
+    .lead-form button {
+      padding: 14px;
+      background: var(--green);
+      border: none;
+      border-radius: 10px;
+      color: var(--black);
+      font-family: var(--font-b);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .lead-form button:hover { opacity: 0.9; transform: translateY(-1px); }
+    .lead-form button:active { transform: translateY(0); }
+    .lead-success {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      color: var(--green);
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+    .lead-success.visible { display: flex; }
   </style>
 </head>
 <body>
@@ -1208,12 +1297,12 @@
   </div>
 
   <h1 class="hero-h1 reveal d1">
-    Choose your business.<br>
-    <em>Talk to Emma.</em>
+    While you sleep,<br>
+    <em>Emma answers.</em>
   </h1>
 
   <p class="hero-sub reveal d2">
-    Emma adapts to every type of business. Try it yourself — ask anything you'd expect a guest to ask.
+    An AI assistant with your name, your voice, your knowledge. For hotels, restaurants and clinics that can't afford to miss a single message.
   </p>
 
   <!-- Interactive business type selector + live chat -->
@@ -1778,20 +1867,70 @@
   </div>
 </div>
 
+<!-- ── INLINE LEAD CAPTURE ── -->
+<section class="lead-section">
+  <h2 class="reveal d1">Ready in <em>24 hours.</em></h2>
+  <p class="reveal d2">Tell us about your business and we'll set up your AI assistant — no credit card, no long-term contract.</p>
+  <form class="lead-form reveal d3" id="leadForm" novalidate>
+    <input type="text" name="business_name" placeholder="Your business name" required autocomplete="organization" />
+    <select name="business_type" required>
+      <option value="" disabled selected>Type of business</option>
+      <option value="hotel">Hotel / Boutique Hotel</option>
+      <option value="restaurant">Restaurant / Café</option>
+      <option value="clinic">Clinic / Medical Practice</option>
+      <option value="other">Other</option>
+    </select>
+    <input type="email" name="email" placeholder="Your email address" required autocomplete="email" />
+    <button type="submit" id="leadBtn">Get My AI Assistant →</button>
+  </form>
+  <div class="lead-success" id="leadSuccess">
+    <span style="font-size:1.2rem;">✓</span> We'll be in touch within 24h.
+  </div>
+</section>
+
 <!-- ── FOOTER ── -->
 <footer>
-  <a href="#" class="footer-logo">TIMELESS<span>.</span></a>
-  <div class="footer-links">
-    <a href="https://timeless-site.pages.dev/onboarding.html">Get Started</a>
-    <a href="#precios">Pricing</a>
-    <a href="#como-funciona">How It Works</a>
-    <a href="https://chic-begonia-1708bb.netlify.app/chat-sunlife.html" target="_blank" rel="noopener">Live Demo (Emma)</a>
-    <a href="mailto:hello@timeless.app">Contact</a>
+  <div class="footer-col">
+    <a href="#" class="footer-logo">TIMELESS<span>.</span></a>
+    <span class="footer-tagline">AI front desk for boutique hospitality</span>
   </div>
-  <div class="footer-copy">© 2026 Timeless. All rights reserved.</div>
+  <div class="footer-links">
+    <a href="/demo.html">Demo</a>
+    <a href="https://timeless-site.pages.dev/onboarding.html">Onboarding</a>
+    <a href="https://chic-begonia-1708bb.netlify.app/chat-sunlife.html" target="_blank" rel="noopener">Chat Emma</a>
+    <a href="#precios">Pricing</a>
+  </div>
+  <div class="footer-col" style="align-items:flex-end;">
+    <div class="footer-contact">Questions? <a href="mailto:hello@timeless.ai">hello@timeless.ai</a></div>
+    <div class="footer-social">
+      <span class="footer-contact" style="font-size:0.78rem;">Follow us</span>
+      <a href="https://www.linkedin.com/company/timeless-ai" target="_blank" rel="noopener" class="footer-li-icon" aria-label="LinkedIn">in</a>
+    </div>
+    <div class="footer-copy" style="margin-top:0.25rem;">© 2026 Timeless. All rights reserved.</div>
+  </div>
 </footer>
 
 <script>
+  /* ── Lead capture form ── */
+  document.getElementById('leadForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('leadBtn');
+    const form = this;
+    const data = Object.fromEntries(new FormData(form).entries());
+    if (!data.business_name || !data.business_type || !data.email) return;
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+    try {
+      await fetch('https://matiasdutli22.app.n8n.cloud/webhook/onboarding-hotel', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+    } catch (_) { /* fire and forget */ }
+    form.style.display = 'none';
+    document.getElementById('leadSuccess').classList.add('visible');
+  });
+
   /* ── Nav scroll class ── */
   const nav = document.getElementById('nav');
   const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 40);

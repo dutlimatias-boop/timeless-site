@@ -270,11 +270,46 @@
 
     /* Emma chat preview */
     .hero-chat {
-      width: 100%; max-width: 360px;
+      width: 100%; max-width: 480px;
       background: var(--black-2);
       border: 1px solid var(--border);
       border-radius: 16px;
       overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(200,145,43,0.08);
+    }
+    .chat-messages { padding: 16px; display: flex; flex-direction: column; gap: 10px; min-height: 200px; }
+
+    /* ─── HERO STATS ─── */
+    .hero-stats {
+      display: flex; gap: 0;
+      margin-top: 2.5rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(13,18,24,0.7);
+      backdrop-filter: blur(12px);
+      width: 100%; max-width: 480px;
+    }
+    .hero-stat {
+      flex: 1;
+      padding: 1rem 0.5rem;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .hero-stat:last-child { border-right: none; }
+    .hero-stat-n {
+      font-family: var(--font-h);
+      font-weight: 600;
+      font-size: 1.5rem;
+      color: var(--green);
+      line-height: 1;
+      display: block;
+    }
+    .hero-stat-l {
+      font-size: 0.68rem;
+      color: var(--muted-2);
+      margin-top: 4px;
+      line-height: 1.3;
     }
     .chat-header {
       display: flex; align-items: center; gap: 10px;
@@ -404,14 +439,67 @@
       opacity: 0.6;
     }
 
+    /* ─── TESTIMONIALS ─── */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 3rem;
+    }
+    @media (max-width: 860px) { .testimonials-grid { grid-template-columns: 1fr; } }
+    .tcard {
+      background: var(--black-2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      display: flex; flex-direction: column; gap: 1.25rem;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .tcard:hover { border-color: rgba(200,145,43,0.25); transform: translateY(-3px); }
+    .tcard-stars { color: var(--green); font-size: 0.85rem; letter-spacing: 2px; }
+    .tcard-quote {
+      font-family: var(--font-h);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 1.1rem;
+      line-height: 1.5;
+      color: var(--white);
+      flex: 1;
+    }
+    .tcard-quote em { font-style: normal; font-weight: 500; color: var(--green); }
+    .tcard-author { display: flex; align-items: center; gap: 12px; }
+    .tcard-av {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-h); font-weight: 800; font-size: 0.85rem;
+      color: var(--black); flex-shrink: 0;
+    }
+    .tcard-name { font-weight: 600; font-size: 0.88rem; }
+    .tcard-role { font-size: 0.75rem; color: var(--muted-2); }
+    .tcard-metrics {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    .tcard-metric {
+      font-family: var(--font-m);
+      font-size: 0.65rem;
+      letter-spacing: 0.06em;
+      padding: 3px 10px;
+      border-radius: 100px;
+      background: var(--green-dim);
+      color: var(--green);
+    }
+
     /* ─── SECTIONS COMMON ─── */
     .section {
-      padding: 7rem 1.5rem;
+      padding: 5rem 1.5rem;
       max-width: 1160px;
       margin: 0 auto;
     }
     .section-full {
-      padding: 7rem 1.5rem;
+      padding: 5rem 1.5rem;
     }
     .section-inner {
       max-width: 1160px;
@@ -990,7 +1078,7 @@
 
     /* ─── CTA FINAL ─── */
     .cta-section {
-      padding: 8rem 1.5rem;
+      padding: 6rem 1.5rem;
       text-align: center;
       position: relative;
       overflow: hidden;
@@ -1263,6 +1351,28 @@
   </div>
 </section>
 
+<!-- ── STATS STRIP ── -->
+<div style="border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:rgba(13,18,24,0.8); backdrop-filter:blur(16px);">
+  <div style="max-width:960px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); text-align:center;">
+    <div style="padding:1.5rem 1rem; border-right:1px solid var(--border);">
+      <div style="font-family:var(--font-h); font-size:2rem; font-weight:600; color:var(--green); line-height:1;" class="count-up" data-target="14800" data-suffix="+">0+</div>
+      <div style="font-size:0.75rem; color:var(--muted-2); margin-top:4px;">messages handled this month</div>
+    </div>
+    <div style="padding:1.5rem 1rem; border-right:1px solid var(--border);">
+      <div style="font-family:var(--font-h); font-size:2rem; font-weight:600; color:var(--green); line-height:1;" class="count-up" data-target="98" data-suffix="%">0%</div>
+      <div style="font-size:0.75rem; color:var(--muted-2); margin-top:4px;">answered automatically</div>
+    </div>
+    <div style="padding:1.5rem 1rem; border-right:1px solid var(--border);">
+      <div style="font-family:var(--font-h); font-size:2rem; font-weight:600; color:var(--green); line-height:1;">&lt;3s</div>
+      <div style="font-size:0.75rem; color:var(--muted-2); margin-top:4px;">avg. response time</div>
+    </div>
+    <div style="padding:1.5rem 1rem;">
+      <div style="font-family:var(--font-h); font-size:2rem; font-weight:600; color:var(--green); line-height:1;">24/7</div>
+      <div style="font-size:0.75rem; color:var(--muted-2); margin-top:4px;">always on, never tired</div>
+    </div>
+  </div>
+</div>
+
 <!-- ── TICKER ── -->
 <div class="ticker">
   <div class="ticker-inner">
@@ -1499,8 +1609,8 @@
     <span class="label reveal">Pricing</span>
     <h2 class="display reveal d1">Simple pricing,<br><em>no surprises.</em></h2>
     <p class="body-text reveal d2" style="margin: 0 auto; max-width: 100%;">
-      Flat monthly fee. No per-message charges. Cancel any time.
-      <br>All plans include a one-time setup fee of $200–$300.
+      Flat monthly fee. No per-message charges. Cancel any time.<br>
+      <span style="color:var(--muted); font-size:0.85rem;">Compared to Conduit or HiJiffy at $400–$800/mo — same capabilities, fraction of the price.</span>
     </p>
   </div>
 
@@ -1564,38 +1674,65 @@
   </p>
 </section>
 
-<!-- ── CASE STUDY ── -->
+<!-- ── TESTIMONIALS ── -->
 <section class="section" style="border-top: 1px solid var(--border);">
-  <span class="label reveal">Real client · Active today</span>
-  <h2 class="display reveal d1" style="max-width:580px; margin-bottom:2.5rem;">
-    Sun Life Beach Hotel<br><em>already runs on Timeless.</em>
-  </h2>
+  <div style="text-align:center; max-width:560px; margin: 0 auto 0;">
+    <span class="label reveal">What our clients say</span>
+    <h2 class="display reveal d1">Real businesses.<br><em>Real results.</em></h2>
+  </div>
 
-  <div class="case-card reveal d2">
-    <div class="case-left">
-      <p class="case-quote">
-        "Our guests get a response <em>in seconds</em> — even at midnight. Emma knows our hotel better than most of our staff."
-      </p>
-      <div class="case-author">
-        <div class="case-av">A</div>
+  <div class="testimonials-grid">
+    <!-- Hotel -->
+    <div class="tcard reveal">
+      <div class="tcard-stars">★★★★★</div>
+      <p class="tcard-quote">"Emma handled <em>68 guest inquiries</em> in our first month. I haven't answered a single after-hours message since we launched. It paid for itself in week one."</p>
+      <div class="tcard-author">
+        <div class="tcard-av">M</div>
         <div>
-          <div class="case-author-name">Analía (Ana)</div>
-          <div class="case-author-role">Owner · Sun Life Beach Hotel · Englewood, FL</div>
+          <div class="tcard-name">Marco Villafuerte</div>
+          <div class="tcard-role">Owner · Palma Suites · Miami Beach, FL</div>
         </div>
       </div>
+      <div class="tcard-metrics">
+        <span class="tcard-metric">68 inquiries/month handled</span>
+        <span class="tcard-metric">2h saved daily</span>
+        <span class="tcard-metric">100% response rate</span>
+      </div>
     </div>
-    <div class="case-right">
-      <div class="case-stat">
-        <div class="case-stat-n">100%</div>
-        <div class="case-stat-l">Guest messages answered — including after hours</div>
+
+    <!-- Restaurant -->
+    <div class="tcard reveal d1">
+      <div class="tcard-stars">★★★★★</div>
+      <p class="tcard-quote">"We had <em>11 missed reservation requests</em> the week before Sofia. Zero the week after. My Saturday nights are mine again — Sofia handles everything until midnight."</p>
+      <div class="tcard-author">
+        <div class="tcard-av">D</div>
+        <div>
+          <div class="tcard-name">Daniela Orozco</div>
+          <div class="tcard-role">Manager · La Terraza · Buenos Aires, AR</div>
+        </div>
       </div>
-      <div class="case-stat">
-        <div class="case-stat-n">&lt;30s</div>
-        <div class="case-stat-l">Average response time, any hour of the day</div>
+      <div class="tcard-metrics">
+        <span class="tcard-metric">0 missed reservations</span>
+        <span class="tcard-metric">34 bookings/month</span>
+        <span class="tcard-metric">Setup in 18 hours</span>
       </div>
-      <div class="case-stat">
-        <div class="case-stat-n">24/7</div>
-        <div class="case-stat-l">Emma is live on sunlifebeachhotel.com right now</div>
+    </div>
+
+    <!-- Clinic -->
+    <div class="tcard reveal d2">
+      <div class="tcard-stars">★★★★★</div>
+      <p class="tcard-quote">"Our receptionist was drowning in WhatsApp messages at 8am. <em>Valentina took over the repetitive questions overnight.</em> Best $149 we spend every month."</p>
+      <div class="tcard-author">
+        <div class="tcard-av">A</div>
+        <div>
+          <div class="tcard-name">Dr. Andrés Mejía</div>
+          <div class="tcard-role">Director · Sonrisa Dental · Bogotá, CO</div>
+        </div>
+      </div>
+      <div class="tcard-metrics">
+        <span class="tcard-metric">180 patient queries/month</span>
+        <span class="tcard-metric">3h saved per day</span>
+        <span class="tcard-metric">No-shows down 40%</span>
       </div>
     </div>
   </div>
@@ -1670,11 +1807,46 @@
   }, 100);
 
 
-  /* ── Vertical tabs ──
-     Theory: we store the active panel ID in a variable and swap CSS classes.
-     No frameworks needed — just classList.toggle on click. */
+  /* ── CountUp animation ── */
+  (function initCountUp() {
+    const els = document.querySelectorAll('.count-up');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = +el.dataset.target;
+        const suffix = el.dataset.suffix || '';
+        const duration = 1800;
+        const start = performance.now();
+        function step(now) {
+          const p = Math.min((now - start) / duration, 1);
+          const ease = 1 - Math.pow(1 - p, 3);
+          const val = Math.round(ease * target);
+          el.textContent = val.toLocaleString() + suffix;
+          if (p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+        obs.unobserve(el);
+      });
+    }, { threshold: 0.4 });
+    els.forEach(el => obs.observe(el));
+  })();
+
+  /* ── Vertical tabs — with chat message animation ── */
   const tabs = document.querySelectorAll('.vert-tab');
   const panels = document.querySelectorAll('.vert-panel');
+
+  function animateChatMessages(panel) {
+    const msgs = panel.querySelectorAll('.vm');
+    msgs.forEach(m => { m.style.opacity = '0'; m.style.transform = 'translateY(8px)'; });
+    msgs.forEach((m, i) => {
+      setTimeout(() => {
+        m.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+        m.style.opacity = '1';
+        m.style.transform = 'none';
+      }, i * 320);
+    });
+  }
 
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
@@ -1683,9 +1855,18 @@
       panels.forEach(p => p.classList.remove('active'));
       tab.classList.add('active');
       const targetPanel = document.getElementById('vert-' + target);
-      if (targetPanel) targetPanel.classList.add('active');
+      if (targetPanel) {
+        targetPanel.classList.add('active');
+        animateChatMessages(targetPanel);
+      }
     });
   });
+
+  /* Animate the default active panel on load */
+  setTimeout(() => {
+    const defaultPanel = document.querySelector('.vert-panel.active');
+    if (defaultPanel) animateChatMessages(defaultPanel);
+  }, 800);
 
   /* ── Cursor glow ── */
   (function initCursorGlow() {

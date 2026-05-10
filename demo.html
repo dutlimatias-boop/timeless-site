@@ -1292,9 +1292,9 @@
 
 <!-- ── HERO ── -->
 <section class="hero" id="inicio">
-  <div class="hero-badge reveal">
+  <div class="hero-badge reveal" id="hero-badge">
     <span class="badge-dot"></span>
-    Live Demo
+    <span id="hero-badge-text">Live Demo</span>
   </div>
 
   <h1 class="hero-h1 reveal d1">
@@ -1302,7 +1302,7 @@
     <em>Emma answers.</em>
   </h1>
 
-  <p class="hero-sub reveal d2">
+  <p class="hero-sub reveal d2" id="hero-sub">
     An AI assistant with your name, your voice, your knowledge. For hotels, restaurants and clinics that can't afford to miss a single message.
   </p>
 
@@ -1912,6 +1912,20 @@
 </footer>
 
 <script>
+  /* ── ?hotel= URL param — personalize hero for cold outreach ── */
+  (function initHotelParam() {
+    const params = new URLSearchParams(window.location.search);
+    const hotelRaw = params.get('hotel');
+    if (!hotelRaw) return;
+    const hotel = decodeURIComponent(hotelRaw);
+    const badgeText = document.getElementById('hero-badge-text');
+    const heroSub = document.getElementById('hero-sub');
+    if (badgeText) badgeText.textContent = 'Emma para ' + hotel;
+    if (heroSub) heroSub.innerHTML =
+      'Así quedaría <em style="font-style:italic;color:var(--green);">Emma</em> para ' +
+      '<strong>' + hotel + '</strong> — lista en menos de 24 horas.';
+  })();
+
   /* ── Lead capture form ── */
   document.getElementById('leadForm').addEventListener('submit', async function(e) {
     e.preventDefault();

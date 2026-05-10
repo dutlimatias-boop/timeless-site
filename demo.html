@@ -1921,9 +1921,12 @@
     const badgeText = document.getElementById('hero-badge-text');
     const heroSub = document.getElementById('hero-sub');
     if (badgeText) badgeText.textContent = 'Emma para ' + hotel;
-    if (heroSub) heroSub.innerHTML =
-      'Así quedaría <em style="font-style:italic;color:var(--green);">Emma</em> para ' +
-      '<strong>' + hotel + '</strong> — lista en menos de 24 horas.';
+    if (heroSub) {
+      heroSub.innerHTML =
+        'Así quedaría <em style="font-style:italic;color:var(--green);">Emma</em> para ' +
+        '<strong></strong> — lista en menos de 24 horas.';
+      heroSub.querySelector('strong').textContent = hotel;
+    }
   })();
 
   /* ── Lead capture form ── */

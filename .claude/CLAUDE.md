@@ -16,3 +16,7 @@ AI automation SaaS for hotels, restaurants, clinics, and small businesses. Provi
 @rules/onboarding.md
 @rules/clients.md
 @rules/roadmap.md
+@rules/competitors.md
+@rules/strategy.md
+@rules/status.md
+@rules/claude-code-shortcuts.md

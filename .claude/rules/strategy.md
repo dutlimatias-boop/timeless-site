@@ -37,7 +37,7 @@ Stranger → Demo page → Onboarding form → Live bot → Cliente activo
 ```
 
 1. **Stranger descubre Timeless** → via LinkedIn, Instagram, cold outreach, referidos
-2. **Ve la demo interactiva** → timeless-site.pages.dev/demo.html (storytelling + chat en vivo)
+2. **Ve la demo interactiva** → timeless-site.pages.dev/ (storytelling + chat en vivo — ES index.html)
 3. **Completa el onboarding** → timeless-site.pages.dev/onboarding.html (6 tipos de negocio)
 4. **Recibe su bot en < 24h** → email de bienvenida con link al chat y panel
 5. **Se convierte en cliente** → propuesta de precios, contrato simple, pago mensual
@@ -65,8 +65,8 @@ Stranger → Demo page → Onboarding form → Live bot → Cliente activo
 **Cómo:**
 - Reels cortos: "así responde Emma a las 3am" (screen recording del chat)
 - Stories: "¿cuánto perdés por no responder en 4 minutos?"
-- Usar colores y estética de la demo page (dark, dorado, cinematográfico)
-- Bio → link a demo.html
+- Usar colores y estética de la landing (dark, dorado, cinematográfico — ya unificado)
+- Bio → link a timeless-site.pages.dev
 
 **Métricas objetivo:** 500 seguidores → 50 visitas/semana a demo.html
 
@@ -154,5 +154,5 @@ Formato de case study:
 | 2 | Recontactar Ana con resumen de actividad de Emma | Matías |
 | 3 | Unirse a 3 grupos de hotelería en Facebook/WhatsApp | Matías |
 | 3 | Demo con al menos 1 nuevo prospecto | Matías |
-| 4 | Iterar demo.html basado en feedback de demos | Claude Code |
+| 4 | Iterar landing page (index.html) basado en feedback de demos | Claude Code |
 | 4 | Documentar case study parcial de Sun Life | Matías |

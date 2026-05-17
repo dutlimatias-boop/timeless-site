@@ -18,7 +18,7 @@
 | Workflow | ID | Trigger | Estado | Descripción |
 |----------|----|---------|--------|-------------|
 | Timeless — Lead Hunter | `uhtAIR0uKDxPzVXn` | Lunes 8am | ⏸ Inactivo | Google Maps → OpenAI scoring → append a Prospectos (score ≥ 7) |
-| Timeless — Outreach Email | `RJArwDBVO9X9GbAp` | Martes 10am | ⏸ Inactivo | Hunter.io → OpenAI subject → Gmail cold email con link ?hotel= |
+| Timeless — Outreach Email | `RJArwDBVO9X9GbAp` | Martes 10am | ⏸ Inactivo | Hunter.io → OpenAI subject → Gmail cold email con link `/?hotel=NombreHotel` |
 | Timeless — Follow-up Bot | `DG1KRnNlMewrbZW9` | Diario 9am | ⏸ Inactivo | Secuencia 4 toques (día 1, 5, 12, 30) a prospectos sin respuesta |
 | Timeless — Content Generator | `LnDGBsIJStSGp0os` | Viernes 10am + Diario 11am | ⏸ Inactivo | Genera posts LinkedIn/Instagram (Parte A) + auto-publica aprobados (Parte B) |
 

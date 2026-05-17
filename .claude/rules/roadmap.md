@@ -23,6 +23,9 @@
 - [ ] Auto-register lead en Google Sheets desde primer mensaje de interés (sin intervención del owner)
 
 ## Completado (mayo 2026)
+- [x] **Landing page unificada** — index.html ES la demo cinematográfica (demo.html eliminado, una sola URL: `/`)
+- [x] **Sistema de diseño unificado** — Cormorant Garamond + DM Sans + dorado `#c8912b` aplicado a index + onboarding (referencia: demo.html)
+- [x] **W2 Outreach Email actualizado** — link `?hotel=` apunta a `/?hotel=` (no más demo.html)
 - [x] **demo.html** — página interactiva con storytelling, chat simulado por tipo de negocio, pricing
 - [x] **Migración a Cloudflare Pages** — timeless-site.pages.dev (sin límites de bandwidth)
 - [x] **Reporte Semanal Silencioso** — acumula métricas en "Weekly Reports" sin enviar email a Ana

@@ -17,12 +17,13 @@ Timeless tiene un cliente activo (Sun Life Beach Hotel), infraestructura complet
 ### Páginas deployadas
 | Archivo | URL | Estado |
 |---------|-----|--------|
-| `index.html` | `/` | Live |
-| `demo.html` | `/demo.html` | Live — demo interactiva con chat simulado |
+| `index.html` | `/` | Live — landing page principal (ES LA DEMO cinematográfica) |
 | `onboarding.html` | `/onboarding.html` | Live — form multi-step 6 tipos de negocio |
 | `chat-sunlife.html` | `/chat-sunlife.html` | Live — Emma para Ana |
 | `panel-sunlife.html` | `/panel-sunlife.html` | Live — panel para Ana |
 | `dashboard-sunlife.html` | `/dashboard-sunlife.html` | Live — dashboard con demo data |
+
+> `demo.html` eliminado (2026-05-17) — su contenido pasó a ser `index.html`. Links con `?hotel=` apuntan a `/?hotel=`.
 
 ### Emma (Bot de Ana)
 - **URL pública:** https://chic-begonia-1708bb.netlify.app/chat-sunlife.html

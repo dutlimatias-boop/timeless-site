@@ -1,5 +1,7 @@
 # Claves y secretos
 apikey*.txt
+KEY*.txt
+KEY *.txt
 *.key
 *.env
 .env*

@@ -4,6 +4,12 @@
 |--------|-------------|-----------|-------|
 | Sun Life Beach Hotel | `C:\Users\user\Desktop\Proyectos\Sunlife` | `sunlife_beach_hotel` | First client — Ana (FL, USA). **PAUSADO** — Ana no disponible por temas personales. |
 
+## ⚠️ Aclaración clave: cliente vs. plataforma vs. demo
+
+- **Intocable = solo lo que es propiedad real de un cliente.** Para Sun Life: los datos de Ana, su KB live, el bot Emma que responde en sunlifebeachhotel.com. No se modifican sin ella.
+- **El trabajo de Timeless ES Timeless.** Plataforma, templates, workflows propios, marketing, onboarding — se trabajan con total libertad. NO aplicar la regla "intocable" a todo lo que diga "hotel".
+- **Hotel Patagonia = workflow DEMO/sandbox de Timeless.** Es nuestro entorno para construir y testear features (reranking, migración de modelo, nuevos flujos) ANTES de llevarlas a un cliente real. Se toca libremente — no es un cliente.
+
 ## Sun Life — n8n Workflows
 
 | Workflow | ID | Estado | Descripción |

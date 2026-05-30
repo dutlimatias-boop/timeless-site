@@ -138,7 +138,7 @@ return topChunks.join('\n\n') || 'No encontre informacion relevante.';
 |-------|---------------|--------------|
 | Rotar secretos | Acceso a OpenAI + Supabase dashboards | ✅ (Matías) — acción manual pendiente |
 | Reranking | API key de Cohere (free tier) | ✅ credencial `Cohere account` creada |
-| Migrar a Claude | Credencial Anthropic **tipo nativo** en n8n | ⏳ existe "Anthropic API Key" pero es Header Auth; el nodo Claude necesita tipo `anthropicApi` |
+| Migrar a Claude | Credencial Anthropic **tipo nativo** en n8n | ✅ `Anthropic account` (anthropicApi, id `3NLGSIOWRqFxCJ0D`) creada y testeada |
 
 ---
 
@@ -160,4 +160,17 @@ return topChunks.join('\n\n') || 'No encontre informacion relevante.';
 - n8n corre **v2.21.8** (ya es 2.x). Tacha el pendiente "verificar n8n 2.0".
 - Cupo de 2.500 ejec/mes es ajustado con marketing + bots. Revisar consumo por workflow al resetear; evaluar plan si entran clientes.
 
-**Pendiente Claude (Tarea B):** crear credencial nativa `Anthropic API` (no Header Auth) antes de armar la versión Claude.
+**Build de Claude (Tarea B) — HECHO (2026-05-30):**
+- Workflow **`Hotel Patagonia - Bot Demo (Claude test)`** (id `BBbqvxenIswa5Sta`) creado.
+- Versión limpia de evaluación: Chat Trigger → AI Agent (mismo system prompt) → **Anthropic Chat Model `claude-sonnet-4-6`** (cred `anthropicApi` 3NLGSIOWRqFxCJ0D) + Simple Memory + tool `buscar_info_hotel` (mismo reranking que el bot GPT).
+- Sin nodos de logging (Sheets/Telegram/Gmail) — solo para comparar calidad de respuesta del modelo.
+- Inactivo; activar para testear el 1 de junio.
+
+**A/B a correr el 1 de junio (cuando reseteen ejecuciones):**
+| Variable | GPT (Bot Demo `fxrIKIn65oZ4o2RN`) | Claude (test `BBbqvxenIswa5Sta`) |
+|----------|-----------------------------------|----------------------------------|
+| Modelo | gpt-4o-mini | claude-sonnet-4-6 |
+| RAG | rerank sub-workflow (igual) | rerank sub-workflow (igual) |
+| Prompt | igual | igual |
+- Mandar las mismas 5 preguntas a ambos → comparar calidad, costo, latencia, y respeto del formato JSON.
+- Anthropic console: créditos USD 10, prompt caching **No habilitado** (activar después para -90% costo, radar 1.5).

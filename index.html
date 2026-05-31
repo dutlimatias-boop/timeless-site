@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Timeless — Your Guest Never Waits</title>
+  <title>Timeless — Tu asistente virtual que nunca duerme</title>
 
   <!-- Open Graph / LinkedIn -->
-  <meta property="og:title" content="Timeless — Your Guest Never Waits" />
-  <meta property="og:description" content="An AI assistant with your name, your personality, your knowledge. For hotels, restaurants and clinics that can't afford to miss a single message." />
-  <meta property="og:url" content="https://timeless-site.pages.dev/demo" />
+  <meta property="og:title" content="Timeless — Tu asistente virtual que nunca duerme" />
+  <meta property="og:description" content="Un asistente virtual con tu nombre, tu personalidad y tu conocimiento. Para hoteles, restaurantes y clínicas que no pueden perder ni un solo mensaje." />
+  <meta property="og:url" content="https://timeless-site.pages.dev/" />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://timeless-site.pages.dev/og-cover.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Timeless — Your Guest Never Waits" />
-  <meta name="twitter:description" content="AI front desk for boutique hotels, restaurants and clinics. Live in 24h. From $79/mo." />
+  <meta name="twitter:title" content="Timeless — Tu asistente virtual que nunca duerme" />
+  <meta name="twitter:description" content="Asistente IA para hoteles boutique, restaurantes y clínicas. En vivo en 24h. Desde $49/mes." />
   <meta name="twitter:image" content="https://timeless-site.pages.dev/og-cover.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -1152,6 +1152,75 @@
       flex-shrink: 0;
     }
 
+    /* ─── FOUNDER ─── */
+    .founder-section { padding-top: 4rem; padding-bottom: 4rem; }
+    .founder-inner {
+      display: flex;
+      gap: 2.5rem;
+      align-items: flex-start;
+    }
+    @media (max-width: 600px) {
+      .founder-inner { flex-direction: column; gap: 1.75rem; }
+    }
+    .founder-photo {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: var(--black-3);
+      border: 1px solid var(--border-2);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .founder-initials {
+      font-family: var(--font-h);
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: var(--green);
+      letter-spacing: 0.05em;
+    }
+    .founder-quote {
+      font-family: var(--font-h);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 1.15rem;
+      line-height: 1.6;
+      color: var(--white);
+      margin-bottom: 1.25rem;
+    }
+    .founder-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .founder-name {
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--white);
+    }
+    .founder-role {
+      font-size: 0.8rem;
+      color: var(--muted-2);
+    }
+    .founder-li {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: var(--muted-2);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .founder-li:hover { color: var(--white); }
+    .founder-li-icon {
+      width: 18px; height: 18px;
+      background: #0A66C2;
+      border-radius: 3px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: white;
+    }
+
     /* ─── FOOTER ─── */
     footer {
       border-top: 1px solid var(--border);
@@ -1283,10 +1352,10 @@
   <a href="#" class="nav-logo">TIMELESS<span>.</span></a>
   <a href="#solucion" class="nav-mobile-cta">Ver demo</a>
   <div class="nav-links">
-    <a href="#como-funciona">How It Works</a>
-    <a href="#solucion">How Emma Works</a>
-    <a href="#precios">Pricing</a>
-    <a href="https://timeless-site.pages.dev/onboarding.html" class="nav-cta">Get Started</a>
+    <a href="#como-funciona">Cómo funciona</a>
+    <a href="#solucion">Tu asistente</a>
+    <a href="#precios">Precios</a>
+    <a href="https://timeless-site.pages.dev/onboarding.html" class="nav-cta">Empezar</a>
   </div>
 </nav>
 
@@ -1294,24 +1363,24 @@
 <section class="hero" id="inicio">
   <div class="hero-badge reveal" id="hero-badge">
     <span class="badge-dot"></span>
-    <span id="hero-badge-text">Live Demo</span>
+    <span id="hero-badge-text">Demo en vivo</span>
   </div>
 
   <h1 class="hero-h1 reveal d1">
-    While you sleep,<br>
-    <em>Emma answers.</em>
+    Mientras dormís,<br>
+    <em>Emma responde.</em>
   </h1>
 
   <p class="hero-sub reveal d2" id="hero-sub">
-    An AI assistant with your name, your voice, your knowledge. For hotels, restaurants and clinics that can't afford to miss a single message.
+    Un asistente virtual con tu nombre, tu voz y tu conocimiento. Para hoteles, restaurantes y clínicas que no pueden perder ni un solo mensaje.
   </p>
 
   <!-- Interactive business type selector + live chat -->
   <div class="hero-demo reveal d3">
     <div class="vert-tabs">
       <button class="vert-tab active" data-vert="hotel">🏨 Hotel</button>
-      <button class="vert-tab" data-vert="restaurant">🍽️ Restaurant</button>
-      <button class="vert-tab" data-vert="clinic">🏥 Clinic</button>
+      <button class="vert-tab" data-vert="restaurant">🍽️ Restaurante</button>
+      <button class="vert-tab" data-vert="clinic">🏥 Clínica</button>
     </div>
 
     <!-- HOTEL -->
@@ -1321,41 +1390,41 @@
           <div class="vc-avatar">E</div>
           <div>
             <div class="vc-name">Emma — Ocean View Hotel</div>
-            <div class="vc-role">Virtual Front Desk</div>
+            <div class="vc-role">Recepción Virtual</div>
           </div>
-          <div class="vc-online"><span class="status-dot"></span> Online · responds in seconds</div>
+          <div class="vc-online"><span class="status-dot"></span> Online · responde en segundos</div>
         </div>
         <div class="vc-msgs">
           <div class="vm u">
             <div class="vm-av">👤</div>
-            <div class="vm-b">Hi! Is breakfast included? We arrive Friday evening.</div>
+            <div class="vm-b">Hola! ¿El desayuno está incluido? Llegamos el viernes a la noche.</div>
           </div>
           <div class="vm a">
             <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">E</div>
-            <div class="vm-b">Good news! 🌅 Breakfast is included for all guests — served 7–10 AM on our garden terrace. Check-in is from 3 PM. Shall I check availability for your dates?</div>
+            <div class="vm-b">¡Buenas noticias! 🌅 El desayuno está incluido para todos los huéspedes — se sirve de 7 a 10 AM en nuestra terraza. El check-in es a partir de las 3 PM. ¿Te busco disponibilidad para esas fechas?</div>
           </div>
           <div class="vm u">
             <div class="vm-av">👤</div>
-            <div class="vm-b">Yes please! July 11–14, 2 adults, oceanview if possible.</div>
+            <div class="vm-b">Sí, por favor! Del 11 al 14 de julio, 2 adultos, con vista al mar si hay.</div>
           </div>
           <div class="vm a">
             <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">E</div>
-            <div class="vm-b">Great choice! 🏖️ Our Oceanview Suite is available those dates at $189/night — private balcony with sea view. Want me to hold it while you decide?</div>
+            <div class="vm-b">¡Excelente elección! 🏖️ La Suite con Vista al Mar está disponible esas fechas a $189/noche — balcón privado con vista al océano. ¿Te la reservo mientras decidís?</div>
           </div>
         </div>
       </div>
       <div class="vert-info">
         <span class="label" style="margin-bottom:0.75rem;">Ocean View Hotel</span>
-        <h3 class="vert-title">Emma knows your hotel<br>inside out.</h3>
-        <p class="vert-desc">From room rates and availability to pet policies and check-in times — Emma learns everything about your property and answers guests instantly, with warmth and precision.</p>
+        <h3 class="vert-title">Emma conoce tu hotel<br>de adentro para afuera.</h3>
+        <p class="vert-desc">Desde tarifas y disponibilidad hasta políticas de mascotas y horarios — Emma aprende todo sobre tu propiedad y responde a los huéspedes al instante, con calidez y precisión.</p>
         <div class="vert-bullets">
-          <div class="vert-bullet">Answers availability and rate questions 24/7</div>
-          <div class="vert-bullet">Captures lead data: dates, room type, special occasions</div>
-          <div class="vert-bullet">Sends pre-arrival and post-stay messages automatically</div>
-          <div class="vert-bullet">Logs every conversation to your dashboard</div>
+          <div class="vert-bullet">Responde consultas de disponibilidad y precios 24/7</div>
+          <div class="vert-bullet">Captura datos del lead: fechas, tipo de habitación, ocasión especial</div>
+          <div class="vert-bullet">Envía mensajes de pre-llegada y post-estadía automáticamente</div>
+          <div class="vert-bullet">Registra cada conversación en tu panel de control</div>
         </div>
         <a href="https://timeless-site.pages.dev/onboarding.html" class="btn-primary" style="margin-top:1.5rem; width:fit-content;">
-          Create My Emma →
+          Crear mi Emma →
         </a>
       </div>
     </div>
@@ -1366,42 +1435,42 @@
         <div class="vc-header">
           <div class="vc-avatar">S</div>
           <div>
-            <div class="vc-name">Sofia — Table Reservations</div>
-            <div class="vc-role">Restaurant Assistant</div>
+            <div class="vc-name">Sofía — Reservas</div>
+            <div class="vc-role">Asistente del Restaurante</div>
           </div>
-          <div class="vc-online"><span class="status-dot"></span> Online · responds in seconds</div>
+          <div class="vc-online"><span class="status-dot"></span> Online · responde en segundos</div>
         </div>
         <div class="vc-msgs">
           <div class="vm u">
             <div class="vm-av">👤</div>
-            <div class="vm-b">Do you have a table for 6 on Saturday at 8 PM? It's a birthday dinner.</div>
+            <div class="vm-b">Hola! ¿Tienen mesa para 6 el sábado a las 8 PM? Es una cena de cumpleaños.</div>
           </div>
           <div class="vm a">
             <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">S</div>
-            <div class="vm-b">Happy birthday! 🎂 Yes — our private terrace table is available Saturday at 8 PM, perfect for 6. Shall I reserve it under your name?</div>
+            <div class="vm-b">¡Feliz cumpleaños! 🎂 Sí — nuestra mesa de terraza privada está disponible el sábado a las 8 PM, perfecta para 6. ¿Te la reservo a tu nombre?</div>
           </div>
           <div class="vm u">
             <div class="vm-av">👤</div>
-            <div class="vm-b">Perfect! Can you do a gluten-free menu for one guest?</div>
+            <div class="vm-b">¡Perfecto! ¿Pueden hacer menú sin gluten para uno de los invitados?</div>
           </div>
           <div class="vm a">
             <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">S</div>
-            <div class="vm-b">Absolutely! Our chef prepares a full gluten-free menu on request. I've noted it in the reservation. Confirmed ✅ — we'll send a reminder Friday!</div>
+            <div class="vm-b">¡Claro que sí! El chef prepara menú sin gluten a pedido. Ya lo anoté en la reserva. Confirmado ✅ — te mandamos un recordatorio el viernes.</div>
           </div>
         </div>
       </div>
       <div class="vert-info">
-        <span class="label" style="margin-bottom:0.75rem;">Restaurant</span>
-        <h3 class="vert-title">Sofia never misses<br>a reservation.</h3>
-        <p class="vert-desc">Never let a Saturday booking slip through a missed message again. Sofia takes reservations, handles special requests and confirms tables — even at 11 PM.</p>
+        <span class="label" style="margin-bottom:0.75rem;">Restaurante</span>
+        <h3 class="vert-title">Sofía no pierde<br>ninguna reserva.</h3>
+        <p class="vert-desc">Nunca más pierdas una reserva del sábado por un mensaje sin respuesta. Sofía toma reservas, gestiona pedidos especiales y confirma mesas — incluso a las 11 PM.</p>
         <div class="vert-bullets">
-          <div class="vert-bullet">Takes and confirms reservations 24/7</div>
-          <div class="vert-bullet">Handles dietary requirements and special occasions</div>
-          <div class="vert-bullet">Sends booking confirmations and day-before reminders</div>
-          <div class="vert-bullet">Captures waitlist requests on fully booked nights</div>
+          <div class="vert-bullet">Toma y confirma reservas 24/7</div>
+          <div class="vert-bullet">Gestiona requerimientos dietarios y celebraciones especiales</div>
+          <div class="vert-bullet">Envía confirmaciones y recordatorios automáticos</div>
+          <div class="vert-bullet">Captura lista de espera en noches completas</div>
         </div>
         <a href="https://timeless-site.pages.dev/onboarding.html" class="btn-primary" style="margin-top:1.5rem; width:fit-content;">
-          Create My Sofia →
+          Crear mi Sofía →
         </a>
       </div>
     </div>
@@ -1412,42 +1481,42 @@
         <div class="vc-header">
           <div class="vc-avatar">V</div>
           <div>
-            <div class="vc-name">Valentina — Patient Concierge</div>
-            <div class="vc-role">Clinic Assistant</div>
+            <div class="vc-name">Valentina — Turnos</div>
+            <div class="vc-role">Asistente de Clínica</div>
           </div>
-          <div class="vc-online"><span class="status-dot"></span> Online · responds in seconds</div>
+          <div class="vc-online"><span class="status-dot"></span> Online · responde en segundos</div>
         </div>
         <div class="vc-msgs">
           <div class="vm u">
             <div class="vm-av">👤</div>
-            <div class="vm-b">Hi, do you accept new patients? I need a general checkup.</div>
+            <div class="vm-b">Hola, ¿atienden pacientes nuevos? Necesito un chequeo general.</div>
           </div>
           <div class="vm a">
             <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">V</div>
-            <div class="vm-b">Welcome! 👋 Yes — Dr. Martínez has availability this Thursday at 10 AM or Friday at 2 PM. Which works best for you?</div>
+            <div class="vm-b">¡Bienvenido! 👋 Sí — el Dr. Martínez tiene disponibilidad este jueves a las 10 AM o el viernes a las 2 PM. ¿Cuál te queda mejor?</div>
           </div>
           <div class="vm u">
             <div class="vm-av">👤</div>
-            <div class="vm-b">Thursday at 10 AM works. Do I need to bring anything?</div>
+            <div class="vm-b">El jueves a las 10 AM. ¿Tengo que llevar algo?</div>
           </div>
           <div class="vm a">
             <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">V</div>
-            <div class="vm-b">Confirmed for Thursday 10 AM ✅ Please bring your ID and insurance card. You'll receive a reminder 24 hours before. We look forward to seeing you!</div>
+            <div class="vm-b">Confirmado para el jueves a las 10 AM ✅ Por favor traé tu DNI y la tarjeta de obra social. Vas a recibir un recordatorio 24 horas antes. ¡Te esperamos!</div>
           </div>
         </div>
       </div>
       <div class="vert-info">
-        <span class="label" style="margin-bottom:0.75rem;">Clinic</span>
-        <h3 class="vert-title">Valentina manages<br>your appointments.</h3>
-        <p class="vert-desc">Valentina handles appointment requests, pre-consultation questions and patient intake — so your receptionist can focus on the patients already in the waiting room.</p>
+        <span class="label" style="margin-bottom:0.75rem;">Clínica</span>
+        <h3 class="vert-title">Valentina gestiona<br>tus turnos.</h3>
+        <p class="vert-desc">Valentina maneja solicitudes de turno, consultas previas e ingreso de pacientes — para que tu recepcionista pueda concentrarse en quienes ya están en la sala de espera.</p>
         <div class="vert-bullets">
-          <div class="vert-bullet">Schedules and confirms appointments automatically</div>
-          <div class="vert-bullet">Answers service, insurance and location questions</div>
-          <div class="vert-bullet">Sends 24-hour appointment reminders</div>
-          <div class="vert-bullet">Captures new patient information before first visit</div>
+          <div class="vert-bullet">Agenda y confirma turnos automáticamente</div>
+          <div class="vert-bullet">Responde consultas de servicios, obra social y ubicación</div>
+          <div class="vert-bullet">Envía recordatorios 24 horas antes del turno</div>
+          <div class="vert-bullet">Captura datos del paciente nuevo antes de la primera visita</div>
         </div>
         <a href="https://timeless-site.pages.dev/onboarding.html" class="btn-primary" style="margin-top:1.5rem; width:fit-content;">
-          Create My Valentina →
+          Crear mi Valentina →
         </a>
       </div>
     </div>
@@ -1458,20 +1527,20 @@
 <div style="border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:rgba(13,18,24,0.8); backdrop-filter:blur(16px);">
   <div style="max-width:960px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); text-align:center;">
     <div style="padding:1.5rem 1rem; border-right:1px solid var(--border);">
-      <div style="font-family:var(--font-h); font-size:2rem; font-weight:600; color:var(--green); line-height:1;" class="count-up" data-target="14800" data-suffix="+">0+</div>
-      <div style="font-size:0.75rem; color:var(--muted-2); margin-top:4px;">messages handled this month</div>
+      <div style="font-family:var(--font-h); font-size:2rem; font-weight:600; color:var(--green); line-height:1;">24/7</div>
+      <div style="font-size:0.75rem; color:var(--muted-2); margin-top:4px;">respuestas sin pausas</div>
     </div>
     <div style="padding:1.5rem 1rem; border-right:1px solid var(--border);">
-      <div style="font-family:var(--font-h); font-size:2rem; font-weight:600; color:var(--green); line-height:1;" class="count-up" data-target="98" data-suffix="%">0%</div>
-      <div style="font-size:0.75rem; color:var(--muted-2); margin-top:4px;">answered automatically</div>
+      <div style="font-family:var(--font-h); font-size:2rem; font-weight:600; color:var(--green); line-height:1;">&lt;24h</div>
+      <div style="font-size:0.75rem; color:var(--muted-2); margin-top:4px;">de forma a asistente en vivo</div>
     </div>
     <div style="padding:1.5rem 1rem; border-right:1px solid var(--border);">
       <div style="font-family:var(--font-h); font-size:2rem; font-weight:600; color:var(--green); line-height:1;">&lt;3s</div>
-      <div style="font-size:0.75rem; color:var(--muted-2); margin-top:4px;">avg. response time</div>
+      <div style="font-size:0.75rem; color:var(--muted-2); margin-top:4px;">tiempo promedio de respuesta</div>
     </div>
     <div style="padding:1.5rem 1rem;">
-      <div style="font-family:var(--font-h); font-size:2rem; font-weight:600; color:var(--green); line-height:1;">24/7</div>
-      <div style="font-size:0.75rem; color:var(--muted-2); margin-top:4px;">always on, never tired</div>
+      <div style="font-family:var(--font-h); font-size:2rem; font-weight:600; color:var(--green); line-height:1;">$0</div>
+      <div style="font-size:0.75rem; color:var(--muted-2); margin-top:4px;">costo por mensaje — sin límites</div>
     </div>
   </div>
 </div>
@@ -1479,27 +1548,27 @@
 <!-- ── TICKER ── -->
 <div class="ticker">
   <div class="ticker-inner">
-    <div class="ticker-item"><span class="ticker-sep"></span>24/7 Guest Support</div>
-    <div class="ticker-item"><span class="ticker-sep"></span>Instant Replies</div>
-    <div class="ticker-item"><span class="ticker-sep"></span>Lead Capture</div>
-    <div class="ticker-item"><span class="ticker-sep"></span>Booking Assistance</div>
-    <div class="ticker-item"><span class="ticker-sep"></span>Weekly Reports</div>
-    <div class="ticker-item"><span class="ticker-sep"></span>Live Dashboard</div>
-    <div class="ticker-item"><span class="ticker-sep"></span>Zero Missed Messages</div>
-    <div class="ticker-item"><span class="ticker-sep"></span>Setup in 24h</div>
-    <div class="ticker-item"><span class="ticker-sep"></span>Named AI Assistant</div>
-    <div class="ticker-item"><span class="ticker-sep"></span>WhatsApp Ready</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Atención 24/7</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Respuestas Instantáneas</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Captura de Leads</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Asistencia con Reservas</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Reporte Semanal</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Panel en Vivo</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Cero Mensajes Sin Respuesta</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>En vivo en 24h</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Asistente con Tu Nombre</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>WhatsApp Incluido</div>
     <!-- duplicate for seamless loop -->
-    <div class="ticker-item"><span class="ticker-sep"></span>24/7 Guest Support</div>
-    <div class="ticker-item"><span class="ticker-sep"></span>Instant Replies</div>
-    <div class="ticker-item"><span class="ticker-sep"></span>Lead Capture</div>
-    <div class="ticker-item"><span class="ticker-sep"></span>Booking Assistance</div>
-    <div class="ticker-item"><span class="ticker-sep"></span>Weekly Reports</div>
-    <div class="ticker-item"><span class="ticker-sep"></span>Live Dashboard</div>
-    <div class="ticker-item"><span class="ticker-sep"></span>Zero Missed Messages</div>
-    <div class="ticker-item"><span class="ticker-sep"></span>Setup in 24h</div>
-    <div class="ticker-item"><span class="ticker-sep"></span>Named AI Assistant</div>
-    <div class="ticker-item"><span class="ticker-sep"></span>WhatsApp Ready</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Atención 24/7</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Respuestas Instantáneas</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Captura de Leads</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Asistencia con Reservas</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Reporte Semanal</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Panel en Vivo</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Cero Mensajes Sin Respuesta</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>En vivo en 24h</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Asistente con Tu Nombre</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>WhatsApp Incluido</div>
   </div>
 </div>
 
@@ -1507,60 +1576,60 @@
 <section class="section" id="problema">
   <div class="two-col">
     <div>
-      <span class="label reveal">The Problem</span>
-      <h2 class="display reveal d1">Every unanswered<br>message is a <em>lost guest.</em></h2>
+      <span class="label reveal">El Problema</span>
+      <h2 class="display reveal d1">Cada mensaje sin respuesta<br>es un <em>cliente perdido.</em></h2>
       <p class="body-text reveal d2">
-        Studies show that 78% of guests book with whoever responds first. When your front desk is closed, your competitors are not. Every missed message after hours is potential revenue walking out the door.
+        El 78% de los clientes elige al primero que responde. Cuando tu recepción está cerrada, la competencia no lo está. Cada mensaje sin respuesta fuera de horario es ingreso que se va por la puerta.
       </p>
       <p class="body-text reveal d3" style="margin-top: 1rem;">
-        You can't be on call 24/7. <strong style="color:var(--white);">Timeless can.</strong>
+        Vos no podés estar disponible 24/7. <strong style="color:var(--white);">Timeless sí puede.</strong>
       </p>
     </div>
 
     <div class="missed-log reveal d2">
       <div class="log-header">
-        <span class="log-title">Unanswered messages</span>
+        <span class="log-title">Mensajes sin respuesta</span>
         <span class="log-badge">
           <span class="log-badge-dot"></span>
-          Live · Tonight
+          En vivo · Esta noche
         </span>
       </div>
       <div class="log-items">
         <div class="log-item">
           <span class="log-icon">💬</span>
           <div class="log-text">
-            <strong>Booking inquiry — Room for 2</strong>
-            <span>Do you have availability for Aug 15–18? King room preferred.</span>
+            <strong>Consulta de reserva — Habitación para 2</strong>
+            <span>¿Tienen disponibilidad del 15 al 18 de agosto? Preferimos cama king.</span>
           </div>
           <span class="log-time">11:34 PM</span>
         </div>
         <div class="log-item">
           <span class="log-icon">📋</span>
           <div class="log-text">
-            <strong>Special occasion request</strong>
-            <span>We're celebrating our anniversary, is there anything special you can do?</span>
+            <strong>Ocasión especial</strong>
+            <span>Estamos festejando nuestro aniversario, ¿pueden hacer algo especial?</span>
           </div>
           <span class="log-time">1:02 AM</span>
         </div>
         <div class="log-item">
           <span class="log-icon">💳</span>
           <div class="log-text">
-            <strong>Ready to book — waiting on reply</strong>
-            <span>Great, what's your cancellation policy? I'll book right now.</span>
+            <strong>Listo para reservar — esperando respuesta</strong>
+            <span>Perfecto, ¿cuál es la política de cancelación? Reservo ahora mismo.</span>
           </div>
           <span class="log-time">2:47 AM</span>
         </div>
         <div class="log-item">
           <span class="log-icon">📸</span>
           <div class="log-text">
-            <strong>Influencer — collaboration ask</strong>
-            <span>Hi! I have 45k followers on Instagram. Would you be interested in...  </span>
+            <strong>Influencer — propuesta de colaboración</strong>
+            <span>¡Hola! Tengo 45k seguidores en Instagram. ¿Les interesaría...</span>
           </div>
           <span class="log-time">3:15 AM</span>
         </div>
       </div>
       <div class="log-footer">
-        <strong>4 messages</strong> received after hours — 0 answered.
+        <strong>4 mensajes</strong> recibidos fuera de horario — 0 respondidos.
       </div>
     </div>
   </div>
@@ -1569,10 +1638,10 @@
 <!-- ── EMMA ── -->
 <section class="section" id="solucion" style="border-top: 1px solid var(--border);">
   <div style="text-align:center; max-width: 640px; margin: 0 auto 4rem;">
-    <span class="label reveal">The Solution</span>
-    <h2 class="display reveal d1">Meet your new<br><em>assistant.</em></h2>
+    <span class="label reveal">La Solución</span>
+    <h2 class="display reveal d1">Conocé a tu nuevo<br><em>asistente.</em></h2>
     <p class="body-text reveal d2" style="max-width: 100%; margin: 0 auto;">
-      Timeless gives you a named, personalized AI assistant trained on your business — your services, your prices, your personality. Not a generic chatbot. <em style="font-style:italic; color:var(--white);">Your</em> assistant.
+      Timeless te da un asistente virtual con nombre y personalidad propios, entrenado con la información de tu negocio — tus servicios, tus precios, tu estilo. No es un chatbot genérico. Es <em style="font-style:italic; color:var(--white);">tu</em> asistente.
     </p>
   </div>
 
@@ -1582,7 +1651,7 @@
         <div class="emma-logo">E</div>
         <div class="emma-info">
           <strong>Emma</strong>
-          <span>Virtual Front Desk · Sun Life Beach Hotel</span>
+          <span>Recepción Virtual · Sun Life Beach Hotel</span>
         </div>
         <div class="emma-online">
           <span class="status-dot"></span>
@@ -1593,48 +1662,48 @@
         <div class="convo-row">
           <span class="convo-icon">🏖️</span>
           <div class="convo-text">
-            <strong>Maria G. — Booking inquiry</strong>
-            <span>Of course! We have a beautiful oceanview room available for...</span>
+            <strong>María G. — Consulta de reserva</strong>
+            <span>¡Claro! Tenemos una hermosa habitación con vista al mar disponible para...</span>
           </div>
-          <span class="convo-badge cb-done">Answered</span>
+          <span class="convo-badge cb-done">Respondida</span>
         </div>
         <div class="convo-row">
           <span class="convo-icon">📅</span>
           <div class="convo-text">
-            <strong>James R. — Check-in question</strong>
-            <span>Check-in is at 3 PM, but I can check if early arrival is possible for...</span>
+            <strong>James R. — Pregunta de check-in</strong>
+            <span>El check-in es a las 3 PM, pero puedo consultar si es posible la llegada temprana...</span>
           </div>
-          <span class="convo-badge cb-live">Live</span>
+          <span class="convo-badge cb-live">En vivo</span>
         </div>
         <div class="convo-row">
           <span class="convo-icon">🎉</span>
           <div class="convo-text">
-            <strong>Sofia T. — Anniversary package</strong>
-            <span>Congratulations! We'd love to make your stay extra special. We offer...</span>
+            <strong>Sofía T. — Paquete aniversario</strong>
+            <span>¡Felicitaciones! Nos encantaría hacer tu estadía extra especial. Tenemos...</span>
           </div>
-          <span class="convo-badge cb-done">Answered</span>
+          <span class="convo-badge cb-done">Respondida</span>
         </div>
         <div class="convo-row">
           <span class="convo-icon">🅿️</span>
           <div class="convo-text">
-            <strong>New visitor — Parking availability</strong>
-            <span>Yes, we have complimentary parking for all guests. You'll find...</span>
+            <strong>Nuevo visitante — Estacionamiento</strong>
+            <span>Sí, tenemos estacionamiento gratuito para todos los huéspedes. Lo encontrás...</span>
           </div>
-          <span class="convo-badge cb-new">New lead</span>
+          <span class="convo-badge cb-new">Nuevo lead</span>
         </div>
       </div>
       <div class="emma-stats">
         <div class="emma-stat">
           <span class="emma-stat-n">100%</span>
-          <div class="emma-stat-l">Response rate</div>
+          <div class="emma-stat-l">Tasa de respuesta</div>
         </div>
         <div class="emma-stat">
           <span class="emma-stat-n">&lt;30s</span>
-          <div class="emma-stat-l">Avg. reply time</div>
+          <div class="emma-stat-l">Tiempo de respuesta</div>
         </div>
         <div class="emma-stat">
           <span class="emma-stat-n">24/7</span>
-          <div class="emma-stat-l">Always on</div>
+          <div class="emma-stat-l">Siempre activa</div>
         </div>
       </div>
     </div>
@@ -1643,29 +1712,29 @@
       <div class="emma-feat">
         <div class="feat-icon">🧠</div>
         <div class="feat-body">
-          <strong>Knows your business inside out</strong>
-          <p>Trained on your real information — rooms, prices, policies, FAQ — using RAG technology. No hallucinations, no wrong answers.</p>
+          <strong>Conoce tu negocio de adentro para afuera</strong>
+          <p>Entrenado con tu información real — habitaciones, precios, políticas, preguntas frecuentes — con tecnología RAG. Sin alucinaciones, sin respuestas incorrectas.</p>
         </div>
       </div>
       <div class="emma-feat">
         <div class="feat-icon">✍️</div>
         <div class="feat-body">
-          <strong>Your name, your personality</strong>
-          <p>Call it Emma, Sofia, Marco — whatever fits your brand. The tone adapts to be formal or casual, warm or professional, in any language.</p>
+          <strong>Tu nombre, tu personalidad</strong>
+          <p>Llamalo Emma, Sofía, Valentina — lo que mejor represente tu marca. El tono se adapta: formal o cercano, cálido o profesional, en cualquier idioma.</p>
         </div>
       </div>
       <div class="emma-feat">
         <div class="feat-icon">📊</div>
         <div class="feat-body">
-          <strong>Dashboard + weekly reports</strong>
-          <p>See every conversation, captured lead and guest request in one place. Receive a weekly summary every Monday morning.</p>
+          <strong>Panel + reportes semanales</strong>
+          <p>Ves cada conversación, lead capturado y solicitud del cliente en un solo lugar. Recibís un resumen semanal cada lunes por la mañana.</p>
         </div>
       </div>
       <div class="emma-feat">
         <div class="feat-icon">🔌</div>
         <div class="feat-body">
-          <strong>On your website in minutes</strong>
-          <p>One line of code via Google Tag Manager. Works on any website — GoDaddy, Wix, WordPress — without any tech skills.</p>
+          <strong>En tu sitio web en minutos</strong>
+          <p>Una línea de código vía Google Tag Manager. Funciona en cualquier sitio — GoDaddy, Wix, WordPress — sin necesitar conocimientos técnicos.</p>
         </div>
       </div>
     </div>
@@ -1675,33 +1744,33 @@
 <!-- ── HOW IT WORKS ── -->
 <section class="section" id="como-funciona" style="border-top: 1px solid var(--border);">
   <div style="text-align:center; max-width: 580px; margin: 0 auto 0;">
-    <span class="label reveal">How It Works</span>
-    <h2 class="display reveal d1">From sign-up to live<br><em>in under 24 hours.</em></h2>
+    <span class="label reveal">Cómo funciona</span>
+    <h2 class="display reveal d1">Del formulario a en vivo<br><em>en menos de 24 horas.</em></h2>
   </div>
   <div class="steps reveal d2">
     <div class="step">
-      <div class="step-num">STEP 01</div>
+      <div class="step-num">PASO 01</div>
       <span class="step-icon">📝</span>
-      <div class="step-title">Fill the form</div>
-      <p class="step-desc">Tell us about your business: name, type, services, hours and FAQ. Takes about 10 minutes.</p>
+      <div class="step-title">Completás el formulario</div>
+      <p class="step-desc">Nos contás sobre tu negocio: nombre, tipo, servicios, horarios y preguntas frecuentes. Lleva unos 10 minutos.</p>
     </div>
     <div class="step">
-      <div class="step-num">STEP 02</div>
+      <div class="step-num">PASO 02</div>
       <span class="step-icon">🧠</span>
-      <div class="step-title">We train your assistant</div>
-      <p class="step-desc">We ingest your knowledge base into a secure AI model. Your assistant learns your business, your tone and your rules.</p>
+      <div class="step-title">Entrenamos tu asistente</div>
+      <p class="step-desc">Cargamos tu base de conocimiento en un modelo de IA seguro. Tu asistente aprende tu negocio, tu tono y tus reglas.</p>
     </div>
     <div class="step">
-      <div class="step-num">STEP 03</div>
+      <div class="step-num">PASO 03</div>
       <span class="step-icon">🔌</span>
-      <div class="step-title">We install it</div>
-      <p class="step-desc">One line of code via Google Tag Manager. Your assistant appears on your website instantly — no dev required.</p>
+      <div class="step-title">Lo instalamos</div>
+      <p class="step-desc">Una línea de código vía Google Tag Manager. Tu asistente aparece en tu sitio al instante — sin conocimientos técnicos.</p>
     </div>
     <div class="step">
-      <div class="step-num">STEP 04</div>
+      <div class="step-num">PASO 04</div>
       <span class="step-icon">✨</span>
-      <div class="step-title">Go timeless</div>
-      <p class="step-desc">Every message gets answered. Every lead gets captured. Your dashboard updates in real time. You just got your evenings back.</p>
+      <div class="step-title">Libre para siempre</div>
+      <p class="step-desc">Cada mensaje queda respondido. Cada lead, capturado. Tu panel se actualiza en tiempo real. Recuperaste tus noches.</p>
     </div>
   </div>
 </section>
@@ -1730,9 +1799,8 @@
         <li>Conversaciones ilimitadas</li>
         <li>Captura de leads + panel de gestión</li>
         <li>Reporte semanal por email</li>
-        <li>Nombre y personalidad personalizados</li>
+        <li>Nombre, estructura y personalidad personalizados</li>
         <li>Soporte por email</li>
-        <li>Setup gratis (primeros 3 clientes)</li>
       </ul>
       <a href="https://timeless-site.pages.dev/onboarding.html" class="price-cta pc-outline">Empezar ahora →</a>
     </div>
@@ -1742,7 +1810,7 @@
       <div class="price-pill">Europa</div>
       <div class="price-tier">España · Suiza</div>
       <div class="price-amount"><sup>$</sup>99</div>
-      <div class="price-period">/ mes · precio de lanzamiento</div>
+      <div class="price-period">/ mes · sin contrato</div>
       <div class="price-target">España · Suiza · y comunidades hispanohablantes en Europa</div>
       <div class="price-div"></div>
       <ul class="price-list">
@@ -1750,129 +1818,93 @@
         <li>Conversaciones ilimitadas</li>
         <li>Captura de leads + panel de gestión</li>
         <li>Reporte semanal por email</li>
-        <li>Nombre y personalidad personalizados</li>
+        <li>Nombre, estructura y personalidad personalizados</li>
         <li>Soporte por email</li>
-        <li>Setup gratis (primeros 3 clientes)</li>
       </ul>
       <a href="https://timeless-site.pages.dev/onboarding.html" class="price-cta pc-green">Empezar ahora →</a>
     </div>
   </div>
 
   <p class="pricing-note reveal" style="max-width:600px; margin: 2rem auto 0; text-align:center;">
-    Precio de lanzamiento para los primeros 3 clientes — después sube.<br>
     Sin contrato de permanencia · Sin tarjeta requerida para empezar · <a href="/terms.html">Términos</a> · <a href="/privacy.html">Privacidad</a>
   </p>
 </section>
 
-<!-- ── TESTIMONIALS ── -->
+<!-- ── TESTIMONIALS ── placeholder: agregar cuando Sun Life (Ana) autorice su caso real -->
+<!--
 <section class="section" style="border-top: 1px solid var(--border);">
-  <div style="text-align:center; max-width:560px; margin: 0 auto 0;">
-    <span class="label reveal">What our clients say</span>
-    <h2 class="display reveal d1">Real businesses.<br><em>Real results.</em></h2>
-  </div>
-
-  <div class="testimonials-grid">
-    <!-- Hotel -->
-    <div class="tcard reveal">
-      <div class="tcard-stars">★★★★★</div>
-      <p class="tcard-quote">"Emma handled <em>68 guest inquiries</em> in our first month. I haven't answered a single after-hours message since we launched. It paid for itself in week one."</p>
-      <div class="tcard-author">
-        <div class="tcard-av">M</div>
-        <div>
-          <div class="tcard-name">Marco Villafuerte</div>
-          <div class="tcard-role">Owner · Palma Suites · Miami Beach, FL</div>
-        </div>
-      </div>
-      <div class="tcard-metrics">
-        <span class="tcard-metric">68 inquiries/month handled</span>
-        <span class="tcard-metric">2h saved daily</span>
-        <span class="tcard-metric">100% response rate</span>
-      </div>
-    </div>
-
-    <!-- Restaurant -->
-    <div class="tcard reveal d1">
-      <div class="tcard-stars">★★★★★</div>
-      <p class="tcard-quote">"We had <em>11 missed reservation requests</em> the week before Sofia. Zero the week after. My Saturday nights are mine again — Sofia handles everything until midnight."</p>
-      <div class="tcard-author">
-        <div class="tcard-av">D</div>
-        <div>
-          <div class="tcard-name">Daniela Orozco</div>
-          <div class="tcard-role">Manager · La Terraza · Buenos Aires, AR</div>
-        </div>
-      </div>
-      <div class="tcard-metrics">
-        <span class="tcard-metric">0 missed reservations</span>
-        <span class="tcard-metric">34 bookings/month</span>
-        <span class="tcard-metric">Setup in 18 hours</span>
-      </div>
-    </div>
-
-    <!-- Clinic -->
-    <div class="tcard reveal d2">
-      <div class="tcard-stars">★★★★★</div>
-      <p class="tcard-quote">"Our receptionist was drowning in WhatsApp messages at 8am. <em>Valentina took over the repetitive questions overnight.</em> Best $149 we spend every month."</p>
-      <div class="tcard-author">
-        <div class="tcard-av">A</div>
-        <div>
-          <div class="tcard-name">Dr. Andrés Mejía</div>
-          <div class="tcard-role">Director · Sonrisa Dental · Bogotá, CO</div>
-        </div>
-      </div>
-      <div class="tcard-metrics">
-        <span class="tcard-metric">180 patient queries/month</span>
-        <span class="tcard-metric">3h saved per day</span>
-        <span class="tcard-metric">No-shows down 40%</span>
-      </div>
-    </div>
-  </div>
+  TESTIMONIOS — pendiente caso real con permiso del cliente
 </section>
+-->
 
 <!-- ── FINAL CTA ── -->
 <div class="cta-section">
-  <span class="label reveal" style="display:block; margin-bottom:1.5rem;">Ready?</span>
+  <span class="label reveal" style="display:block; margin-bottom:1.5rem;">¿Listo?</span>
   <h2 class="reveal d1">
-    Your guests are messaging<br>right now. <em>Who's answering?</em>
+    Tus clientes están escribiendo<br>ahora mismo. <em>¿Quién les responde?</em>
   </h2>
   <p class="cta-sub reveal d2">
-    Create your AI assistant today. Live on your website in under 24 hours. No credit card required to start.
+    Creá tu asistente hoy. En vivo en tu sitio web en menos de 24 horas. Sin tarjeta de crédito para empezar.
   </p>
   <div class="reveal d3">
     <a href="https://timeless-site.pages.dev/onboarding.html" class="btn-primary" style="font-size:1rem; padding:15px 36px;">
-      Create My Assistant — Free →
+      Crear mi asistente — Gratis →
     </a>
   </div>
   <div class="reveal d4">
     <a
-      href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Ftimeless-site.pages.dev%2Fdemo"
+      href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Ftimeless-site.pages.dev%2F"
       target="_blank"
       rel="noopener noreferrer"
       class="linkedin-share"
     >
       <div class="li-box">in</div>
-      Share on LinkedIn — help another business owner get their time back
+      Compartir en LinkedIn — ayudá a otro dueño de negocio a recuperar su tiempo
     </a>
   </div>
 </div>
 
 <!-- ── INLINE LEAD CAPTURE ── -->
 <section class="lead-section">
-  <h2 class="reveal d1">Ready in <em>24 hours.</em></h2>
-  <p class="reveal d2">Tell us about your business and we'll set up your AI assistant — no credit card, no long-term contract.</p>
+  <h2 class="reveal d1">En vivo en <em>24 horas.</em></h2>
+  <p class="reveal d2">Contanos sobre tu negocio y configuramos tu asistente — sin tarjeta de crédito, sin contrato de permanencia.</p>
   <form class="lead-form reveal d3" id="leadForm" novalidate>
-    <input type="text" name="business_name" placeholder="Your business name" required autocomplete="organization" />
+    <input type="text" name="business_name" placeholder="Nombre de tu negocio" required autocomplete="organization" />
     <select name="business_type" required>
-      <option value="" disabled selected>Type of business</option>
-      <option value="hotel">Hotel / Boutique Hotel</option>
-      <option value="restaurant">Restaurant / Café</option>
-      <option value="clinic">Clinic / Medical Practice</option>
-      <option value="other">Other</option>
+      <option value="" disabled selected>Tipo de negocio</option>
+      <option value="hotel">Hotel / Hotel Boutique</option>
+      <option value="restaurant">Restaurante / Café</option>
+      <option value="clinic">Clínica / Consultorio</option>
+      <option value="other">Otro</option>
     </select>
-    <input type="email" name="email" placeholder="Your email address" required autocomplete="email" />
-    <button type="submit" id="leadBtn">Get My AI Assistant →</button>
+    <input type="email" name="email" placeholder="Tu email" required autocomplete="email" />
+    <button type="submit" id="leadBtn">Quiero mi asistente →</button>
   </form>
   <div class="lead-success" id="leadSuccess">
-    <span style="font-size:1.2rem;">✓</span> We'll be in touch within 24h.
+    <span style="font-size:1.2rem;">✓</span> Te contactamos en menos de 24h.
+  </div>
+</section>
+
+<!-- ── FOUNDER ── -->
+<section class="section founder-section" style="border-top: 1px solid var(--border); max-width: 760px;">
+  <div class="founder-inner reveal">
+    <div class="founder-photo" aria-label="Matías Dutli, fundador de Timeless">
+      <span class="founder-initials">MD</span>
+    </div>
+    <div class="founder-text">
+      <span class="label" style="margin-bottom: 0.75rem;">Detrás de Timeless</span>
+      <p class="founder-quote">
+        "Soy Matías, fundador de Timeless. Lo armé porque vi cómo los negocios chicos pierden clientes todos los días simplemente por no poder responder a tiempo. Emma existe para resolver exactamente eso — sin que tengas que estar pegado al teléfono."
+      </p>
+      <div class="founder-meta">
+        <span class="founder-name">Matías Dutli</span>
+        <span class="founder-role">Fundador · Zurich, Suiza</span>
+        <a href="https://linkedin.com/in/matiasdutli" target="_blank" rel="noopener" class="founder-li">
+          <span class="founder-li-icon">in</span>
+          LinkedIn
+        </a>
+      </div>
+    </div>
   </div>
 </section>
 

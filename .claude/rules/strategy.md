@@ -1,158 +1,162 @@
-# Strategy — Timeless (mayo 2026)
+# Strategy — Timeless (actualizado mayo 2026)
 
 ## Visión
 
-Ser la plataforma de automatización IA más accesible para hoteles boutique y pequeños negocios de hospitalidad (4–30 habitaciones / mesas / consultorios) en Latinoamérica y comunidades hispanas en USA.
+Ser la plataforma de automatización IA más accesible para hoteles boutique, restaurantes, clínicas, centros de belleza y pequeños negocios de hospitalidad en Latinoamérica, España y comunidades hispanohablantes en Suiza.
 
 No competimos con Conduit ni HiJiffy por precio — los usamos como ancla de comparación para mostrar que ofrecemos el 80% del valor al 20% del costo.
 
 ---
 
+## Verticales objetivo (multi-vertical desde el día 1)
+
+| Vertical | Estado | Notas |
+|----------|--------|-------|
+| Hoteles boutique | ✅ Activo | Caso de uso más documentado (Sun Life) |
+| Restaurantes | ✅ Bot demo existe | Alto potencial LATAM/España |
+| Centros de belleza / barberías | ✅ Bot demo existe | Alto volumen de consultas, ideal para Emma |
+| Clínicas estéticas / médicas | ✅ Bot demo existe | Alto ticket, ROI muy claro |
+| Inmobiliarias | ✅ Bot demo existe | Secundario por ahora |
+
+---
+
+## Mercados objetivo
+
+### Latinoamérica (mercado principal)
+**Fase 1 — primeros 3 meses:**
+Buenos Aires, Córdoba, Mendoza, Rosario, Salta, Bariloche, Mar del Plata, Tucumán
+
+**Fase 2 — mes 4+:**
+Jujuy, Neuquén, Santa Fe, Montevideo (Uruguay), Bogotá, Medellín, Cartagena (Colombia), CDMX, Guadalajara (México), Santiago, Valparaíso (Chile), Lima, Cusco (Perú)
+
+### España (mercado secundario)
+Todas las ciudades principales: Madrid, Barcelona, Valencia, Sevilla, Málaga, Bilbao, Zaragoza, Palma de Mallorca, Granada, Alicante
+
+### Suiza (mercado terciario — hispanohablantes)
+Zúrich, Ginebra
+
+**Nota:** Todos los mercados reciben cold email automatizado (W2). No hay diferencia de canal entre mercados.
+
+---
+
 ## Modelo de negocio
 
-### Pricing tiers actuales
+### Pricing (actualizado mayo 2026)
 
-| Tier | Precio | Target | Qué incluye |
-|------|--------|--------|-------------|
-| **Starter** | $79/mes | Hoteles 4–8 hab, restaurantes pequeños | Bot web + dashboard + reporte semanal |
-| **Growth** | $149/mes | Hoteles 8–20 hab, clínicas | Todo Starter + guest journey automation + WhatsApp |
-| **Scale** | $299/mes | Multi-propiedad, resorts boutique | Todo Growth + integraciones custom + soporte prioritario |
+| Mercado | Precio | Setup | Contrato |
+|---------|--------|-------|---------|
+| **Europa** (España + Suiza) | $99/mes | Gratis primeros 3 clientes, luego $199 | Mes a mes |
+| **Latinoamérica** | $49/mes | Gratis primeros 3 clientes, luego $199 | Mes a mes |
 
-### Setup fee
-- $200–$500 único por cliente (cubre onboarding, personalización del bot, KB setup)
-- Negociable para primeros 5 clientes (etapa de validación)
+**Precio de lanzamiento:** sube después de los primeros 3 clientes
+- Europa: $99 → $149/mes
+- LATAM: $49 → $79/mes
 
-### Meta a 6 meses
-- 5 clientes activos de pago → $500–$1,500 MRR
-- 1 case study documentado (Sun Life) con métricas reales
+**Por qué geographic pricing:** El ROI para el cliente es el mismo (Emma se paga sola con 3-5 clientes extra), pero el ticket promedio y el poder adquisitivo son muy distintos. Es práctica estándar en SaaS global (Notion, Figma, Canva lo hacen).
 
----
+### ROI por vertical — argumento de venta
 
-## Funnel de adquisición
+| Negocio | Ticket promedio | Clientes extra para ROI LATAM ($49) | Clientes extra para ROI Europa ($99) |
+|---------|----------------|--------------------------------------|---------------------------------------|
+| Peluquería/barbería | $8-15 LATAM / €20-35 Europa | 4-7 turnos extra/mes | 3-5 turnos extra/mes |
+| Restaurante | $15-30 LATAM / €40-80 Europa | 2-4 reservas extra/mes | 2 reservas extra/mes |
+| Clínica estética | $30-80 LATAM / €60-150 Europa | 1-2 consultas extra/mes | 1 consulta extra/mes |
+| Hotel boutique | $50-120 LATAM / €80-200 Europa | 1 reserva extra/mes | 1 reserva extra/mes |
 
-### Etapa actual: Discovery + Proof of Concept
-
-```
-Stranger → Demo page → Onboarding form → Live bot → Cliente activo
-```
-
-1. **Stranger descubre Timeless** → via LinkedIn, Instagram, cold outreach, referidos
-2. **Ve la demo interactiva** → timeless-site.pages.dev/ (storytelling + chat en vivo — ES index.html)
-3. **Completa el onboarding** → timeless-site.pages.dev/onboarding.html (6 tipos de negocio)
-4. **Recibe su bot en < 24h** → email de bienvenida con link al chat y panel
-5. **Se convierte en cliente** → propuesta de precios, contrato simple, pago mensual
-
-### Conversión esperada
-- Demo → Onboarding: ~20% (es una acción de alta intención)
-- Onboarding → Cliente activo: ~60% (si el bot funciona bien = cierre)
+### Meta a 3 meses
+- 3 clientes activos (primeros 3 con setup gratis) → validar producto
+- 5 clientes activos de pago → $245-495/mes MRR primer ingreso real
+- 1 case study documentado con métricas reales
 
 ---
 
-## TOP 5 canales de adquisición (ordenados por prioridad)
+## Mensajes de venta
 
-### 1. LinkedIn — outreach directo a dueños de hoteles boutique
-**Quién:** Propietarios de hoteles pequeños, gerentes generales, directores de revenue  
-**Cómo:**
-- Perfil personal de Matías como fundador de Timeless (not corporate)
-- Posts educativos: "cuánto cuesta un mensaje sin respuesta a las 2am" / "Emma atendió 40 consultas esta semana"
-- DM con valor primero: compartir estadísticas de Emma (sin revelar cliente) → ofrecer demo
-- Target geográfico: Argentina, Chile, México, Colombia, España, Florida/Miami
+### Familia de mensajes core
 
-**Métricas objetivo:** 20 DMs/semana → 5 demos → 1 cliente/mes
+**Ángulo pérdida (miedo):**
+> "¿Cuántos turnos perdiste este mes porque no pudiste responder el WhatsApp a tiempo? Con Emma, eso no pasa más."
 
-### 2. Instagram — contenido visual de producto
-**Quién:** Hoteles boutique con presencia social, restaurantes con buen Instagram  
-**Cómo:**
-- Reels cortos: "así responde Emma a las 3am" (screen recording del chat)
-- Stories: "¿cuánto perdés por no responder en 4 minutos?"
-- Usar colores y estética de la landing (dark, dorado, cinematográfico — ya unificado)
+**Ángulo organización (paz mental):**
+> "Tené tus clientes organizados y trabajá tranquilo — Emma se encarga de responder, vos te encargás de tu negocio."
+
+**Ángulo agotamiento:**
+> "Sos recepcionista, peluquero y community manager al mismo tiempo. Emma te saca al menos uno de esos sombreros."
+
+**Ángulo horario:**
+> "Emma atiende a las 2am cuando vos estás durmiendo. Ninguna consulta sin respuesta."
+
+**Tagline principal:**
+> "Emma atiende a tus clientes 24/7 como tu mejor recepcionista — sin sueldo, sin días libres, lista en menos de 24 horas."
+
+### Por vertical
+
+| Vertical | Mensaje específico |
+|----------|-------------------|
+| Hotel | "Una reserva extra por mes y Emma ya se pagó sola." |
+| Restaurante | "Emma toma reservas y responde preguntas del menú — ni a las 11pm del sábado deja un mensaje sin respuesta." |
+| Peluquería/barbería | "Emma agenda turnos mientras dormís. 5 turnos extra por mes y ya recuperaste la inversión." |
+| Clínica | "Emma responde consultas de pacientes 24/7. Sin revelar datos sensibles, sin errores." |
+
+### Lo que NO decir
+- No mencionar n8n, Supabase, webhooks ni stack técnico
+- No decir "chatbot" — decir "asistente virtual" o "recepcionista virtual"
+- No prometer integraciones con PMS/sistemas que aún no existen
+- No arrancar con "IA" — primero el problema, después la solución
+
+---
+
+## Canales de adquisición
+
+### 1. LinkedIn — outreach directo (PRIORIDAD ALTA)
+- Perfil personal de Matías como fundador (pendiente crear)
+- Posts para TODOS los verticales — alternar entre hoteles, restaurantes, beauty, clínicas
+- DMs personalizados a dueños de negocios en ciudades target
+- Target: Argentina (top 8 ciudades) + España + Suiza (Zúrich/Ginebra)
+
+### 2. Instagram — contenido visual
+- Reels cortos: "así responde Emma a las 3am" (screen recording del bot)
+- Stories: dolor del dueño → solución → CTA a demo
+- Alternar todos los verticales
 - Bio → link a timeless-site.pages.dev
 
-**Métricas objetivo:** 500 seguidores → 50 visitas/semana a demo.html
+### 3. Cold email automatizado (W1 + W2 + W3)
+- W1 busca prospectos en Google Maps (5 verticales × todas las ciudades)
+- W2 manda cold email personalizado con ROI específico del vertical y mercado
+- W3 hace seguimiento 4 toques (días 1, 5, 12, 30)
 
-### 3. Grupos de WhatsApp y Facebook — comunidades hoteleras
-**Quién:** Administradores de grupos de hotelería latinoamericana  
-**Dónde:**
-- Grupos de Facebook: "Hoteleros Argentina", "Turismo y Hotelería Colombia", etc.
-- Grupos de WhatsApp de asociaciones hoteleras locales
-- Foros de SiteMinder, Booking.com, Expedia para partners  
-**Cómo:** Aportar valor primero (tips de automatización), luego presentar Timeless con caso real
+### 4. Grupos de WhatsApp/Facebook — comunidades de negocio
+- Grupos de hotelería, gastronomía, estética en LATAM
+- Aportar valor primero, luego presentar Timeless
 
-### 4. Cold email — propietarios de hoteles en Booking.com/Google Maps
-**Quién:** Hoteles boutique con score > 8.5 en Booking o > 4.3 en Google  
-**Cómo:**
-- Scraping manual de hoteles en ciudades target (Mendoza, Cartagena, Montevideo, etc.)
-- Email personalizado: mencionar el nombre del hotel y su puntaje
-- Secuencia de 3 emails: problema → solución → demo link
-- Herramienta: Hunter.io o Apollo para encontrar emails de propietarios
-
-**Métricas objetivo:** 50 emails/semana → 10% open rate → 2% respuesta → 1 cliente/mes
-
-### 5. Referidos — red de partners locales
-**Quién:** Agencias de marketing digital que atienden hoteles, consultores turísticos  
-**Cómo:**
-- Programa de referidos: 20% del primer mes al referente
-- Alianzas con agencias en Argentina/Colombia que manejan redes sociales de hoteles
-- Partner program: la agencia vende Timeless como add-on a sus clientes existentes
+### 5. Referidos
+- 20% del primer mes al referente
+- Agencias de marketing digital que atienden estos negocios
 
 ---
 
-## Perfiles que crear (plataformas)
+## Perfiles sociales
 
-| Plataforma | Tipo | Prioridad | Contenido |
-|-----------|------|-----------|-----------|
-| LinkedIn | Personal (Matías) + Company page | 🔴 Alta | Caso Sun Life, updates de producto, tips |
-| Instagram | Business (@timeless.ai o similar) | 🔴 Alta | Reels del bot, behind the scenes |
-| Product Hunt | Launch page | 🟡 Media | Lanzar cuando tengamos 3+ clientes con testimonios |
-| Twitter/X | Personal Matías | 🟡 Media | Build in public — métricas, aprendizajes |
-| Hacker News | Show HN post | 🟡 Media | "Show HN: I built an AI front desk for boutique hotels" |
-| TikTok | Business | 🟢 Baja | Si hay capacidad; mismo contenido que Instagram |
-| YouTube | Canal Timeless | 🟢 Baja | Tutoriales de n8n + hotel automation (SEO largo plazo) |
+| Plataforma | Estado | Prioridad |
+|-----------|--------|-----------|
+| LinkedIn personal (Matías) | ❌ Pendiente crear | 🔴 Esta semana |
+| LinkedIn company page | ✅ Existe | — |
+| Instagram business | ❌ Pendiente crear | 🔴 Esta semana |
+| Twitter/X | 🟡 Opcional | Baja |
+| TikTok | 🟡 Opcional | Baja |
 
 ---
 
-## Posicionamiento de mensaje
-
-### Para hoteles
-> "Emma atiende a tus huéspedes 24/7 como si fuera tu mejor recepcionista — sin sueldo, sin días libres, sin errores."
-
-### Para restaurantes
-> "Emma toma reservas, responde preguntas y nunca deja un mensaje sin respuesta — ni a las 11pm del sábado."
-
-### Diferenciadores clave
+## Diferenciadores clave
 1. **Setup en < 24h** — no meses de implementación
-2. **Precio accesible** — desde $79/mes vs $500+ de competidores
-3. **Personalizado** — Emma tiene el nombre y personalidad de tu negocio
-4. **Tu datos, tu control** — Google Sheets / Excel que vos ya conocés
-5. **Sin contrato largo** — mes a mes
+2. **Precio accesible** — desde $49/mes LATAM vs $300+ de competidores
+3. **Multi-vertical** — hoteles, restaurantes, beauty, clínicas, inmobiliarias
+4. **Personalizado** — el asistente tiene el nombre y personalidad de tu negocio
+5. **Tu datos, tu control** — Google Sheets que ya conocés
+6. **Sin contrato largo** — mes a mes
 
 ---
 
-## Case study a construir: Sun Life
-
-Datos a documentar cuando Ana reactive:
-- Número de conversaciones que Emma manejó sin intervención humana
-- Horarios de las consultas (% fuera de horario de oficina)
-- Leads capturados por Emma
-- Tiempo de respuesta promedio (vs 4 minutos = tasa de abandono)
-- Ahorro de tiempo estimado para Ana (horas/semana)
-
-Formato de case study:
-- PDF de 1 página para enviar por email/LinkedIn
-- Página web `/case-study-sunlife.html` con diseño cinematográfico igual a demo.html
-- Video corto (Loom) mostrando Emma en acción en el sitio real
-
----
-
-## Próximos 30 días — acciones concretas
-
-| Semana | Acción | Dueño |
-|--------|--------|-------|
-| 1 | Crear perfil LinkedIn + 3 posts iniciales | Matías |
-| 1 | Crear Instagram business + 2 reels del bot | Matías |
-| 2 | Enviar 50 cold emails a hoteles boutique región | Matías |
-| 2 | Recontactar Ana con resumen de actividad de Emma | Matías |
-| 3 | Unirse a 3 grupos de hotelería en Facebook/WhatsApp | Matías |
-| 3 | Demo con al menos 1 nuevo prospecto | Matías |
-| 4 | Iterar landing page (index.html) basado en feedback de demos | Claude Code |
-| 4 | Documentar case study parcial de Sun Life | Matías |
+## Próximas acciones (ver checklists completos)
+- `docs/empresa-lista-checklist.md` — todo lo que necesita la empresa antes de vender
+- `docs/pre-launch-checklist.md` — todo lo técnico antes de activar los agentes

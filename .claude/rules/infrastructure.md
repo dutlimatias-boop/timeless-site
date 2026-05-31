@@ -17,10 +17,11 @@
 
 | Workflow | ID | Trigger | Estado | Descripción |
 |----------|----|---------|--------|-------------|
-| Timeless — Lead Hunter | `uhtAIR0uKDxPzVXn` | Lunes 8am | ⏸ Inactivo | Google Maps → OpenAI scoring → append a Prospectos (score ≥ 7) |
-| Timeless — Outreach Email | `RJArwDBVO9X9GbAp` | Martes 10am | ⏸ Inactivo | Hunter.io → OpenAI subject → Gmail cold email con link `/?hotel=NombreHotel` |
-| Timeless — Follow-up Bot | `DG1KRnNlMewrbZW9` | Diario 9am | ⏸ Inactivo | Secuencia 4 toques (día 1, 5, 12, 30) a prospectos sin respuesta |
-| Timeless — Content Generator | `LnDGBsIJStSGp0os` | Viernes 10am + Diario 11am | ⏸ Inactivo | Genera posts LinkedIn/Instagram (Parte A) + auto-publica aprobados (Parte B) |
+| Timeless — Lead Hunter | `uhtAIR0uKDxPzVXn` | Lunes 8am | ✓ Activo | Google Maps → OpenAI scoring → append a Prospectos (score ≥ 7). City auto-rotation via ISO week number (6 ciudades rotando cada semana). Testeado 2026-05-25 ✅ |
+| Timeless — Outreach Email | `RJArwDBVO9X9GbAp` | Martes 10am | ✓ Activo | Hunter.io → OpenAI subject → Gmail cold email con link `/?hotel=NombreHotel`. Secuencias actualizadas de Timeless_Outreach_Sequence.docx |
+| Timeless — Follow-up Bot | `DG1KRnNlMewrbZW9` | Diario 9am | ✓ Activo | Secuencia 4 toques (día 1, 5, 12, 30) a prospectos sin respuesta |
+| Timeless — Content Generator | `LnDGBsIJStSGp0os` | Viernes 10am + Diario 11am | ⏸ Inactivo | Genera posts LinkedIn/Instagram (Parte A) + auto-publica aprobados (Parte B). Pendiente crear perfiles LinkedIn/Instagram |
+| Timeless — Mateo Reply Handler | `L1Cd7ZGaJkIVJn85` | Gmail trigger (team@timelessai.pro) | ✓ Activo | Detecta replies de prospectos → OpenAI clasifica intención → speech personalizado → alerta Telegram. LLAMADA speech incluye link Calendly real |
 
 ### CRM Google Sheet (mayo 2026)
 - **Nombre:** Timeless — CRM Maestro
@@ -38,21 +39,23 @@ LINKEDIN_ACCESS_TOKEN=<LinkedIn API — expira cada 60 días>
 LINKEDIN_PERSON_ID=<GET https://api.linkedin.com/v2/me → campo id>
 ```
 
-### Credenciales n8n a configurar (Settings → Credentials)
-- `Google Sheets Timeless` — OAuth2 con matiidutlii@gmail.com
-- `Gmail Timeless` — OAuth2 con matiidutlii@gmail.com
-- `LinkedIn Timeless` — OAuth2 para LinkedIn API
+### Credenciales n8n configuradas
+- `Google Sheets Timeless` — OAuth2 con matiidutlii@gmail.com ✅
+- `Gmail Timeless` — OAuth2 con matiidutlii@gmail.com ✅
+- `Gmail team@timelessai.pro` — OAuth2 con team@timelessai.pro ✅ (para Mateo Reply Handler)
+- `LinkedIn Timeless` — OAuth2 para LinkedIn API ⏳ (pendiente crear perfiles)
+- `Telegram Timeless` — Bot configurado, chat ID 1081637964 ✅
 
-### Pasos para activar el sistema (en orden)
-1. Importar `timeless-crm-master.xlsx` → Google Sheets → copiar Sheet ID
-2. Configurar las 6 variables de entorno en n8n
-3. Crear las 3 credenciales OAuth2 en n8n
-4. Abrir cada workflow y asignar las credenciales correctas a cada nodo
-5. Probar W1 manualmente (test trigger, 1 ciudad sola para ahorrar API credits)
-6. Activar W1 → esperar lunes → verificar Prospectos tab
-7. Activar W2 → verificar emails en Gmail Sent
-8. Activar W3
-9. Activar W4 → verificar Contenido tab cada viernes
+### Estado del sistema (actualizado 2026-05-30)
+- ✅ CRM Google Sheet creado y Sheet ID configurado en n8n variables
+- ✅ Variables de entorno configuradas (Google Maps, OpenAI, Hunter.io, Sheet ID)
+- ✅ W1 testeado manualmente (2026-05-25) — pipeline completo funcionando
+- ✅ W1 activo — city rotation automática (ISO week → 1 ciudad/semana de 6 rotando)
+- ✅ W2 activo — enviando cold emails desde matiidutlii@gmail.com
+- ✅ W3 activo — follow-up secuencia 4 toques
+- ✅ Mateo Reply Handler activo — Gmail trigger team@timelessai.pro
+- ⏸ W4 inactivo — pendiente crear perfiles LinkedIn/Instagram
+- ⏸ W4 pendiente — agregar LINKEDIN_ACCESS_TOKEN + LINKEDIN_PERSON_ID a variables
 
 ### Workflows por cliente (duplicar para cada uno)
 
@@ -61,6 +64,14 @@ LINKEDIN_PERSON_ID=<GET https://api.linkedin.com/v2/me → campo id>
 | [client] — Bot Demo | POST /chat | Chat IA principal, logs a Google Sheets |
 | [client] — Panel API | POST /[client]-data | Lee Google Sheets para el dashboard |
 | [client] — Reporte Semanal | Cron | Email semanal al cliente |
+
+## Calendly (agendado de demos)
+
+- **Cuenta:** team@timelessai.pro
+- **Evento:** "Demo Timeless — 15 min" — duración 15 min
+- **Disponibilidad:** Lunes–Viernes 18:00–22:00 + Sábado 09:00–13:00 (CET — Central European Time)
+- **Link público:** `https://calendly.com/team-timelessai/30min` (slug heredado de la creación inicial)
+- **Integrado en:** speech LLAMADA del Mateo Reply Handler — se envía automáticamente cuando un prospecto pide hablar
 
 ## MCP Servers (configurados en Claude Code — scope: local, solo proyecto timeless)
 

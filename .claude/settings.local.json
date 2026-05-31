@@ -1,7 +1,30 @@
 {
   "permissions": {
     "allow": [
-      "WebSearch"
+      "WebSearch",
+      "mcp__Claude_in_Chrome__javascript_tool",
+      "mcp__Claude_in_Chrome__computer",
+      "Bash(node -e ' *)",
+      "Read(//tmp/**)",
+      "Bash(curl -s 'https://matiasdutli22.app.n8n.cloud/api/v1/workflows?limit=50' -H 'X-N8N-API-KEY: __TRACKED_VAR__')",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(rm -f .git/index.lock)",
+      "Bash(git add *)",
+      "Bash(pandoc timeless-workflows-n8n.docx -o - --to plain)",
+      "Bash(python -c ' *)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c \"echo -e '\\n\\033[90m── Shift+Tab+Tab=PlanMode  Ctrl+R=historial  Esc+Esc=rewind  @archivo=contexto  /clear=reset ──\\033[0m'\""
+          }
+        ]
+      }
     ]
   }
 }

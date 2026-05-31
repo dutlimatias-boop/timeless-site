@@ -1,5 +1,14 @@
 # Timeless — Project Context
 
+## REGLA CRÍTICA — Clientes vs. Plataforma
+Los clientes son entidades separadas. **Nunca modificar, sugerir cambios, ni tocar workflows, prompts, datos o archivos de un cliente específico.** Eso es propiedad del cliente.
+
+El trabajo de desarrollo de Timeless es siempre a nivel **plataforma**: templates genéricos, demo bots, onboarding, infraestructura compartida.
+
+**Sun Life Beach Hotel = cliente de Ana = sus workflows, prompts y datos son INTOCABLES desde desarrollo de producto.**
+
+---
+
 ## What is Timeless
 Timeless is an AI automation SaaS for hotels, restaurants, clinics, and small businesses. It provides a virtual assistant (named per client) that handles guest/customer communications 24/7, plus a management dashboard and weekly analytics reports.
 

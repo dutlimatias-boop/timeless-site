@@ -1,7 +1,13 @@
 # n8n — Timeless Unsubscribe (webhook de baja)
 
 Registra las bajas que llegan desde `baja.html` y deja la lista lista para suprimir en W2/W3.
-Estado: **spec lista para construir** (2026-06-14). Frontend `baja.html` ya creado y verificado.
+Estado: **workflow CONSTRUIDO en n8n (inactivo)** — ID `Rl85GmT7EnStTyIY`. Validado ✓ (0 errores). Frontend `baja.html` live en ambos hosts.
+
+## Para activarlo (3 pasos manuales)
+1. **Crear la pestaña "Bajas"** en el CRM Maestro (headers fila 1: `Email` · `Fecha` · `Origen`).
+2. En el nodo **"Registrar Baja"** → seleccionar la credencial **Google Sheets Timeless** (se creó sin credencial asignada).
+3. Confirmar que `GOOGLE_SHEET_ID` está en n8n → Settings → Variables, y **activar** el workflow (toggle Active).
+   - Probar: abrir `https://timeless-site.pages.dev/baja.html?e=prueba@test.com` → debe aparecer una fila en "Bajas".
 
 ## Qué hace
 `baja.html` hace `POST` a este webhook con `{ email, source, ts }` → el workflow agrega una fila a la pestaña **"Bajas"** del CRM → responde 200.

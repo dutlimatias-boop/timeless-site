@@ -1,0 +1,48 @@
+# n8n — Timeless Unsubscribe (webhook de baja)
+
+Registra las bajas que llegan desde `baja.html` y deja la lista lista para suprimir en W2/W3.
+Estado: **spec lista para construir** (2026-06-14). Frontend `baja.html` ya creado y verificado.
+
+## Qué hace
+`baja.html` hace `POST` a este webhook con `{ email, source, ts }` → el workflow agrega una fila a la pestaña **"Bajas"** del CRM → responde 200.
+
+## Prerequisitos (manual, 1 vez)
+1. En el Google Sheet **CRM Maestro**, crear una pestaña nueva **`Bajas`** con estos encabezados en la fila 1:
+   | Email | Fecha | Origen |
+   |-------|-------|--------|
+2. Tener la credencial **"Google Sheets Timeless"** (ya existe en n8n).
+
+## Workflow (3 nodos)
+
+### 1. Webhook (trigger)
+- Type: `n8n-nodes-base.webhook`
+- **HTTP Method:** `POST`
+- **Path:** `unsubscribe`
+- **Respond:** `Using Respond to Webhook node`
+- URL pública resultante: `https://matiasdutli22.app.n8n.cloud/webhook/unsubscribe` (coincide con la constante `WEBHOOK` en `baja.html`)
+
+### 2. Google Sheets — Append Row
+- Type: `n8n-nodes-base.googleSheets` (v4)
+- **Resource:** Sheet Within Document · **Operation:** Append Row
+- **Document:** por ID → expresión `={{ $env.GOOGLE_SHEET_ID }}` (o seleccionar el CRM Maestro de la lista)
+- **Sheet:** `Bajas`
+- **Mapping:** Map Each Column Manually
+  - `Email`  → `={{ $json.body.email }}`
+  - `Fecha`  → `={{ $now.toFormat('dd/MM/yyyy HH:mm') }}`
+  - `Origen` → `={{ $json.body.source || 'baja.html' }}`
+- **Credential:** Google Sheets Timeless
+
+### 3. Respond to Webhook
+- Type: `n8n-nodes-base.respondToWebhook` (typeVersion 1.5)
+- **Respond With:** `Text`
+- **Response Body:** `OK`
+- (CORS: si el navegador bloquea, agregar en el nodo Webhook → Options → Response Headers: `Access-Control-Allow-Origin: *`. La página igual confirma la baja al usuario aunque el POST falle, así que no es bloqueante.)
+
+**Conexiones:** Webhook → Google Sheets → Respond to Webhook.
+
+## Activación
+- Guardar y **activar** el workflow (toggle Active).
+- Probar: abrir `https://timeless-site.pages.dev/baja.html?e=prueba@test.com` → debe aparecer una fila en la pestaña "Bajas".
+
+## Paso siguiente — supresión en W2/W3 (otra tarea)
+Una vez que "Bajas" se llena, agregar a **W2 (Outreach)** y **W3 (Follow-up)** un paso que, antes de enviar, lea la pestaña "Bajas" y **descarte** los prospectos cuyo email esté ahí. (Recomendado además: header `List-Unsubscribe` en el nodo Gmail apuntando a `https://timelessai.pro/baja.html?e={{email}}` para one-click unsubscribe nativo de Gmail/Outlook.)

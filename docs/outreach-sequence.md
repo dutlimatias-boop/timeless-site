@@ -37,7 +37,7 @@
 | `{{link_demo}}` | Industria | `timeless-site.pages.dev/demo/hotels` · `/restaurants` · `/clinics` · `/beauty` · `/realestate` — cambiar a `timelessai.pro/demo/...` cuando el dominio esté conectado |
 | `{{link_calendly}}` | Fijo | `calendly.com/team-timelessai` |
 | `{{apertura_personalizada}}` | GPT con datos scrapeados (ver Email 1) | línea genérica de respaldo |
-| `{{link_baja}}` | n8n / proveedor de envío | obligatorio en todos los emails |
+| `{{link_baja}}` | Página de baja | `timeless-site.pages.dev/baja.html?e={{email}}` (→ `timelessai.pro/baja.html?e=...` cuando el dominio esté listo). Registra la baja vía webhook n8n `/unsubscribe` |
 
 **Tono:** ustedeo por defecto. Si el prospecto tutea, Mateo se adapta.
 
@@ -326,7 +326,10 @@ Respuestas rápidas según la categoría que clasifica Mateo. Ustedeo por defect
 ## Pendientes antes de activar en volumen
 
 - [ ] Migrar envío de W2 a **team@timelessai.pro** y verificar SPF/DKIM/DMARC con un test de deliverability (mail-tester o similar).
-- [ ] Implementar **{{link_baja}}** real (unsubscribe) — requisito RGPD para España.
+- [x] Página de baja **`baja.html`** branded creada y verificada. ✅
+- [ ] Webhook n8n **`/unsubscribe`** que registra la baja en pestaña "Bajas" del CRM (spec en `n8n-workflows/unsubscribe-spec.md`).
+- [ ] Filtro de supresión en W2/W3: no enviar a emails presentes en "Bajas".
+- [ ] Header `List-Unsubscribe` en los nodos Gmail de W2/W3 (one-click unsubscribe, mejora deliverability).
 - [x] Crear las páginas **`/demo/{industria}`** en el sitio (prerequisito de `{{link_demo}}`). ✅ Live en `timeless-site.pages.dev/demo/...`
 - [ ] **(Opcional)** Conectar `timelessai.pro` como custom domain en Cloudflare Pages para links de marca. Hoy HTTPS no responde y el DNS está en Namecheap (no en Cloudflare). El email (`team@timelessai.pro`) ya funciona vía Google Workspace.
 - [ ] Parametrizar **{{precio_mes}}** por mercado en los nodos de W2/W3.

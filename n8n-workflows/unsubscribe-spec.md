@@ -57,6 +57,11 @@ Implementado en ambos workflows live (incremental, sin tocar la lógica existent
 - Ambos `Filtrar bajas` son **fail-open** (si no se puede leer la lista, no bloquean el envío) y con lista vacía son pass-through inofensivo.
 - **Verificación:** estructura confirmada en ambos. La prueba runtime real ocurre en la próxima corrida programada (W3 diario 9am, W2 martes 10am) porque ejecutar manualmente dispararía envíos reales.
 
+## Link de baja en emails — HECHO ✅ (2026-06-14)
+W2 (Construir cuerpo) y W3 (Toques 1/2/3) ahora linkean a `https://timeless-site.pages.dev/baja.html?e={{email}}` (en vez del `mailto:?subject=BAJA` viejo). Esto **cierra el loop**: un prospecto que se da de baja desde el email ahora SÍ queda registrado en la pestaña "bajas", y la supresión lo filtra en la próxima corrida. Toque 4 (el último) mantiene opt-out blando "me avisa y listo".
+Precio EU corregido de $79 → $99 en W3 Toque 2 (LATAM sigue $49), vía regex de "Ciudad / País".
+
 ## Pendiente (mejora opcional)
-- Header `List-Unsubscribe` en los nodos Gmail apuntando a `https://timelessai.pro/baja.html?e={{email}}` para one-click unsubscribe nativo de Gmail/Outlook (mejora deliverability).
-- Los emails de W2/W3 todavía usan el link de baja viejo (`mailto:...?subject=BAJA`); migrar a `baja.html?e=` para que registre automático en "bajas".
+- Header `List-Unsubscribe` en los nodos Gmail (one-click unsubscribe nativo de Gmail/Outlook, mejora deliverability).
+- **Discrepancia de timing:** W3 dispara los toques a los días **3/7/14/30**, pero el copy v2 (`docs/outreach-sequence.md`) dice **1/5/12/30**. Decisión estratégica pendiente — no se cambió.
+- Email 4 (W3 Toque 3) usa el fallback genérico, no el dato "60%" que el usuario quería mantener. Cambio menor de wording si se quiere.

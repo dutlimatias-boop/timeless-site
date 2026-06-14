@@ -147,7 +147,7 @@ FIN → Prospecto queda en CRM como "frío"
 | `[servicios, precios, políticas...]` | adaptar al vertical |
 | `[49/99]` | 49 para LATAM, 99 para Europa |
 | `[CALENDLY_LINK]` | https://calendly.com/team-timelessai/30min |
-| `[ONBOARDING_LINK]` | https://timeless-site.pages.dev/onboarding.html |
+| `[ONBOARDING_LINK]` | https://timelessai.pro/onboarding.html |
 
 ---
 

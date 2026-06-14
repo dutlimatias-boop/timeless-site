@@ -13,7 +13,7 @@
 | **Precio** | Geográfico: `€99/mes` Europa · `US$49/mes` LATAM | Token `{{precio_mes}}` — W1 ya conoce el mercado por ciudad |
 | **Setup** | Sin costo para los primeros hoteles (oferta de lanzamiento) | Se usa como palanca, no como fricción |
 | **Remitente** | Firma **Matías**, desde **team@timelessai.pro** | Identidad unificada en toda la secuencia |
-| **Links demo** | Por industria: `timeless-site.pages.dev/demo/hotels` (dominio `timelessai.pro` pendiente de conectar) | Token `{{link_demo}}` |
+| **Links demo** | Por industria: `timelessai.pro/demo/hotels` | Token `{{link_demo}}` |
 | **Dato 60%** | Se mantiene (hay fuente — citar al activar) | Email 4 |
 
 ### Correcciones de copy vs. el doc original
@@ -34,10 +34,10 @@
 | `{{nombre_hotel}}` | Google Maps (W1) | — (obligatorio) |
 | `{{nombre}}` | Contacto si existe | omitir el saludo con nombre → "Hola," |
 | `{{precio_mes}}` | Mercado del prospecto | LATAM `US$49` · Europa `€99` |
-| `{{link_demo}}` | Industria | `timeless-site.pages.dev/demo/hotels` · `/restaurants` · `/clinics` · `/beauty` · `/realestate` — cambiar a `timelessai.pro/demo/...` cuando el dominio esté conectado |
+| `{{link_demo}}` | Industria | `timelessai.pro/demo/hotels` · `/restaurants` · `/clinics` · `/beauty` · `/realestate` |
 | `{{link_calendly}}` | Fijo | `calendly.com/team-timelessai` |
 | `{{apertura_personalizada}}` | GPT con datos scrapeados (ver Email 1) | línea genérica de respaldo |
-| `{{link_baja}}` | Página de baja | `timeless-site.pages.dev/baja.html?e={{email}}` (→ `timelessai.pro/baja.html?e=...` cuando el dominio esté listo). Registra la baja vía webhook n8n `/unsubscribe` |
+| `{{link_baja}}` | Página de baja | `timelessai.pro/baja.html?e={{email}}`. Registra la baja vía webhook n8n `/unsubscribe` |
 
 **Tono:** ustedeo por defecto. Si el prospecto tutea, Mateo se adapta.
 
@@ -330,7 +330,7 @@ Respuestas rápidas según la categoría que clasifica Mateo. Ustedeo por defect
 - [ ] Webhook n8n **`/unsubscribe`** que registra la baja en pestaña "Bajas" del CRM (spec en `n8n-workflows/unsubscribe-spec.md`).
 - [ ] Filtro de supresión en W2/W3: no enviar a emails presentes en "Bajas".
 - [ ] Header `List-Unsubscribe` en los nodos Gmail de W2/W3 (one-click unsubscribe, mejora deliverability).
-- [x] Crear las páginas **`/demo/{industria}`** en el sitio (prerequisito de `{{link_demo}}`). ✅ Live en `timeless-site.pages.dev/demo/...`
+- [x] Crear las páginas **`/demo/{industria}`** en el sitio (prerequisito de `{{link_demo}}`). ✅ Live en `timelessai.pro/demo/...`
 - [ ] **(Opcional)** Conectar `timelessai.pro` como custom domain en Cloudflare Pages para links de marca. Hoy HTTPS no responde y el DNS está en Namecheap (no en Cloudflare). El email (`team@timelessai.pro`) ya funciona vía Google Workspace.
 - [ ] Parametrizar **{{precio_mes}}** por mercado en los nodos de W2/W3.
 - [ ] Verificar/citar la fuente del **60%** (Email 4).

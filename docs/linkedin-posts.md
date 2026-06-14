@@ -26,7 +26,7 @@ Voy a compartir acá el proceso de construir Timeless — los aprendizajes, los 
 
 Si tenés un pequeño negocio y perdés clientes por no poder responder siempre, esto es para vos.
 
-🔗 timeless-site.pages.dev
+🔗 timelessai.pro
 
 #Timeless #AsistenteVirtual #IA #EmprendimientoLatam #Hoteles #Restaurantes
 ```

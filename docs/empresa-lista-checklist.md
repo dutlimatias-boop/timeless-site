@@ -39,7 +39,7 @@
 |---|------|--------|-----------|-------|
 | 3.1 | Logo vectorial (SVG/PDF) | ✅ Existe en diseño | — | Usar el de `index.html` |
 | 3.2 | Design system documentado | ✅ En `tech-decisions.md` | — | Cormorant + DM Sans + dorado |
-| 3.3 | **Pitch deck** (presentación de ventas, 10-15 slides) | ❓ `timeless-templates-ventas.docx` existe pero sin verificar | 🔴 | Revisar y completar |
+| 3.3 | **Pitch deck** (presentación de ventas, 10-15 slides) | ❓ `docs/business/timeless-templates-ventas.docx` existe pero sin verificar | 🔴 | Revisar y completar |
 | 3.4 | **One-pager** de producto (1 página PDF para enviar por email) | ❌ No confirmado | 🔴 | Enviar tras primer contacto |
 | 3.5 | **Demo video** corto (2-3 min, Loom) mostrando Emma en vivo | ❌ No existe | 🔴 | Subir a YouTube/Loom |
 | 3.6 | **Firma de email profesional** para team@timelessai.pro | ❓ No verificada | 🟡 | Incluir nombre, cargo, link sitio |

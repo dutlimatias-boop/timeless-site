@@ -17,16 +17,19 @@
 
 | Workflow | ID | Trigger | Estado | Descripción |
 |----------|----|---------|--------|-------------|
-| Timeless — Lead Hunter | `uhtAIR0uKDxPzVXn` | Lunes 8am | ✓ Activo | Google Maps → OpenAI scoring → append a Prospectos (score ≥ 7). City auto-rotation via ISO week number (6 ciudades rotando cada semana). Testeado 2026-05-25 ✅ |
-| Timeless — Outreach Email | `RJArwDBVO9X9GbAp` | Martes 10am | ✓ Activo | Hunter.io → OpenAI subject → Gmail cold email con link `/?hotel=NombreHotel`. Secuencias actualizadas de Timeless_Outreach_Sequence.docx |
+| Timeless — Lead Hunter | `uhtAIR0uKDxPzVXn` | Lunes 8am | ✓ Activo | Google Maps → OpenAI scoring → append a Prospectos (score ≥ 7). City auto-rotation via ISO week number. ⚠️ Corre pero el embudo está roto: usa Text Search (no devuelve `website`) → W2 no encuentra email → 0 enviados. Fix pendiente (ver `memory/project_w1_status.md`) |
+| Timeless — Outreach Email | `RJArwDBVO9X9GbAp` | Martes 10am | ✓ Activo | Hunter.io → OpenAI subject → Gmail cold email con link `/?hotel=NombreHotel`. Copy canónico en `docs/outreach-sequence.md` (fuente original `docs/business/Timeless_Outreach_Sequence.docx`) |
 | Timeless — Follow-up Bot | `DG1KRnNlMewrbZW9` | Diario 9am | ✓ Activo | Secuencia 4 toques (día 1, 5, 12, 30) a prospectos sin respuesta |
-| Timeless — Content Generator | `LnDGBsIJStSGp0os` | Viernes 10am + Diario 11am | ⏸ Inactivo | Genera posts LinkedIn/Instagram (Parte A) + auto-publica aprobados (Parte B). Pendiente crear perfiles LinkedIn/Instagram |
+| Timeless — Content Generator | `LnDGBsIJStSGp0os` | Viernes 10am + Diario 11am | ✓ Activo | Genera posts LinkedIn/Instagram (Parte A) + auto-publica aprobados (Parte B) |
 | Timeless — Mateo Reply Handler | `L1Cd7ZGaJkIVJn85` | Gmail trigger (team@timelessai.pro) | ✓ Activo | Detecta replies de prospectos → OpenAI clasifica intención → speech personalizado → alerta Telegram. LLAMADA speech incluye link Calendly real |
+| Timeless — Unsubscribe (Baja) | `Rl85GmT7EnStTyIY` | POST /webhook (baja) | ✓ Activo | Baja de contacto desde `baja.html` → suprime de futuros envíos. Creado 2026-06-13 |
+
+> **Suite "AI Sales Agent" (inactiva):** 4 workflows en n8n — `Timeless — AI Sales Agent (Monitor)` `jkLLOv6Jt0mZKdjA`, `(Demo Generator)` `VpZxwrRIURa1E4Sp`, `(Daily Digest)` `HsjDcX7eT01KIEJT`, `(Cleanup)` `y95oYaqhsugfu9VT`. Sistema de ventas previo (auto-genera demo por prospecto, monitorea Gmail, digest diario, limpia demos expiradas), reemplazado por el sistema Mateo. Todos `active: false`. Archivar o reactivar como bloque, no por partes.
 
 ### CRM Google Sheet (mayo 2026)
 - **Nombre:** Timeless — CRM Maestro
 - **Sheet ID:** configurar en `$env.GOOGLE_SHEET_ID` en n8n → Settings → Variables
-- **Archivo fuente:** `timeless-crm-master.xlsx` (importar a Google Sheets)
+- **Archivo fuente:** `docs/business/timeless-crm-master.xlsx` (importar a Google Sheets)
 - **Pestañas:** Prospectos · Pipeline · Clientes · Contenido
 
 ### Variables de entorno requeridas (n8n → Settings → Variables)
@@ -49,13 +52,13 @@ LINKEDIN_PERSON_ID=<GET https://api.linkedin.com/v2/me → campo id>
 ### Estado del sistema (actualizado 2026-05-30)
 - ✅ CRM Google Sheet creado y Sheet ID configurado en n8n variables
 - ✅ Variables de entorno configuradas (Google Maps, OpenAI, Hunter.io, Sheet ID)
-- ✅ W1 testeado manualmente (2026-05-25) — pipeline completo funcionando
-- ✅ W1 activo — city rotation automática (ISO week → 1 ciudad/semana de 6 rotando)
+- ⚠️ W1 activo pero embudo roto — no captura `website` (Text Search) → W2 sin dominio → 0 emails. Fix preparado (Place Details + reescribir scoring), pendiente aplicar (ver `memory/project_w1_status.md`)
+- ✅ W1 activo — city rotation automática (ISO week)
 - ✅ W2 activo — enviando cold emails desde matiidutlii@gmail.com
 - ✅ W3 activo — follow-up secuencia 4 toques
 - ✅ Mateo Reply Handler activo — Gmail trigger team@timelessai.pro
-- ⏸ W4 inactivo — pendiente crear perfiles LinkedIn/Instagram
-- ⏸ W4 pendiente — agregar LINKEDIN_ACCESS_TOKEN + LINKEDIN_PERSON_ID a variables
+- ✅ W4 Content Generator activo — LinkedIn de Matías ya live
+- ⏸ W4 pendiente — agregar LINKEDIN_ACCESS_TOKEN + LINKEDIN_PERSON_ID a variables (token expira cada 60 días)
 
 ### Workflows por cliente (duplicar para cada uno)
 

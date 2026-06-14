@@ -16,7 +16,7 @@
 |----------|----|--------|-------------|
 | Sunlife — Bot Demo | `6tGhMpKls5NbFgCF` | ✓ Activo | Chat principal de Emma — webhook + RAG + logs a Sheets |
 | Sunlife — Panel API | `2v2fI1emw91k5Hh3` | ✓ Activo | Lee Google Sheets → JSON para el dashboard |
-| Sunlife — Reporte Semanal | `lEzgYNVXVP7m9HkG` | ✓ Activo | Email lunes 8am a Ana con resumen semanal |
+| Sunlife — Reporte Semanal | `lEzgYNVXVP7m9HkG` | ⏸ Inactivo | Email lunes 8am a Ana — apagado mientras Ana está pausada (corre el Silencioso) |
 | Sunlife — Reporte Semanal Silencioso | `JoNrXeN1GgvRGQeJ` | ✓ Activo | Guarda resumen en "Weekly Reports" sin email |
 | Sunlife — Guest Journey (Silent) | `EuW7N0FwaIrb0sS7` | ✓ Activo | Detecta check-ins/checkouts, loga acciones pendientes |
 | Emma — Bot Demo (OneDrive) | `Cy3Rlw7xDRFvm7mh` | ⏸ Inactivo | Versión Excel/OneDrive — pendiente OAuth2 de Ana |

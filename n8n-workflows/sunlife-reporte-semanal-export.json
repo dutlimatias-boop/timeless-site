@@ -1,0 +1,365 @@
+{
+  "updatedAt": "2026-05-06T10:55:22.094Z",
+  "createdAt": "2026-04-19T08:33:23.043Z",
+  "id": "lEzgYNVXVP7m9HkG",
+  "name": "Sunlife_beach_hotel - Reporte Semanal",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                1
+              ],
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "51f6322f-6693-4e6c-8dec-d4e16168afc8",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1UqCJbqBSNQCOPUecEp_K3C8Hbu4DtcKQO5ZptHiZ0Ks",
+          "mode": "list",
+          "cachedResultName": "Timeless - Sun Life Beach Hotel",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1UqCJbqBSNQCOPUecEp_K3C8Hbu4DtcKQO5ZptHiZ0Ks/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "conversaciones",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1UqCJbqBSNQCOPUecEp_K3C8Hbu4DtcKQO5ZptHiZ0Ks/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "c07d3799-f919-42b7-8f20-92daad796311",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0uNp6g1Sebhvcwic",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = $input.all();\nconst ahora = new Date();\n\nfunction parseFecha(fechaStr) {\n  if (!fechaStr) return null;\n  const [dia, mes, anio] = fechaStr.split('/');\n  return new Date(anio, mes - 1, dia);\n}\n\nconst estaSemana = [];\nconst semanaAnterior = [];\n\nfor (const row of rows) {\n  const fecha = parseFecha(row.json.fecha);\n  if (!fecha) continue;\n  const diffDias = (ahora - fecha) / (1000 * 60 * 60 * 24);\n  if (diffDias <= 7) estaSemana.push(row.json);\n  else if (diffDias <= 14) semanaAnterior.push(row.json);\n}\n\nconst total = estaSemana.length;\nconst totalAnterior = semanaAnterior.length;\nconst cambioTotal = totalAnterior > 0 ? (((total - totalAnterior) / totalAnterior) * 100).toFixed(0) : 0;\nconst flechaTotal = cambioTotal > 0 ? `↑ +${cambioTotal}% vs previous week` : cambioTotal < 0 ? `↓ ${cambioTotal}% vs previous week` : '= same as previous week';\nconst colorFlecha = cambioTotal > 0 ? '#2d8a4e' : cambioTotal < 0 ? '#e53e3e' : '#666';\n\nlet reservados = 0;\nlet interesados = 0;\nlet enProceso = 0;\n\nfor (const row of estaSemana) {\n  const estado = (row.estado || '').toLowerCase();\n  const intencion = (row.intencion || '').toLowerCase();\n  if (estado === 'reservado' || intencion.includes('reserva')) reservados++;\n  else if (estado === 'interesado' || intencion.includes('interes')) interesados++;\n  else if (estado === 'en_proceso' || intencion.includes('proceso')) enProceso++;\n}\n\nconst tasaConversion = total > 0 ? ((reservados / total) * 100).toFixed(1) : '0.0';\nconst reservadosAnterior = semanaAnterior.filter(r => (r.estado||'').toLowerCase() === 'reservado').length;\nconst tasaAnterior = totalAnterior > 0 ? ((reservadosAnterior / totalAnterior) * 100).toFixed(1) : '0.0';\n\nconst keywords = {\n  'pricing / rates':  ['price', 'cost', 'how much', 'rate', 'fee'],\n  'availability':     ['available', 'availability', 'date', 'free', 'vacancy'],\n  'booking':          ['book', 'reserve', 'reservation', 'check-in', 'check-out'],\n  'amenities':        ['pool', 'wifi', 'breakfast', 'parking', 'kitchen'],\n  'location':         ['where', 'location', 'directions', 'beach', 'far']\n};\n\nconst temasConteo = {};\nfor (const row of estaSemana) {\n  const consulta = (row.consulta || '').toLowerCase();\n  for (const [tema, palabras] of Object.entries(keywords)) {\n    if (palabras.some(p => consulta.includes(p))) {\n      temasConteo[tema] = (temasConteo[tema] || 0) + 1;\n    }\n  }\n}\n\nconst topTemas = Object.entries(temasConteo)\n  .sort((a, b) => b[1] - a[1])\n  .slice(0, 3)\n  .map(([k, v], i) => `<tr><td style=\"padding:8px 0;color:#0a1628;font-size:14px;\">${i+1}. ${k}</td><td style=\"padding:8px 0;text-align:right;font-weight:bold;color:#0a1628;\">${v} queries</td></tr>`)\n  .join('');\n\nconst canales = {};\nfor (const row of estaSemana) {\n  const canal = row.canal || 'Unknown';\n  canales[canal] = (canales[canal] || 0) + 1;\n}\nconst canalesStr = Object.entries(canales)\n  .map(([k, v]) => `<tr><td style=\"padding:6px 0;color:#333;font-size:14px;\">${k}</td><td style=\"padding:6px 0;text-align:right;font-weight:bold;color:#0a1628;\">${v}</td></tr>`)\n  .join('');\n\nconst valorEstimado = reservados * 150 * 4;\n\nconst fechaInicio = new Date(ahora); fechaInicio.setDate(ahora.getDate() - 7);\nconst formatFecha = (d) => d.toLocaleDateString('en-US', {day:'2-digit', month:'2-digit', year:'numeric'});\n\nreturn [{\n  json: {\n    total,\n    totalAnterior,\n    flechaTotal,\n    colorFlecha,\n    interesados,\n    reservados,\n    enProceso,\n    tasaConversion,\n    tasaAnterior,\n    topTemas: topTemas || '<tr><td colspan=\"2\" style=\"color:#666;font-size:13px;\">Not enough data this week</td></tr>',\n    canalesStr: canalesStr || '<tr><td colspan=\"2\" style=\"color:#666;font-size:13px;\">No data</td></tr>',\n    valorEstimado: `USD ${valorEstimado.toLocaleString()}`,\n    semana: `${formatFecha(fechaInicio)} – ${formatFecha(ahora)}`\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "42cd5a88-b15e-4fce-b849-7d750c7f8300",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "sendTo": "matiidutlii@gmail.com",
+        "subject": "Reporte Semanal - Sun Life Beach Hotel",
+        "message": "=<!DOCTYPE html>\n<html>\n<body style=\"margin:0;padding:0;background:#f4f4f4;font-family:Georgia,serif;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#f4f4f4;padding:40px 0;\">\n  <tr><td align=\"center\">\n  <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);\">\n\n    <tr>\n      <td style=\"background:#0a1628;padding:40px;text-align:center;\">\n        <h1 style=\"color:#C9A84C;margin:0;font-size:28px;letter-spacing:2px;\">TIMELESS</h1>\n        <p style=\"color:#ffffff;margin:8px 0 0;font-size:13px;letter-spacing:1px;\">REPORTE SEMANAL DE RENDIMIENTO</p>\n      </td>\n    </tr>\n\n    <tr>\n      <td style=\"background:#C9A84C;padding:16px 40px;text-align:center;\">\n        <p style=\"margin:0;color:#0a1628;font-size:16px;font-weight:bold;\">🏨 Hotel Patagonia — Bariloche</p>\n        <p style=\"margin:4px 0 0;color:#0a1628;font-size:13px;\">Semana: {{ $json.semana }}</p>\n      </td>\n    </tr>\n\n    <tr>\n      <td style=\"padding:40px;\">\n\n        <!-- RESUMEN -->\n        <h2 style=\"color:#0a1628;font-size:15px;margin:0 0 20px;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #C9A84C;padding-bottom:8px;\">Resumen de la semana</h2>\n        <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n          <tr>\n            <td width=\"30%\" style=\"text-align:center;padding:20px;background:#f9f9f9;border-radius:8px;\">\n              <p style=\"margin:0;font-size:36px;font-weight:bold;color:#0a1628;\">{{ $json.total }}</p>\n              <p style=\"margin:6px 0 0;font-size:11px;color:#666;text-transform:uppercase;\">Consultas</p>\n            </td>\n            <td width=\"4%\"></td>\n            <td width=\"30%\" style=\"text-align:center;padding:20px;background:#f9f9f9;border-radius:8px;\">\n              <p style=\"margin:0;font-size:36px;font-weight:bold;color:#C9A84C;\">{{ $json.interesados }}</p>\n              <p style=\"margin:6px 0 0;font-size:11px;color:#666;text-transform:uppercase;\">Interesados</p>\n            </td>\n            <td width=\"4%\"></td>\n            <td width=\"30%\" style=\"text-align:center;padding:20px;background:#f9f9f9;border-radius:8px;\">\n              <p style=\"margin:0;font-size:36px;font-weight:bold;color:#2d8a4e;\">{{ $json.reservados }}</p>\n              <p style=\"margin:6px 0 0;font-size:11px;color:#666;text-transform:uppercase;\">Reservados</p>\n            </td>\n          </tr>\n        </table>\n        <p style=\"text-align:center;margin:12px 0 0;font-size:13px;font-weight:bold;color:{{ $json.colorFlecha }};\">{{ $json.flechaTotal }}</p>\n\n        <!-- CONVERSIÓN Y VALOR -->\n        <h2 style=\"color:#0a1628;font-size:15px;margin:32px 0 16px;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #C9A84C;padding-bottom:8px;\">Conversión y valor generado</h2>\n        <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n          <tr>\n            <td width=\"47%\" style=\"text-align:center;padding:20px;background:#f9f9f9;border-radius:8px;\">\n              <p style=\"margin:0;font-size:32px;font-weight:bold;color:#0a1628;\">{{ $json.tasaConversion }}%</p>\n              <p style=\"margin:6px 0 0;font-size:11px;color:#666;text-transform:uppercase;\">Tasa de conversión</p>\n              <p style=\"margin:6px 0 0;font-size:11px;color:#999;\">Semana anterior: {{ $json.tasaAnterior }}%</p>\n            </td>\n            <td width=\"6%\"></td>\n            <td width=\"47%\" style=\"text-align:center;padding:20px;background:#0a1628;border-radius:8px;\">\n              <p style=\"margin:0;font-size:28px;font-weight:bold;color:#C9A84C;\">{{ $json.valorEstimado }}</p>\n              <p style=\"margin:6px 0 0;font-size:11px;color:#ffffff;text-transform:uppercase;\">Valor estimado generado</p>\n              <p style=\"margin:6px 0 0;font-size:10px;color:#999;\">Basado en {{ $json.reservados }} reservas × USD 240 prom.</p>\n            </td>\n          </tr>\n        </table>\n\n        <!-- TOP TEMAS -->\n        <h2 style=\"color:#0a1628;font-size:15px;margin:32px 0 16px;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #C9A84C;padding-bottom:8px;\">🔥 Temas más consultados</h2>\n        <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#f9f9f9;border-radius:8px;padding:16px;\">\n          <tr><td style=\"padding:16px;\">\n            <table width=\"100%\">\n              {{ $json.topTemas }}\n            </table>\n          </td></tr>\n        </table>\n\n        <!-- CANALES -->\n        <h2 style=\"color:#0a1628;font-size:15px;margin:32px 0 16px;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #C9A84C;padding-bottom:8px;\">Canal de contacto</h2>\n        <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#f9f9f9;border-radius:8px;\">\n          <tr><td style=\"padding:16px;\">\n            <table width=\"100%\">\n              {{ $json.canalesStr }}\n            </table>\n          </td></tr>\n        </table>\n\n        <!-- SEGUIMIENTO -->\n        <h2 style=\"color:#0a1628;font-size:15px;margin:32px 0 16px;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #C9A84C;padding-bottom:8px;\">Estado de seguimiento</h2>\n        <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n          <tr>\n            <td width=\"30%\" style=\"text-align:center;padding:16px;background:#f9f9f9;border-radius:8px;\">\n              <p style=\"margin:0;font-size:28px;font-weight:bold;color:#C9A84C;\">{{ $json.interesados }}</p>\n              <p style=\"margin:6px 0 0;font-size:11px;color:#666;text-transform:uppercase;\">Interesados</p>\n            </td>\n            <td width=\"4%\"></td>\n            <td width=\"30%\" style=\"text-align:center;padding:16px;background:#f9f9f9;border-radius:8px;\">\n              <p style=\"margin:0;font-size:28px;font-weight:bold;color:#0a1628;\">{{ $json.enProceso }}</p>\n              <p style=\"margin:6px 0 0;font-size:11px;color:#666;text-transform:uppercase;\">En proceso</p>\n            </td>\n            <td width=\"4%\"></td>\n            <td width=\"30%\" style=\"text-align:center;padding:16px;background:#f9f9f9;border-radius:8px;\">\n              <p style=\"margin:0;font-size:28px;font-weight:bold;color:#2d8a4e;\">{{ $json.reservados }}</p>\n              <p style=\"margin:6px 0 0;font-size:11px;color:#666;text-transform:uppercase;\">Reservados</p>\n            </td>\n          </tr>\n        </table>\n\n      </td>\n    </tr>\n\n    <tr>\n      <td style=\"background:#0a1628;padding:24px;text-align:center;\">\n        <p style=\"margin:0;color:#C9A84C;font-size:12px;letter-spacing:1px;\">Generado automáticamente por TIMELESS ✨</p>\n        <p style=\"margin:8px 0 0;color:#666;font-size:11px;\">Este reporte se genera todos los lunes a las 8:00am</p>\n      </td>\n    </tr>\n\n  </table>\n  </td></tr>\n</table>\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        624,
+        0
+      ],
+      "id": "73fc7fc9-4ab4-421a-aef8-7e22dec8fde1",
+      "name": "Send a message",
+      "webhookId": "33b34232-0f30-4ed6-8c3f-b146253e6440",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "4XxJNzwMmxbTni6s",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "a784588f-d30e-489e-ad59-8d6804ffdbee",
+  "activeVersionId": "a784588f-d30e-489e-ad59-8d6804ffdbee",
+  "versionCounter": 22,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-04-19T08:33:23.045Z",
+      "createdAt": "2026-04-19T08:33:23.045Z",
+      "role": "workflow:owner",
+      "workflowId": "lEzgYNVXVP7m9HkG",
+      "projectId": "W8rdq8mUpaT2VVIY",
+      "project": {
+        "updatedAt": "2026-04-05T13:27:55.528Z",
+        "createdAt": "2026-04-05T13:27:49.822Z",
+        "id": "W8rdq8mUpaT2VVIY",
+        "name": "Matías Dutli <dutlimatias@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "f6d74d2a-3f1b-416a-8408-aa623552bf4c"
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-05-05T22:04:22.118Z",
+    "createdAt": "2026-05-05T22:04:22.118Z",
+    "versionId": "a784588f-d30e-489e-ad59-8d6804ffdbee",
+    "workflowId": "lEzgYNVXVP7m9HkG",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "weeks",
+                "triggerAtDay": [
+                  1
+                ],
+                "triggerAtHour": 8
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          0,
+          0
+        ],
+        "id": "51f6322f-6693-4e6c-8dec-d4e16168afc8",
+        "name": "Schedule Trigger"
+      },
+      {
+        "parameters": {
+          "documentId": {
+            "__rl": true,
+            "value": "1UqCJbqBSNQCOPUecEp_K3C8Hbu4DtcKQO5ZptHiZ0Ks",
+            "mode": "list",
+            "cachedResultName": "Timeless - Sun Life Beach Hotel",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1UqCJbqBSNQCOPUecEp_K3C8Hbu4DtcKQO5ZptHiZ0Ks/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "conversaciones",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1UqCJbqBSNQCOPUecEp_K3C8Hbu4DtcKQO5ZptHiZ0Ks/edit#gid=0"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          208,
+          0
+        ],
+        "id": "c07d3799-f919-42b7-8f20-92daad796311",
+        "name": "Get row(s) in sheet",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "0uNp6g1Sebhvcwic",
+            "name": "Google Sheets OAuth2 API"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const rows = $input.all();\nconst ahora = new Date();\n\nfunction parseFecha(fechaStr) {\n  if (!fechaStr) return null;\n  const [dia, mes, anio] = fechaStr.split('/');\n  return new Date(anio, mes - 1, dia);\n}\n\nconst estaSemana = [];\nconst semanaAnterior = [];\n\nfor (const row of rows) {\n  const fecha = parseFecha(row.json.fecha);\n  if (!fecha) continue;\n  const diffDias = (ahora - fecha) / (1000 * 60 * 60 * 24);\n  if (diffDias <= 7) estaSemana.push(row.json);\n  else if (diffDias <= 14) semanaAnterior.push(row.json);\n}\n\nconst total = estaSemana.length;\nconst totalAnterior = semanaAnterior.length;\nconst cambioTotal = totalAnterior > 0 ? (((total - totalAnterior) / totalAnterior) * 100).toFixed(0) : 0;\nconst flechaTotal = cambioTotal > 0 ? `↑ +${cambioTotal}% vs previous week` : cambioTotal < 0 ? `↓ ${cambioTotal}% vs previous week` : '= same as previous week';\nconst colorFlecha = cambioTotal > 0 ? '#2d8a4e' : cambioTotal < 0 ? '#e53e3e' : '#666';\n\nlet reservados = 0;\nlet interesados = 0;\nlet enProceso = 0;\n\nfor (const row of estaSemana) {\n  const estado = (row.estado || '').toLowerCase();\n  const intencion = (row.intencion || '').toLowerCase();\n  if (estado === 'reservado' || intencion.includes('reserva')) reservados++;\n  else if (estado === 'interesado' || intencion.includes('interes')) interesados++;\n  else if (estado === 'en_proceso' || intencion.includes('proceso')) enProceso++;\n}\n\nconst tasaConversion = total > 0 ? ((reservados / total) * 100).toFixed(1) : '0.0';\nconst reservadosAnterior = semanaAnterior.filter(r => (r.estado||'').toLowerCase() === 'reservado').length;\nconst tasaAnterior = totalAnterior > 0 ? ((reservadosAnterior / totalAnterior) * 100).toFixed(1) : '0.0';\n\nconst keywords = {\n  'pricing / rates':  ['price', 'cost', 'how much', 'rate', 'fee'],\n  'availability':     ['available', 'availability', 'date', 'free', 'vacancy'],\n  'booking':          ['book', 'reserve', 'reservation', 'check-in', 'check-out'],\n  'amenities':        ['pool', 'wifi', 'breakfast', 'parking', 'kitchen'],\n  'location':         ['where', 'location', 'directions', 'beach', 'far']\n};\n\nconst temasConteo = {};\nfor (const row of estaSemana) {\n  const consulta = (row.consulta || '').toLowerCase();\n  for (const [tema, palabras] of Object.entries(keywords)) {\n    if (palabras.some(p => consulta.includes(p))) {\n      temasConteo[tema] = (temasConteo[tema] || 0) + 1;\n    }\n  }\n}\n\nconst topTemas = Object.entries(temasConteo)\n  .sort((a, b) => b[1] - a[1])\n  .slice(0, 3)\n  .map(([k, v], i) => `<tr><td style=\"padding:8px 0;color:#0a1628;font-size:14px;\">${i+1}. ${k}</td><td style=\"padding:8px 0;text-align:right;font-weight:bold;color:#0a1628;\">${v} queries</td></tr>`)\n  .join('');\n\nconst canales = {};\nfor (const row of estaSemana) {\n  const canal = row.canal || 'Unknown';\n  canales[canal] = (canales[canal] || 0) + 1;\n}\nconst canalesStr = Object.entries(canales)\n  .map(([k, v]) => `<tr><td style=\"padding:6px 0;color:#333;font-size:14px;\">${k}</td><td style=\"padding:6px 0;text-align:right;font-weight:bold;color:#0a1628;\">${v}</td></tr>`)\n  .join('');\n\nconst valorEstimado = reservados * 150 * 4;\n\nconst fechaInicio = new Date(ahora); fechaInicio.setDate(ahora.getDate() - 7);\nconst formatFecha = (d) => d.toLocaleDateString('en-US', {day:'2-digit', month:'2-digit', year:'numeric'});\n\nreturn [{\n  json: {\n    total,\n    totalAnterior,\n    flechaTotal,\n    colorFlecha,\n    interesados,\n    reservados,\n    enProceso,\n    tasaConversion,\n    tasaAnterior,\n    topTemas: topTemas || '<tr><td colspan=\"2\" style=\"color:#666;font-size:13px;\">Not enough data this week</td></tr>',\n    canalesStr: canalesStr || '<tr><td colspan=\"2\" style=\"color:#666;font-size:13px;\">No data</td></tr>',\n    valorEstimado: `USD ${valorEstimado.toLocaleString()}`,\n    semana: `${formatFecha(fechaInicio)} – ${formatFecha(ahora)}`\n  }\n}];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          416,
+          0
+        ],
+        "id": "42cd5a88-b15e-4fce-b849-7d750c7f8300",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "sendTo": "matiidutlii@gmail.com",
+          "subject": "Reporte Semanal - Sun Life Beach Hotel",
+          "message": "=<!DOCTYPE html>\n<html>\n<body style=\"margin:0;padding:0;background:#f4f4f4;font-family:Georgia,serif;\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#f4f4f4;padding:40px 0;\">\n  <tr><td align=\"center\">\n  <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);\">\n\n    <tr>\n      <td style=\"background:#0a1628;padding:40px;text-align:center;\">\n        <h1 style=\"color:#C9A84C;margin:0;font-size:28px;letter-spacing:2px;\">TIMELESS</h1>\n        <p style=\"color:#ffffff;margin:8px 0 0;font-size:13px;letter-spacing:1px;\">REPORTE SEMANAL DE RENDIMIENTO</p>\n      </td>\n    </tr>\n\n    <tr>\n      <td style=\"background:#C9A84C;padding:16px 40px;text-align:center;\">\n        <p style=\"margin:0;color:#0a1628;font-size:16px;font-weight:bold;\">🏨 Hotel Patagonia — Bariloche</p>\n        <p style=\"margin:4px 0 0;color:#0a1628;font-size:13px;\">Semana: {{ $json.semana }}</p>\n      </td>\n    </tr>\n\n    <tr>\n      <td style=\"padding:40px;\">\n\n        <!-- RESUMEN -->\n        <h2 style=\"color:#0a1628;font-size:15px;margin:0 0 20px;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #C9A84C;padding-bottom:8px;\">Resumen de la semana</h2>\n        <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n          <tr>\n            <td width=\"30%\" style=\"text-align:center;padding:20px;background:#f9f9f9;border-radius:8px;\">\n              <p style=\"margin:0;font-size:36px;font-weight:bold;color:#0a1628;\">{{ $json.total }}</p>\n              <p style=\"margin:6px 0 0;font-size:11px;color:#666;text-transform:uppercase;\">Consultas</p>\n            </td>\n            <td width=\"4%\"></td>\n            <td width=\"30%\" style=\"text-align:center;padding:20px;background:#f9f9f9;border-radius:8px;\">\n              <p style=\"margin:0;font-size:36px;font-weight:bold;color:#C9A84C;\">{{ $json.interesados }}</p>\n              <p style=\"margin:6px 0 0;font-size:11px;color:#666;text-transform:uppercase;\">Interesados</p>\n            </td>\n            <td width=\"4%\"></td>\n            <td width=\"30%\" style=\"text-align:center;padding:20px;background:#f9f9f9;border-radius:8px;\">\n              <p style=\"margin:0;font-size:36px;font-weight:bold;color:#2d8a4e;\">{{ $json.reservados }}</p>\n              <p style=\"margin:6px 0 0;font-size:11px;color:#666;text-transform:uppercase;\">Reservados</p>\n            </td>\n          </tr>\n        </table>\n        <p style=\"text-align:center;margin:12px 0 0;font-size:13px;font-weight:bold;color:{{ $json.colorFlecha }};\">{{ $json.flechaTotal }}</p>\n\n        <!-- CONVERSIÓN Y VALOR -->\n        <h2 style=\"color:#0a1628;font-size:15px;margin:32px 0 16px;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #C9A84C;padding-bottom:8px;\">Conversión y valor generado</h2>\n        <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n          <tr>\n            <td width=\"47%\" style=\"text-align:center;padding:20px;background:#f9f9f9;border-radius:8px;\">\n              <p style=\"margin:0;font-size:32px;font-weight:bold;color:#0a1628;\">{{ $json.tasaConversion }}%</p>\n              <p style=\"margin:6px 0 0;font-size:11px;color:#666;text-transform:uppercase;\">Tasa de conversión</p>\n              <p style=\"margin:6px 0 0;font-size:11px;color:#999;\">Semana anterior: {{ $json.tasaAnterior }}%</p>\n            </td>\n            <td width=\"6%\"></td>\n            <td width=\"47%\" style=\"text-align:center;padding:20px;background:#0a1628;border-radius:8px;\">\n              <p style=\"margin:0;font-size:28px;font-weight:bold;color:#C9A84C;\">{{ $json.valorEstimado }}</p>\n              <p style=\"margin:6px 0 0;font-size:11px;color:#ffffff;text-transform:uppercase;\">Valor estimado generado</p>\n              <p style=\"margin:6px 0 0;font-size:10px;color:#999;\">Basado en {{ $json.reservados }} reservas × USD 240 prom.</p>\n            </td>\n          </tr>\n        </table>\n\n        <!-- TOP TEMAS -->\n        <h2 style=\"color:#0a1628;font-size:15px;margin:32px 0 16px;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #C9A84C;padding-bottom:8px;\">🔥 Temas más consultados</h2>\n        <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#f9f9f9;border-radius:8px;padding:16px;\">\n          <tr><td style=\"padding:16px;\">\n            <table width=\"100%\">\n              {{ $json.topTemas }}\n            </table>\n          </td></tr>\n        </table>\n\n        <!-- CANALES -->\n        <h2 style=\"color:#0a1628;font-size:15px;margin:32px 0 16px;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #C9A84C;padding-bottom:8px;\">Canal de contacto</h2>\n        <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#f9f9f9;border-radius:8px;\">\n          <tr><td style=\"padding:16px;\">\n            <table width=\"100%\">\n              {{ $json.canalesStr }}\n            </table>\n          </td></tr>\n        </table>\n\n        <!-- SEGUIMIENTO -->\n        <h2 style=\"color:#0a1628;font-size:15px;margin:32px 0 16px;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #C9A84C;padding-bottom:8px;\">Estado de seguimiento</h2>\n        <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n          <tr>\n            <td width=\"30%\" style=\"text-align:center;padding:16px;background:#f9f9f9;border-radius:8px;\">\n              <p style=\"margin:0;font-size:28px;font-weight:bold;color:#C9A84C;\">{{ $json.interesados }}</p>\n              <p style=\"margin:6px 0 0;font-size:11px;color:#666;text-transform:uppercase;\">Interesados</p>\n            </td>\n            <td width=\"4%\"></td>\n            <td width=\"30%\" style=\"text-align:center;padding:16px;background:#f9f9f9;border-radius:8px;\">\n              <p style=\"margin:0;font-size:28px;font-weight:bold;color:#0a1628;\">{{ $json.enProceso }}</p>\n              <p style=\"margin:6px 0 0;font-size:11px;color:#666;text-transform:uppercase;\">En proceso</p>\n            </td>\n            <td width=\"4%\"></td>\n            <td width=\"30%\" style=\"text-align:center;padding:16px;background:#f9f9f9;border-radius:8px;\">\n              <p style=\"margin:0;font-size:28px;font-weight:bold;color:#2d8a4e;\">{{ $json.reservados }}</p>\n              <p style=\"margin:6px 0 0;font-size:11px;color:#666;text-transform:uppercase;\">Reservados</p>\n            </td>\n          </tr>\n        </table>\n\n      </td>\n    </tr>\n\n    <tr>\n      <td style=\"background:#0a1628;padding:24px;text-align:center;\">\n        <p style=\"margin:0;color:#C9A84C;font-size:12px;letter-spacing:1px;\">Generado automáticamente por TIMELESS ✨</p>\n        <p style=\"margin:8px 0 0;color:#666;font-size:11px;\">Este reporte se genera todos los lunes a las 8:00am</p>\n      </td>\n    </tr>\n\n  </table>\n  </td></tr>\n</table>\n</body>\n</html>",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.2,
+        "position": [
+          624,
+          0
+        ],
+        "id": "73fc7fc9-4ab4-421a-aef8-7e22dec8fde1",
+        "name": "Send a message",
+        "webhookId": "33b34232-0f30-4ed6-8c3f-b146253e6440",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "4XxJNzwMmxbTni6s",
+            "name": "Gmail OAuth2 API"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "Get row(s) in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get row(s) in sheet": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "Send a message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Matías Dutli",
+    "name": null,
+    "description": null,
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-05-05T22:04:22.303Z",
+        "id": 187,
+        "workflowId": "lEzgYNVXVP7m9HkG",
+        "versionId": "a784588f-d30e-489e-ad59-8d6804ffdbee",
+        "event": "activated",
+        "userId": "f6d74d2a-3f1b-416a-8408-aa623552bf4c"
+      },
+      {
+        "createdAt": "2026-05-05T22:04:43.123Z",
+        "id": 190,
+        "workflowId": "lEzgYNVXVP7m9HkG",
+        "versionId": "a784588f-d30e-489e-ad59-8d6804ffdbee",
+        "event": "activated",
+        "userId": "f6d74d2a-3f1b-416a-8408-aa623552bf4c"
+      },
+      {
+        "createdAt": "2026-05-06T10:55:22.255Z",
+        "id": 198,
+        "workflowId": "lEzgYNVXVP7m9HkG",
+        "versionId": "a784588f-d30e-489e-ad59-8d6804ffdbee",
+        "event": "activated",
+        "userId": "f6d74d2a-3f1b-416a-8408-aa623552bf4c"
+      },
+      {
+        "createdAt": "2026-05-05T22:04:22.218Z",
+        "id": 186,
+        "workflowId": "lEzgYNVXVP7m9HkG",
+        "versionId": "a784588f-d30e-489e-ad59-8d6804ffdbee",
+        "event": "deactivated",
+        "userId": "f6d74d2a-3f1b-416a-8408-aa623552bf4c"
+      },
+      {
+        "createdAt": "2026-05-05T22:04:43.038Z",
+        "id": 189,
+        "workflowId": "lEzgYNVXVP7m9HkG",
+        "versionId": "a784588f-d30e-489e-ad59-8d6804ffdbee",
+        "event": "deactivated",
+        "userId": "f6d74d2a-3f1b-416a-8408-aa623552bf4c"
+      },
+      {
+        "createdAt": "2026-05-06T10:55:22.153Z",
+        "id": 197,
+        "workflowId": "lEzgYNVXVP7m9HkG",
+        "versionId": "a784588f-d30e-489e-ad59-8d6804ffdbee",
+        "event": "deactivated",
+        "userId": "f6d74d2a-3f1b-416a-8408-aa623552bf4c"
+      }
+    ]
+  }
+}

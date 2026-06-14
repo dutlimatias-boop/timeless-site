@@ -17,3 +17,13 @@ Thumbs.db
 
 # n8n exports con credenciales reales (usar los de n8n-workflows/ que tienen placeholders)
 *credentials*.json
+
+# Backups y temporales (no versionar)
+*.bundle
+*_unpacked/
+
+# Fotos de cámara personales (no son assets del proyecto)
+DSC_*.JPG
+DSC_*.jpg
+IMG_*.JPG
+IMG_*.jpg

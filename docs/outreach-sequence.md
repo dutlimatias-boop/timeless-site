@@ -1,6 +1,6 @@
 # Timeless — Secuencia de Outreach (v2, lista para vender)
 
-> Fuente canónica del copy de adquisición. Reemplaza a `Timeless_Outreach_Sequence.docx`.
+> Fuente canónica del copy de adquisición. Reemplaza a `docs/business/Timeless_Outreach_Sequence.docx`.
 > Mapea a los workflows: **W2 Outreach Email** (Email 1) · **W3 Follow-up** (Emails 2–5) · **Mateo Reply Handler** (speeches).
 > Última revisión: 2026-06-13.
 

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timeless — Brutalismo Mobile</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ── EDITAR AQUÍ: tokens de diseño ── */
+  :root {
+    --bg-page:    #f0ede8;
+    --bg-screen:  #f9f7f4;
+    --black:      #0d0c0b;
+    --gray-dark:  #2a2825;
+    --gray-mid:   #888078;
+    --white:      #fdfcfa;
+    --accent:     #0e7c7b;   /* teal Timeless */
+    --gold:       #b8720a;   /* gold Timeless */
+    --border-w:   2px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg-page);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .label {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--gray-mid);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  /* ── PHONE FRAME ── */
+  .phone {
+    width: 320px;
+    background: var(--black);
+    border-radius: 40px;
+    border: 3px solid var(--black);
+    overflow: hidden;
+    box-shadow: 6px 6px 0px var(--black);
+  }
+
+  .status-bar {
+    background: var(--black);
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+  }
+  .status-bar span {
+    font-size: 12px;
+    color: var(--white);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .notch {
+    width: 80px; height: 6px;
+    background: #111;
+    border-radius: 3px;
+  }
+
+  /* ── SCREEN ── */
+  .screen {
+    background: var(--white);
+  }
+
+  /* ── NAV ── */
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    border-bottom: var(--border-w) solid var(--black);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--black);
+    text-transform: uppercase;
+  }
+  .hamburger {
+    display: flex; flex-direction: column; gap: 4px; width: 22px;
+  }
+  .hamburger span {
+    display: block; height: 2px; background: var(--black);
+  }
+  .hamburger span:last-child { width: 75%; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 0;
+    border-bottom: var(--border-w) solid var(--black);
+  }
+
+  .hero-tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--black);
+    padding: 5px 14px;
+    margin-bottom: 0;
+  }
+
+  .hero-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 68px;
+    font-weight: 600;
+    line-height: 0.88;
+    color: var(--black);
+    letter-spacing: -0.03em;
+    padding: 16px 18px 0;
+    text-transform: uppercase;
+  }
+
+  .hero-sub {
+    font-size: 11px;
+    color: var(--gray-mid);
+    padding: 12px 18px 16px;
+    line-height: 1.5;
+    border-top: 1px solid #ddd;
+    margin-top: 12px;
+  }
+
+  /* ── STATS ROW (brutalista: sin rounded, bordes duros) ── */
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-bottom: var(--border-w) solid var(--black);
+  }
+  .stat {
+    padding: 14px 10px;
+    border-right: var(--border-w) solid var(--black);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--black);
+    line-height: 1;
+    display: block;
+  }
+  .stat-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+    display: block;
+    margin-top: 3px;
+  }
+
+  /* ── FEATURE BLOCK ── */
+  .feature-block {
+    padding: 16px 18px;
+    border-bottom: var(--border-w) solid var(--black);
+  }
+  .feature-num {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--gray-mid);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .feature-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--black);
+    line-height: 1.1;
+  }
+
+  /* ── CTA ── */
+  .cta-block {
+    padding: 16px 18px;
+    border-bottom: var(--border-w) solid var(--black);
+  }
+  .cta-btn {
+    display: block;
+    background: var(--black);
+    color: var(--white);
+    text-align: center;
+    padding: 13px;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .cta-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--gray-mid);
+    text-align: center;
+  }
+
+  /* ── TICKER ── */
+  .ticker {
+    padding: 10px 18px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    overflow: hidden;
+  }
+  .ticker span { white-space: nowrap; }
+  .ticker-dot {
+    width: 4px; height: 4px;
+    background: var(--black);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── HOME BAR ── */
+  .home-bar {
+    height: 24px;
+    background: var(--white);
+    border-top: var(--border-w) solid var(--black);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .home-pill {
+    width: 50px; height: 4px;
+    background: var(--black);
+    border-radius: 2px;
+  }
+
+  /* ── NOTAS DE EDICIÓN ── */
+  .edit-notes {
+    margin-top: 28px;
+    max-width: 320px;
+    border: 1.5px dashed var(--gray-mid);
+    padding: 16px;
+  }
+  .edit-notes h3 {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-dark);
+    margin-bottom: 10px;
+  }
+  .edit-notes ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .edit-notes li {
+    font-size: 12px;
+    color: var(--gray-mid);
+    padding-left: 12px;
+    position: relative;
+  }
+  .edit-notes li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--black);
+  }
+</style>
+</head>
+<body>
+
+<p class="label">Timeless · Estilo Brutalismo · Mobile Hero</p>
+
+<div class="phone">
+  <div class="status-bar">
+    <span>9:41</span>
+    <div class="notch"></div>
+    <span>■■■</span>
+  </div>
+
+  <div class="screen">
+
+    <nav class="nav">
+      <span class="nav-logo">Timeless</span>
+      <div class="hamburger">
+        <span></span><span></span><span style="width:75%"></span>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <span class="hero-tag">Virtual · 24/7 · Hoteles</span>
+      <h1 class="hero-headline">Emma<br>no<br>duerme.</h1>
+      <p class="hero-sub">Recepcionista virtual para hoteles boutique. Responde al instante, califica leads, nunca descansa.</p>
+    </section>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-num">24/7</span>
+        <span class="stat-label">Activa</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">&lt;3s</span>
+        <span class="stat-label">Respuesta</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">$79</span>
+        <span class="stat-label">Por mes</span>
+      </div>
+    </div>
+
+    <div class="feature-block">
+      <p class="feature-num">01 — Lo que hace Emma</p>
+      <p class="feature-title">Conoce tu hotel.<br>Responde por vos.</p>
+    </div>
+
+    <div class="feature-block">
+      <p class="feature-num">02 — Sin IT, sin demoras</p>
+      <p class="feature-title">Lista en menos<br>de 24 horas.</p>
+    </div>
+
+    <div class="cta-block">
+      <a class="cta-btn">Ver demo en vivo</a>
+      <p class="cta-price">Desde $79 / mes · Sin contrato</p>
+    </div>
+
+    <div class="ticker">
+      <span>Hoteles</span>
+      <div class="ticker-dot"></div>
+      <span>Restaurantes</span>
+      <div class="ticker-dot"></div>
+      <span>Clínicas</span>
+      <div class="ticker-dot"></div>
+      <span>Boutique</span>
+    </div>
+
+  </div>
+
+  <div class="home-bar"><div class="home-pill"></div></div>
+</div>
+
+<div class="edit-notes">
+  <h3>Cosas a editar</h3>
+  <ul>
+    <li>Cambiar <code>--accent</code> y <code>--gold</code> para variantes de color</li>
+    <li>Hero headline: ajustar font-size (68px) si el texto cambia</li>
+    <li>Stats: reemplazar números con datos reales de Emma</li>
+    <li>Feature blocks: agregar/quitar secciones según necesidad</li>
+    <li>CTA: cambiar href del botón al link de onboarding</li>
+  </ul>
+</div>
+
+</body>
+</html>

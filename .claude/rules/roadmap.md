@@ -32,10 +32,10 @@
 - [x] **Guest Journey (Silent)** — detecta check-ins/checkouts, loga acciones pendientes sin enviar mensajes
 - [x] **Fix Reporte Semanal** — corregido para leer sheet correcto donde Emma loguea conversaciones
 - [x] **Sistema de marketing completo** — W1 Lead Hunter + W2 Outreach + W3 Follow-up + W4 Content Generator + CRM Google Sheet
-- [x] **W1 testeado y funcionando** (2026-05-25) — pipeline completo: Google Maps → OpenAI scoring → CRM Prospectos ✅
+- [x] **W1 pipeline construido** (2026-05-25) — Google Maps → OpenAI scoring → CRM Prospectos. ⚠️ Corre pero el embudo está roto (no captura `website` → 0 emails); fix pendiente, ver `memory/project_w1_status.md`
 - [x] **City auto-rotation en W1** — Split Cities Code node rotando 6 ciudades por ISO week (sin repetir ciudad la misma semana)
 - [x] **W2 + W3 activados** — enviando cold emails y follow-ups automáticamente
-- [x] **Email sequences actualizadas** — textos de W2 y W3 revisados de Timeless_Outreach_Sequence.docx
+- [x] **Email sequences actualizadas** — textos de W2 y W3 revisados de docs/business/Timeless_Outreach_Sequence.docx
 - [x] **Mateo Reply Handler activo** (`L1Cd7ZGaJkIVJn85`) — Gmail trigger team@timelessai.pro, clasifica replies con OpenAI, speech por categoría (INFO/PRECIO/TIEMPO/CONFIANZA/DEMO/YA_TIENE/LLAMADA/COMPRA/NEGATIVO/GENERICO), alerta Telegram
 - [x] **Fix NEGATIVO speech** — categorizaba mal; lógica de clasificación corregida
 - [x] **Calendly configurado** — "Demo Timeless — 15 min", Lun–Vie 18–22 + Sáb 9–13 CET, link https://calendly.com/team-timelessai/30min
@@ -44,9 +44,9 @@
 - [x] **Documentación completa** — status.md, strategy.md, infrastructure.md, clients.md actualizados
 
 ## Próximas prioridades concretas (mayo 2026)
-1. **Perfiles de adquisición** — LinkedIn personal + Instagram business (ver strategy.md)
-2. **Recontactar Ana** — con evidencia de Emma acumulada en Weekly Reports
-3. **W4 Content Generator** — activar cuando LinkedIn/Instagram estén listos
+1. **Arreglar embudo W1** — agregar Place Details (capturar `website`) + reescribir scoring para excluir cadenas. Sin esto W2 manda 0 emails (ver `memory/project_w1_status.md`)
+2. **Instagram business** — LinkedIn de Matías ya live; falta Instagram (ver strategy.md)
+3. **Recontactar Ana** — con evidencia de Emma acumulada en Weekly Reports
 4. **W3 senderName encoding** — "Mat?as ? Timeless" tiene caracteres corruptos, corregir UTF-8
 5. **W2 campo apertura** — GPT genera apertura pero no se usa en el email; limpiar o integrar
 6. **Ingestar horarios corregidos** — check-in/out de Sun Life desactualizados en KB de Emma

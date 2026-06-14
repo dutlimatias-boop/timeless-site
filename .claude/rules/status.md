@@ -38,11 +38,14 @@ Timeless tiene un cliente activo (Sun Life Beach Hotel), infraestructura complet
 ### Marketing y ventas (sistema Mateo)
 | Workflow | ID | Estado | Descripción |
 |----------|----|--------|-------------|
-| Timeless — Lead Hunter | `uhtAIR0uKDxPzVXn` | ✓ Activo | Google Maps → AI scoring → CRM. City rotation automática (ISO week). Testeado ✅ |
+| Timeless — Lead Hunter | `uhtAIR0uKDxPzVXn` | ✓ Activo | Google Maps → AI scoring → CRM. City rotation automática (ISO week). ⚠️ Corre pero el embudo está roto: no captura `website` → 0 emails (ver `memory/project_w1_status.md`) |
 | Timeless — Outreach Email | `RJArwDBVO9X9GbAp` | ✓ Activo | Hunter.io → cold email personalizado desde matiidutlii@gmail.com |
 | Timeless — Follow-up Bot | `DG1KRnNlMewrbZW9` | ✓ Activo | Secuencia 4 toques a prospectos sin respuesta |
 | Timeless — Mateo Reply Handler | `L1Cd7ZGaJkIVJn85` | ✓ Activo | Gmail trigger team@timelessai.pro → clasifica reply → speech → Telegram |
-| Timeless — Content Generator | `LnDGBsIJStSGp0os` | ⏸ Inactivo | Pendiente perfiles LinkedIn/Instagram |
+| Timeless — Content Generator | `LnDGBsIJStSGp0os` | ✓ Activo | Posts LinkedIn/Instagram (Parte A) + auto-publica aprobados (Parte B) |
+| Timeless — Unsubscribe (Baja) | `Rl85GmT7EnStTyIY` | ✓ Activo | Webhook de baja → suprime contacto. Wired a `baja.html` (creado 2026-06-13) |
+
+> **Suite "AI Sales Agent" (inactiva):** existen en n8n 4 workflows `Timeless — AI Sales Agent (Monitor / Demo Generator / Daily Digest / Cleanup)` — un sistema de ventas anterior, reemplazado por el sistema Mateo. Todos `active: false`. Conservar como referencia o archivar.
 
 ### Plataforma (todos los clientes)
 | Workflow | ID | Estado | Descripción |
@@ -57,7 +60,7 @@ Timeless tiene un cliente activo (Sun Life Beach Hotel), infraestructura complet
 |----------|----|--------|-------------|
 | Sunlife — Bot Demo | `6tGhMpKls5NbFgCF` | ✓ Activo | Chat principal de Emma |
 | Sunlife — Panel API | `2v2fI1emw91k5Hh3` | ✓ Activo | API para el dashboard |
-| Sunlife — Reporte Semanal | `lEzgYNVXVP7m9HkG` | ✓ Activo | Email lunes 8am (corregido — lee sheet correcto) |
+| Sunlife — Reporte Semanal | `lEzgYNVXVP7m9HkG` | ⏸ Inactivo | Email lunes 8am a Ana (apagado mientras Ana está pausada — corre el Silencioso en su lugar) |
 | Sunlife — Reporte Semanal Silencioso | `JoNrXeN1GgvRGQeJ` | ✓ Activo | Guarda resumen en "Weekly Reports" sin email a Ana |
 | Sunlife — Guest Journey (Silent) | `EuW7N0FwaIrb0sS7` | ✓ Activo | Detecta check-ins/checkouts, loga en "Guest Journey Log" sin enviar mensajes |
 | Emma — Bot Demo (OneDrive) | `Cy3Rlw7xDRFvm7mh` | ⏸ Inactivo | Versión con Excel/OneDrive — pendiente credenciales OAuth de Ana |

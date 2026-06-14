@@ -44,8 +44,8 @@
 - [x] **Documentación completa** — status.md, strategy.md, infrastructure.md, clients.md actualizados
 
 ## Próximas prioridades concretas (mayo 2026)
-1. **Verificar W2 end-to-end** — W1 ya provee el `website` real en el CRM; confirmar que W2 lo use para Hunter.io y que efectivamente salgan emails (era el bloqueo de "0 enviados")
-2. **Rotar API key de OpenAI** — está hardcodeada en texto plano en el nodo `OpenAI Score Hotel` de W1 (comprometida). Generar nueva en platform.openai.com y guardarla en credencial n8n
+1. **Rotar API keys hardcodeadas** — la key de OpenAI (en `OpenAI Score Hotel` de W1 y `OpenAI - Personalizar email` de W2) y la de Hunter.io (en W2) están en texto plano (comprometidas). Generar nuevas y guardarlas en credenciales n8n
+2. **Monitorear primera corrida real del lunes** — embudo W1→W2 ya verificado por código (W1 captura website → W2 lo usa para Hunter.io); confirmar que efectivamente salgan emails con dominios reales (era el bloqueo de "0 enviados")
 3. **Instagram business** — LinkedIn de Matías ya live; falta Instagram (ver strategy.md)
 4. **Recontactar Ana** — con evidencia de Emma acumulada en Weekly Reports
 5. **W3 senderName encoding** — "Mat?as ? Timeless" tiene caracteres corruptos, corregir UTF-8

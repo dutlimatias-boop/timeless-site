@@ -52,7 +52,8 @@ LINKEDIN_PERSON_ID=<GET https://api.linkedin.com/v2/me → campo id>
 ### Estado del sistema (actualizado 2026-05-30)
 - ✅ CRM Google Sheet creado y Sheet ID configurado en n8n variables
 - ✅ Variables de entorno configuradas (Google Maps, OpenAI, Hunter.io, Sheet ID)
-- ✅ W1 activo y embudo arreglado (2026-06-14) — Place Details captura website+teléfono, scoring reescrito excluye cadenas. Publicado (activeVersion) + verificado con corrida de prueba. Pendiente: confirmar que W2 use el website del CRM
+- ✅ W1 activo y embudo arreglado (2026-06-14) — Place Details captura website+teléfono, scoring reescrito excluye cadenas. Publicado (activeVersion) + verificado con corrida de prueba
+- ✅ Embudo W1→W2 coherente — W2 ("Extraer dominio") lee la columna `Tiene web?` del CRM y extrae el dominio para Hunter.io; con W1 escribiendo URLs reales, W2 ya no cae al fallback de adivinar el dominio. Falta solo la prueba viva (corrida del lunes)
 - ✅ W1 activo — city rotation automática (ISO week)
 - ✅ W2 activo — enviando cold emails desde matiidutlii@gmail.com
 - ✅ W3 activo — follow-up secuencia 4 toques

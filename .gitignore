@@ -20,6 +20,11 @@ Thumbs.db
 # Bot Demo exports con secrets reales en texto plano (key activa + Supabase service_role)
 n8n-workflows/sunlife-bot-demo.json
 n8n-workflows/sunlife-bot-demo-fixed.json
+# Exports de CLIENTE (Sun Life): contienen emails/PII de Ana y Sheet IDs.
+# Propiedad del cliente — NO versionar en el repo de plataforma.
+n8n-workflows/sunlife-*.json
+n8n-workflows/guest-journey-automation.json
+n8n-workflows/emma-system-prompt-v2.md
 
 # Backups y temporales (no versionar)
 *.bundle

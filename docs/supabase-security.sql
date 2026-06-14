@@ -59,7 +59,10 @@ BEGIN
     1 - (d.embedding <=> query_embedding) AS similarity
   FROM documents d
   WHERE
-    (p_business_id IS NULL OR d.business_id = p_business_id)
+    -- FAIL-CLOSED: sin business_id no se devuelve NADA (evita fuga cross-cliente
+    -- si un workflow olvida pasar el parámetro). NUNCA cambiar a "IS NULL OR".
+    p_business_id IS NOT NULL
+    AND d.business_id = p_business_id
     AND 1 - (d.embedding <=> query_embedding) > match_threshold
   ORDER BY d.embedding <=> query_embedding
   LIMIT match_count;

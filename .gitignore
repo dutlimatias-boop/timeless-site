@@ -17,6 +17,9 @@ Thumbs.db
 
 # n8n exports con credenciales reales (usar los de n8n-workflows/ que tienen placeholders)
 *credentials*.json
+# Bot Demo exports con secrets reales en texto plano (key activa + Supabase service_role)
+n8n-workflows/sunlife-bot-demo.json
+n8n-workflows/sunlife-bot-demo-fixed.json
 
 # Backups y temporales (no versionar)
 *.bundle

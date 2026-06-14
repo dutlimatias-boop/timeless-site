@@ -67,6 +67,16 @@ Timeless tiene un cliente activo (Sun Life Beach Hotel), infraestructura complet
 
 ---
 
+## Salud de infraestructura (revisión 2026-06-14)
+- ✅ 0 ejecuciones fallidas/crashed desde 2026-05-31. Sitios (timelessai.pro, pages.dev, netlify) + webhook de status responden 200.
+- ✅ **Error Notification** cableado (2026-06-14) como "Error Workflow" en 7 de plataforma/marketing: Lead Hunter, Outreach, Follow-up, Content Generator, Mateo, Ingesta, Status Endpoint. **Onboarding v2** quedó sin cablear a propósito (estado intencional del usuario — no tocar). No se tocaron Sun Life ni los Bot Demos de cliente.
+- 🟡 **Backups desfasados:** solo 5 `.json` commiteados en `n8n-workflows/`; los workflows editados el 14/6 (Lead Hunter, Outreach, Content Generator, Mateo) no están exportados al repo.
+- 🟡 **Credenciales n8n:** 21 totales, ~14 sin uso en 90d, 2 huérfanas, 7 de OpenAI → consolidar (reduce confusión sobre cuál key borrar + superficie de ataque).
+- 🟡 **Seguridad:** 12 webhooks sin autenticación (Panel API ×6, onboarding, status, baja, ingesta). Secrets hardcodeados en Bot Demos — ver roadmap prioridad #1.
+- 💰 **Costo fijo conocido ~$28/mes** (n8n $20 + Google Workspace $7 + dominio ~$1.25). OpenAI / Hunter.io / Google Maps: usage-based, revisar dashboards de billing (no medibles vía API).
+
+---
+
 ## Calendly
 - **Evento:** "Demo Timeless — 15 min" — 15 minutos
 - **Disponibilidad:** Lun–Vie 18:00–22:00 + Sáb 09:00–13:00 (CET)

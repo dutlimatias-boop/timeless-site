@@ -73,7 +73,7 @@ Timeless tiene un cliente activo (Sun Life Beach Hotel), infraestructura complet
 - 🟡 **Backups desfasados:** solo 5 `.json` commiteados en `n8n-workflows/`; los workflows editados el 14/6 (Lead Hunter, Outreach, Content Generator, Mateo) no están exportados al repo.
 - 🟡 **Credenciales n8n:** 21 totales, ~14 sin uso en 90d, 2 huérfanas, 7 de OpenAI → consolidar (reduce confusión sobre cuál key borrar + superficie de ataque).
 - 🟡 **Seguridad:** 12 webhooks sin autenticación (Panel API ×6, onboarding, status, baja, ingesta). Secrets hardcodeados en Bot Demos — ver roadmap prioridad #1.
-- 💰 **Costo fijo conocido ~$28/mes** (n8n $20 + Google Workspace $7 + dominio ~$1.25). OpenAI / Hunter.io / Google Maps: usage-based, revisar dashboards de billing (no medibles vía API).
+- 💰 **Costo fijo conocido ~$48/mes** (n8n $20 + Claude Pro $20 + Google Workspace $7 + dominio ~$1.25). Netlify y Cloudflare Pages: $0 (free tier). OpenAI / Hunter.io / Google Maps: usage-based, revisar dashboards de billing (no medibles vía API).
 
 ---
 

@@ -50,5 +50,13 @@ Estado: **workflow CONSTRUIDO en n8n (inactivo)** — ID `Rl85GmT7EnStTyIY`. Val
 - Guardar y **activar** el workflow (toggle Active).
 - Probar: abrir `https://timeless-site.pages.dev/baja.html?e=prueba@test.com` → debe aparecer una fila en la pestaña "Bajas".
 
-## Paso siguiente — supresión en W2/W3 (otra tarea)
-Una vez que "Bajas" se llena, agregar a **W2 (Outreach)** y **W3 (Follow-up)** un paso que, antes de enviar, lea la pestaña "Bajas" y **descarte** los prospectos cuyo email esté ahí. (Recomendado además: header `List-Unsubscribe` en el nodo Gmail apuntando a `https://timelessai.pro/baja.html?e={{email}}` para one-click unsubscribe nativo de Gmail/Outlook.)
+## Supresión en W2/W3 — HECHO ✅ (2026-06-14)
+Implementado en ambos workflows live (incremental, sin tocar la lógica existente):
+- **W2 (Outreach `RJArwDBVO9X9GbAp`):** nodo `Get Bajas` (lee pestaña "bajas") en paralelo al trigger + nodo `Filtrar bajas` (Code) insertado en la rama "sí" de "Email encontrado?", antes de OpenAI. Filtra por `_hunterEmail`/`to_email`.
+- **W3 (Follow-up `DG1KRnNlMewrbZW9`):** mismo `Get Bajas` + `Filtrar bajas` insertado entre "Code - calcular días" y el "IF" (cubre los 4 toques de una). Filtra por columna `Email encontrado`.
+- Ambos `Filtrar bajas` son **fail-open** (si no se puede leer la lista, no bloquean el envío) y con lista vacía son pass-through inofensivo.
+- **Verificación:** estructura confirmada en ambos. La prueba runtime real ocurre en la próxima corrida programada (W3 diario 9am, W2 martes 10am) porque ejecutar manualmente dispararía envíos reales.
+
+## Pendiente (mejora opcional)
+- Header `List-Unsubscribe` en los nodos Gmail apuntando a `https://timelessai.pro/baja.html?e={{email}}` para one-click unsubscribe nativo de Gmail/Outlook (mejora deliverability).
+- Los emails de W2/W3 todavía usan el link de baja viejo (`mailto:...?subject=BAJA`); migrar a `baja.html?e=` para que registre automático en "bajas".

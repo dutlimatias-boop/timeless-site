@@ -17,7 +17,7 @@
 
 | Workflow | ID | Trigger | Estado | Descripción |
 |----------|----|---------|--------|-------------|
-| Timeless — Lead Hunter | `uhtAIR0uKDxPzVXn` | Lunes 8am | ✓ Activo | Google Maps → OpenAI scoring → append a Prospectos (score ≥ 7). City auto-rotation via ISO week number. ⚠️ Corre pero el embudo está roto: usa Text Search (no devuelve `website`) → W2 no encuentra email → 0 enviados. Fix pendiente (ver `memory/project_w1_status.md`) |
+| Timeless — Lead Hunter | `uhtAIR0uKDxPzVXn` | Lunes 8am | ✓ Activo | Google Maps Text Search → **Place Details** (captura `website`+teléfono por `place_id`) → Enrich → OpenAI scoring (excluye cadenas, prioriza boutique <30 hab, no castiga pocas reseñas) → append a Prospectos (score ≥ 7). City auto-rotation (ISO week). Embudo arreglado, publicado y verificado 2026-06-14 ✅ |
 | Timeless — Outreach Email | `RJArwDBVO9X9GbAp` | Martes 10am | ✓ Activo | Hunter.io → OpenAI subject → Gmail cold email con link `/?hotel=NombreHotel`. Copy canónico en `docs/outreach-sequence.md` (fuente original `docs/business/Timeless_Outreach_Sequence.docx`) |
 | Timeless — Follow-up Bot | `DG1KRnNlMewrbZW9` | Diario 9am | ✓ Activo | Secuencia 4 toques (día 1, 5, 12, 30) a prospectos sin respuesta |
 | Timeless — Content Generator | `LnDGBsIJStSGp0os` | Viernes 10am + Diario 11am | ✓ Activo | Genera posts LinkedIn/Instagram (Parte A) + auto-publica aprobados (Parte B) |
@@ -52,7 +52,7 @@ LINKEDIN_PERSON_ID=<GET https://api.linkedin.com/v2/me → campo id>
 ### Estado del sistema (actualizado 2026-05-30)
 - ✅ CRM Google Sheet creado y Sheet ID configurado en n8n variables
 - ✅ Variables de entorno configuradas (Google Maps, OpenAI, Hunter.io, Sheet ID)
-- ⚠️ W1 activo pero embudo roto — no captura `website` (Text Search) → W2 sin dominio → 0 emails. Fix preparado (Place Details + reescribir scoring), pendiente aplicar (ver `memory/project_w1_status.md`)
+- ✅ W1 activo y embudo arreglado (2026-06-14) — Place Details captura website+teléfono, scoring reescrito excluye cadenas. Publicado (activeVersion) + verificado con corrida de prueba. Pendiente: confirmar que W2 use el website del CRM
 - ✅ W1 activo — city rotation automática (ISO week)
 - ✅ W2 activo — enviando cold emails desde matiidutlii@gmail.com
 - ✅ W3 activo — follow-up secuencia 4 toques

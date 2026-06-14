@@ -38,7 +38,7 @@ Timeless tiene un cliente activo (Sun Life Beach Hotel), infraestructura complet
 ### Marketing y ventas (sistema Mateo)
 | Workflow | ID | Estado | Descripción |
 |----------|----|--------|-------------|
-| Timeless — Lead Hunter | `uhtAIR0uKDxPzVXn` | ✓ Activo | Google Maps → AI scoring → CRM. City rotation automática (ISO week). ⚠️ Corre pero el embudo está roto: no captura `website` → 0 emails (ver `memory/project_w1_status.md`) |
+| Timeless — Lead Hunter | `uhtAIR0uKDxPzVXn` | ✓ Activo | Google Maps → Place Details (captura website+tel) → AI scoring (excluye cadenas) → CRM. City rotation (ISO week). Embudo arreglado, publicado y verificado con corrida de prueba 2026-06-14 ✅ |
 | Timeless — Outreach Email | `RJArwDBVO9X9GbAp` | ✓ Activo | Hunter.io → cold email personalizado desde matiidutlii@gmail.com |
 | Timeless — Follow-up Bot | `DG1KRnNlMewrbZW9` | ✓ Activo | Secuencia 4 toques a prospectos sin respuesta |
 | Timeless — Mateo Reply Handler | `L1Cd7ZGaJkIVJn85` | ✓ Activo | Gmail trigger team@timelessai.pro → clasifica reply → speech → Telegram |

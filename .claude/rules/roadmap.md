@@ -32,7 +32,7 @@
 - [x] **Guest Journey (Silent)** — detecta check-ins/checkouts, loga acciones pendientes sin enviar mensajes
 - [x] **Fix Reporte Semanal** — corregido para leer sheet correcto donde Emma loguea conversaciones
 - [x] **Sistema de marketing completo** — W1 Lead Hunter + W2 Outreach + W3 Follow-up + W4 Content Generator + CRM Google Sheet
-- [x] **W1 pipeline construido** (2026-05-25) — Google Maps → OpenAI scoring → CRM Prospectos. ⚠️ Corre pero el embudo está roto (no captura `website` → 0 emails); fix pendiente, ver `memory/project_w1_status.md`
+- [x] **W1 embudo arreglado y verificado** (2026-06-14) — Place Details captura website+teléfono, scoring reescrito excluye cadenas; publicado + corrida de prueba OK. Antes mandaba 0 emails por no capturar website.
 - [x] **City auto-rotation en W1** — Split Cities Code node rotando 6 ciudades por ISO week (sin repetir ciudad la misma semana)
 - [x] **W2 + W3 activados** — enviando cold emails y follow-ups automáticamente
 - [x] **Email sequences actualizadas** — textos de W2 y W3 revisados de docs/business/Timeless_Outreach_Sequence.docx
@@ -44,10 +44,11 @@
 - [x] **Documentación completa** — status.md, strategy.md, infrastructure.md, clients.md actualizados
 
 ## Próximas prioridades concretas (mayo 2026)
-1. **Arreglar embudo W1** — agregar Place Details (capturar `website`) + reescribir scoring para excluir cadenas. Sin esto W2 manda 0 emails (ver `memory/project_w1_status.md`)
-2. **Instagram business** — LinkedIn de Matías ya live; falta Instagram (ver strategy.md)
-3. **Recontactar Ana** — con evidencia de Emma acumulada en Weekly Reports
-4. **W3 senderName encoding** — "Mat?as ? Timeless" tiene caracteres corruptos, corregir UTF-8
+1. **Verificar W2 end-to-end** — W1 ya provee el `website` real en el CRM; confirmar que W2 lo use para Hunter.io y que efectivamente salgan emails (era el bloqueo de "0 enviados")
+2. **Rotar API key de OpenAI** — está hardcodeada en texto plano en el nodo `OpenAI Score Hotel` de W1 (comprometida). Generar nueva en platform.openai.com y guardarla en credencial n8n
+3. **Instagram business** — LinkedIn de Matías ya live; falta Instagram (ver strategy.md)
+4. **Recontactar Ana** — con evidencia de Emma acumulada en Weekly Reports
+5. **W3 senderName encoding** — "Mat?as ? Timeless" tiene caracteres corruptos, corregir UTF-8
 5. **W2 campo apertura** — GPT genera apertura pero no se usa en el email; limpiar o integrar
 6. **Ingestar horarios corregidos** — check-in/out de Sun Life desactualizados en KB de Emma
 7. **Descripciones en workflows n8n** — Bot Demo, Panel API, Reporte Semanal para n8n-instance MCP

@@ -172,15 +172,15 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://matiasdutli22.app.n8n.cloud/webhook/chat",
+        "url": "={{ $('POST /onboarding-hotel').first().json.bot_webhook_url || 'https://matiasdutli22.app.n8n.cloud/webhook/chat' }}",
         "sendBody": true,
         "bodyParameters": {
           "parameters": [
-            { "name": "chatInput", "value": "={{ '¿Cuál es el nombre del negocio ' + $('Code — Dividir en chunks').first().json.business_id + '?' }}" },
+            { "name": "chatInput", "value": "={{ 'What is the name of ' + $('Code — Dividir en chunks').first().json.business_name + '?' }}" },
             { "name": "sessionId", "value": "={{ 'smoketest_' + $('Code — Dividir en chunks').first().json.job_id }}" }
           ]
         },
-        "options": { "timeout": 15000 }
+        "options": { "timeout": 20000 }
       },
       "id": "c1a2b3c4-d5e6-7890-abcd-000000000009",
       "name": "HTTP — Smoke test al bot",
@@ -305,7 +305,12 @@
     "Code — Dividir en chunks": { "main": [[{ "node": "OpenAI — Generar embedding", "type": "main", "index": 0 }]] },
     "OpenAI — Generar embedding": { "main": [[{ "node": "Supabase — Insertar chunk", "type": "main", "index": 0 }]] },
     "Supabase — Insertar chunk": { "main": [[{ "node": "Sheets — ingestion=done", "type": "main", "index": 0 }]] },
-    "Sheets — ingestion=done": { "main": [[{ "node": "Sheets — smoketest=done", "type": "main", "index": 0 }]] },
+    "Sheets — ingestion=done": { "main": [[{ "node": "HTTP — Smoke test al bot", "type": "main", "index": 0 }]] },
+    "HTTP — Smoke test al bot": { "main": [[{ "node": "IF — ¿Bot respondió?", "type": "main", "index": 0 }]] },
+    "IF — ¿Bot respondió?": { "main": [
+      [{ "node": "Sheets — smoketest=done", "type": "main", "index": 0 }],
+      [{ "node": "Sheets — smoketest=error", "type": "main", "index": 0 }]
+    ]},
     "Sheets — smoketest=done": { "main": [[{ "node": "Email — Bienvenida al cliente", "type": "main", "index": 0 }]] },
     "Email — Bienvenida al cliente": { "main": [[{ "node": "Sheets — email=done", "type": "main", "index": 0 }]] }
   },

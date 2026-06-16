@@ -1,0 +1,239 @@
+{
+  "name": "Timeless - Outreach Email",
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "errorWorkflow": "XnfBtmWah9W0TXfj"
+  },
+  "nodes": [
+    {
+      "id": "node-schedule",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [0, 300],
+      "parameters": { "rule": { "interval": [ { "field": "weeks", "weeksInterval": 1, "triggerAtDay": [2], "triggerAtHour": 10, "triggerAtMinute": 0 } ] } }
+    },
+    {
+      "id": "node-read-sheets",
+      "name": "Get Prospectos",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [220, 300],
+      "credentials": { "googleSheetsOAuth2Api": { "id": "0uNp6g1Sebhvcwic", "name": "Google Sheets OAuth2 API" } },
+      "parameters": {
+        "operation": "read",
+        "documentId": { "__rl": true, "mode": "id", "value": "1gJqxMsei6JBtsMwB2u6Wfyzg_DM7SFVAmkOgx5Udyhs" },
+        "sheetName": { "__rl": true, "mode": "name", "value": "Prospectos" },
+        "filtersUI": { "values": [ { "lookupColumn": "Estado", "lookupValue": "Nuevo" }, { "lookupColumn": "Enviado?", "lookupValue": "No" } ] },
+        "combineFilters": "AND",
+        "options": { "returnAllMatches": "returnAllMatches" }
+      }
+    },
+    {
+      "id": "c471dd95-5152-4bd0-b543-d370625fd2fa",
+      "name": "Cap volumen",
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [330, 300],
+      "parameters": { "maxItems": 12 }
+    },
+    {
+      "id": "node-if-prospectos",
+      "name": "Hay prospectos?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [440, 300],
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "loose", "version": 2 },
+          "conditions": [ { "id": "cond-items", "leftValue": "={{ $input.all().length }}", "rightValue": 0, "operator": { "type": "number", "operation": "gt" } } ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "node-noop",
+      "name": "Sin prospectos - Stop",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [660, 480],
+      "parameters": {}
+    },
+    {
+      "id": "f51ddfd9-47f6-4027-aff4-6f1f45fdf82f",
+      "name": "Get Bajas",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [220, 120],
+      "credentials": { "googleSheetsOAuth2Api": { "id": "0uNp6g1Sebhvcwic", "name": "Google Sheets OAuth2 API" } },
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "operation": "read",
+        "documentId": { "__rl": true, "mode": "id", "value": "1gJqxMsei6JBtsMwB2u6Wfyzg_DM7SFVAmkOgx5Udyhs" },
+        "sheetName": { "__rl": true, "mode": "name", "value": "bajas" },
+        "options": {}
+      }
+    },
+    {
+      "id": "node-parse-domain",
+      "name": "Extraer dominio",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [660, 300],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const item = $input.item.json;\nconst url = item['web'] || item['Tiene web?'] || '';\nlet domain = '';\ntry {\n  if (url.startsWith('http')) {\n    domain = new URL(url).hostname.replace(/^www\\./, '');\n  } else if (url.includes('.')) {\n    domain = url.replace(/^www\\./, '').split('/')[0];\n  } else {\n    domain = (item['Nombre Hotel'] || '').toLowerCase().replace(/\\s+/g, '') + '.com';\n  }\n} catch(e) {\n  domain = url.replace(/^https?:\\/\\//,'').replace(/^www\\./,'').split('/')[0];\n}\nreturn { json: { ...item, _domain: domain } };"
+      }
+    },
+    {
+      "id": "node-hunter",
+      "name": "Hunter.io - Buscar email",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [880, 300],
+      "onError": "continueRegularOutput",
+      "credentials": { "httpQueryAuth": { "id": "YpitVXFKoyw7JIz1", "name": "Hunter W2" } },
+      "parameters": {
+        "method": "GET",
+        "url": "https://api.hunter.io/v2/domain-search",
+        "sendQuery": true,
+        "specifyQuery": "keypair",
+        "queryParameters": { "parameters": [ { "name": "domain", "value": "={{ $json._domain }}" }, { "name": "limit", "value": "1" } ] },
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth"
+      }
+    },
+    {
+      "id": "node-merge-hunter",
+      "name": "Unir Hunter + Prospecto",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1100, 300],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const hunterData = $input.item.json;\nconst emails = hunterData?.data?.emails || [];\nconst firstEmail = emails.length > 0 ? emails[0].value : null;\nreturn { json: { ...$input.item.json, _hunterEmail: firstEmail || '', _hasEmail: firstEmail !== null && firstEmail !== '' } };"
+      }
+    },
+    {
+      "id": "node-if-email",
+      "name": "Email encontrado?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [1320, 300],
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "loose", "version": 2 },
+          "conditions": [ { "id": "cond-email", "leftValue": "={{ $json._hunterEmail }}", "operator": { "type": "string", "operation": "notEmpty", "singleValue": true } } ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "397c8ca2-67c2-42b0-a69f-92e004e371a9",
+      "name": "Filtrar bajas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1430, 160],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "let bajas = new Set();\ntry {\n  for (const r of $('Get Bajas').all()) {\n    const e = String((r.json && (r.json.Email ?? r.json.email)) || '').toLowerCase().trim();\n    if (e) bajas.add(e);\n  }\n} catch (err) { /* fail-open: si no se puede leer la lista, no filtra */ }\nreturn $input.all().filter(it => {\n  const email = String((it.json._hunterEmail ?? it.json.to_email) || '').toLowerCase().trim();\n  return !email || !bajas.has(email);\n});"
+      }
+    },
+    {
+      "id": "node-update-no-email",
+      "name": "Marcar Sin email",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [1540, 480],
+      "credentials": { "googleSheetsOAuth2Api": { "id": "0uNp6g1Sebhvcwic", "name": "Google Sheets OAuth2 API" } },
+      "parameters": {
+        "operation": "update",
+        "documentId": { "__rl": true, "mode": "id", "value": "1gJqxMsei6JBtsMwB2u6Wfyzg_DM7SFVAmkOgx5Udyhs" },
+        "sheetName": { "__rl": true, "mode": "name", "value": "Prospectos" },
+        "columns": { "mappingMode": "defineBelow", "matchingColumns": ["Nombre Hotel"], "value": { "Nombre Hotel": "={{ $json['Nombre Hotel'] }}", "Estado": "Sin email" }, "schema": [] },
+        "options": {}
+      }
+    },
+    {
+      "id": "node-openai",
+      "name": "OpenAI - Personalizar email",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1540, 300],
+      "onError": "continueRegularOutput",
+      "credentials": { "httpHeaderAuth": { "id": "QamVou700WBITt1k", "name": "OpenAI W1W2" } },
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": { "parameters": [ { "name": "Content-Type", "value": "application/json" } ] },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'gpt-4o-mini', temperature: 0.5, max_tokens: 200, messages: [{ role: 'user', content: 'Escribi un asunto y una apertura de 1-2 oraciones para un cold email a este hotel boutique. Tono emprendedor directo, NO corporativo. Escribi en voseo rioplatense (vos: \"tenés\", \"podés\", \"tu hotel\"). El asunto debe ser concreto y despertar curiosidad; PROHIBIDO usar las palabras \"colaboración\", \"potenciar\", \"solución\", \"impulsar\" u \"optimizar\". REGLAS ESTRICTAS: no inventes datos del hotel (premios, caracteristicas, reconocimientos) que no esten en el contexto; no uses frases genericas de relleno tipo \"vi que tienen un hotel hermoso\"; si no podes decir algo genuinamente especifico y verificable, escribi una apertura neutra y honesta sin inventar nada. Hotel: ' + $json['Nombre Hotel'] + '. Rating: ' + ($json['Rating Google'] || $json.rating || '') + '/5. Responde SOLO JSON valido: {\"subject\": \"...\", \"apertura\": \"...\"}. Subject max 60 caracteres, apertura max 2 oraciones.' }] }) }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth"
+      }
+    },
+    {
+      "id": "node-build-email",
+      "name": "Construir cuerpo del email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1760, 300],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "let aiResponse;\ntry {\n  const content = $input.item.json.choices[0].message.content;\n  const cleaned = content.replace(/^```json\\n?|\\n?```$/g, '').trim();\n  const jsonMatch = cleaned.match(/\\{[\\s\\S]*\\}/);\n  aiResponse = JSON.parse(jsonMatch ? jsonMatch[0] : cleaned);\n} catch(e) {\n  aiResponse = { subject: 'Emma para tu hotel - respuesta 24/7', apertura: 'Vi tu hotel y creo que Emma puede ayudarte a no perder mas consultas.' };\n}\n\nconst _src = $('Filtrar bajas').item.json;\nconst hotelName = _src['Nombre Hotel'] || '';\nconst hunterEmail = _src._hunterEmail || '';\nconst hotelEncoded = encodeURIComponent(hotelName);\nconst demoUrl = 'https://timelessai.pro/?hotel=' + hotelEncoded;\nconst apertura = (aiResponse.apertura && String(aiResponse.apertura).trim()) ? String(aiResponse.apertura).trim() : ('Te escribo porque trabajo con hoteles boutique y creo que Emma te puede ahorrar consultas perdidas.');\n\nreturn {\n  json: {\n    subject: aiResponse.subject,\n    body: '<p>Hola,</p><p>' + apertura + '</p><p>La mayoría de los hoteles boutique pierden reservas entre las 10pm y las 8am, cuando no hay nadie respondiendo mensajes.</p><p>En Sun Life Beach Hotel (Florida) resolvimos eso con Emma — una recepcionista virtual que responde en menos de 3 segundos, a cualquier hora, en el idioma del huésped. La primera semana atendió 40+ consultas. La mayoría, de madrugada.</p><p>Armamos una demo con el nombre de tu hotel para que lo veas en contexto real:<br><a href=\"' + demoUrl + '\">Ver demo personalizada →</a></p><p>Saludos,<br>Matías<br>Timeless AI</p><p style=\"font-size:12px;color:#999;margin-top:24px;\">Timeless AI · Zúrich, Suiza · team@timelessai.pro<br>Te escribo porque encontré el contacto de tu hotel públicamente. Para no recibir más emails, <a href=\"https://timelessai.pro/baja.html?e=' + encodeURIComponent(hunterEmail) + '\">hacé clic acá para darte de baja</a> o respondé BAJA.</p>',\n    to_email: hunterEmail,\n    'Nombre Hotel': hotelName,\n    _hunterEmail: hunterEmail\n  }\n};"
+      }
+    },
+    {
+      "id": "node-gmail",
+      "name": "Gmail - Enviar email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [1980, 300],
+      "credentials": { "gmailOAuth2": { "id": "4XxJNzwMmxbTni6s", "name": "Gmail OAuth2 API" } },
+      "parameters": {
+        "resource": "message",
+        "operation": "send",
+        "sendTo": "={{ $json.to_email }}",
+        "subject": "={{ $json.subject }}",
+        "emailType": "html",
+        "message": "={{ $json.body }}",
+        "options": { "senderName": "Matías | Timeless", "appendAttribution": false }
+      },
+      "webhookId": "5d7d6996-d4a8-4bfe-8177-0c7071c267d1"
+    },
+    {
+      "id": "node-update-sent",
+      "name": "Actualizar fila - Contactado",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [2200, 300],
+      "credentials": { "googleSheetsOAuth2Api": { "id": "0uNp6g1Sebhvcwic", "name": "Google Sheets OAuth2 API" } },
+      "parameters": {
+        "operation": "update",
+        "documentId": { "__rl": true, "mode": "id", "value": "1gJqxMsei6JBtsMwB2u6Wfyzg_DM7SFVAmkOgx5Udyhs" },
+        "sheetName": { "__rl": true, "mode": "name", "value": "Prospectos" },
+        "columns": { "mappingMode": "defineBelow", "matchingColumns": ["Nombre Hotel"], "value": { "Nombre Hotel": "={{ $json['Nombre Hotel'] }}", "Enviado?": "Si", "Fecha envio": "={{ $now.setZone('America/Argentina/Buenos_Aires').toFormat('dd/MM/yyyy') }}", "Email encontrado": "={{ $json._hunterEmail }}", "Estado": "Contactado" }, "schema": [] },
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": { "main": [ [ { "node": "Get Prospectos", "type": "main", "index": 0 }, { "node": "Get Bajas", "type": "main", "index": 0 } ] ] },
+    "Get Prospectos": { "main": [ [ { "node": "Cap volumen", "type": "main", "index": 0 } ] ] },
+    "Cap volumen": { "main": [ [ { "node": "Hay prospectos?", "type": "main", "index": 0 } ] ] },
+    "Hay prospectos?": { "main": [ [ { "node": "Extraer dominio", "type": "main", "index": 0 } ], [ { "node": "Sin prospectos - Stop", "type": "main", "index": 0 } ] ] },
+    "Extraer dominio": { "main": [ [ { "node": "Hunter.io - Buscar email", "type": "main", "index": 0 } ] ] },
+    "Hunter.io - Buscar email": { "main": [ [ { "node": "Unir Hunter + Prospecto", "type": "main", "index": 0 } ] ] },
+    "Unir Hunter + Prospecto": { "main": [ [ { "node": "Email encontrado?", "type": "main", "index": 0 } ] ] },
+    "Email encontrado?": { "main": [ [ { "node": "Filtrar bajas", "type": "main", "index": 0 } ], [ { "node": "Marcar Sin email", "type": "main", "index": 0 } ] ] },
+    "Filtrar bajas": { "main": [ [ { "node": "OpenAI - Personalizar email", "type": "main", "index": 0 } ] ] },
+    "OpenAI - Personalizar email": { "main": [ [ { "node": "Construir cuerpo del email", "type": "main", "index": 0 } ] ] },
+    "Construir cuerpo del email": { "main": [ [ { "node": "Gmail - Enviar email", "type": "main", "index": 0 } ] ] },
+    "Gmail - Enviar email": { "main": [ [ { "node": "Actualizar fila - Contactado", "type": "main", "index": 0 } ] ] }
+  }
+}

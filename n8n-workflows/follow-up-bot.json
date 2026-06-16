@@ -1,0 +1,270 @@
+{
+  "name": "Timeless - Follow-up Bot",
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "errorWorkflow": "XnfBtmWah9W0TXfj"
+  },
+  "nodes": [
+    {
+      "id": "node-schedule",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [0, 0],
+      "parameters": {
+        "rule": { "interval": [ { "field": "cronExpression", "expression": "0 9 * * *" } ] }
+      }
+    },
+    {
+      "id": "node-get-rows",
+      "name": "Google Sheets - Get Rows",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [240, 0],
+      "credentials": { "googleSheetsOAuth2Api": { "id": "0uNp6g1Sebhvcwic", "name": "Google Sheets OAuth2 API" } },
+      "parameters": {
+        "operation": "read",
+        "documentId": { "__rl": true, "mode": "id", "value": "1gJqxMsei6JBtsMwB2u6Wfyzg_DM7SFVAmkOgx5Udyhs", "cachedResultName": "Timeless - CRM Maestro" },
+        "sheetName": { "__rl": true, "mode": "name", "value": "Prospectos", "cachedResultName": "Prospectos" },
+        "range": "A:Z",
+        "filtersUI": { "values": [ { "lookupColumn": "Enviado?", "lookupValue": "Si" }, { "lookupColumn": "Respuesta?", "lookupValue": "No" } ] },
+        "options": {}
+      }
+    },
+    {
+      "id": "node-code-filter",
+      "name": "Code - Filtrar y calcular dias",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 0],
+      "parameters": {
+        "jsCode": "function parseDate(dateStr) {\n  if (!dateStr) return new Date();\n  const iso = new Date(dateStr);\n  if (!isNaN(iso.getTime())) return iso;\n  const parts = String(dateStr).split('/');\n  if (parts.length === 3) {\n    return new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));\n  }\n  return new Date();\n}\n\nconst validDays = [3, 7, 14, 30];\n\nreturn $input.all()\n  .filter(item => {\n    const estado = (item.json['Estado'] || '').trim();\n    return estado !== 'Descartado' && estado !== 'Pipeline';\n  })\n  .map(item => {\n    const fechaEnvio = parseDate(item.json['Fecha envio'] || item.json['Fecha envio'] || '');\n    const dias = Math.floor((Date.now() - fechaEnvio.getTime()) / 86400000);\n    return { json: { ...item.json, dias_desde_envio: dias } };\n  })\n  .filter(item => validDays.includes(item.json.dias_desde_envio));"
+      }
+    },
+    {
+      "id": "node-if",
+      "name": "IF - Hay follow-ups?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [720, 0],
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+          "conditions": [ { "leftValue": "={{ $input.all().length }}", "rightValue": 0, "operator": { "type": "number", "operation": "gt" } } ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "node-split",
+      "name": "Split In Batches",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [960, -80],
+      "parameters": { "batchSize": 1, "options": {} }
+    },
+    {
+      "id": "node-switch",
+      "name": "Switch - Toque",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [1200, -80],
+      "parameters": {
+        "mode": "rules",
+        "rules": {
+          "values": [
+            { "conditions": { "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" }, "conditions": [ { "leftValue": "={{ $json.dias_desde_envio }}", "rightValue": 3, "operator": { "type": "number", "operation": "equals" } } ], "combinator": "and" }, "renameOutput": true, "outputKey": "Dia 3" },
+            { "conditions": { "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" }, "conditions": [ { "leftValue": "={{ $json.dias_desde_envio }}", "rightValue": 7, "operator": { "type": "number", "operation": "equals" } } ], "combinator": "and" }, "renameOutput": true, "outputKey": "Dia 7" },
+            { "conditions": { "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" }, "conditions": [ { "leftValue": "={{ $json.dias_desde_envio }}", "rightValue": 14, "operator": { "type": "number", "operation": "equals" } } ], "combinator": "and" }, "renameOutput": true, "outputKey": "Dia 14" },
+            { "conditions": { "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" }, "conditions": [ { "leftValue": "={{ $json.dias_desde_envio }}", "rightValue": 30, "operator": { "type": "number", "operation": "equals" } } ], "combinator": "and" }, "renameOutput": true, "outputKey": "Dia 30" }
+          ]
+        },
+        "options": { "fallbackOutput": "none" }
+      }
+    },
+    {
+      "id": "node-code-url",
+      "name": "Code - Encode URL hotel",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1440, -300],
+      "parameters": {
+        "jsCode": "const item = $input.item;\nconst hotelName = item.json['Nombre Hotel'] || '';\nreturn [{ json: { ...item.json, hotel_url_encoded: encodeURIComponent(hotelName) } }];"
+      }
+    },
+    {
+      "id": "node-gmail-1",
+      "name": "Gmail - Toque 1",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [1680, -300],
+      "credentials": { "gmailOAuth2": { "id": "4XxJNzwMmxbTni6s", "name": "Gmail OAuth2 API" } },
+      "parameters": {
+        "resource": "message",
+        "operation": "send",
+        "sendTo": "={{ $json['Email encontrado'] }}",
+        "subject": "Una cosa que hace Emma distinto",
+        "emailType": "html",
+        "message": "={{ '<p>Hola,</p><p>Por si no tuviste tiempo de ver la demo — quería agregar algo que no mencioné antes: Emma no solo responde preguntas.</p><p>Captura el nombre, email y tipo de consulta de cada persona que escribe — y se lo manda en un reporte semanal.</p><p>Para un hotel de tu tamaño, eso son leads que hoy probablemente se pierden.</p><p><a href=\"https://timelessai.pro/?hotel=' + $json.hotel_url_encoded + '\">Ver demo →</a></p><p>Saludos,<br>Matías | Timeless</p><p style=\"font-size:12px;color:#999;\">Timeless AI · Zúrich, Suiza · Para no recibir más, <a href=\"https://timelessai.pro/baja.html?e=' + encodeURIComponent($json['Email encontrado']) + '\">darte de baja</a> o respondé BAJA.</p>' }}",
+        "options": { "senderName": "Matías | Timeless" }
+      },
+      "webhookId": "2ce65978-f231-467c-a4a3-8c5b829217ca"
+    },
+    {
+      "id": "node-gmail-2",
+      "name": "Gmail - Toque 2",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [1440, -100],
+      "credentials": { "gmailOAuth2": { "id": "4XxJNzwMmxbTni6s", "name": "Gmail OAuth2 API" } },
+      "parameters": {
+        "resource": "message",
+        "operation": "send",
+        "sendTo": "={{ $json['Email encontrado'] }}",
+        "subject": "40 consultas en 7 días",
+        "emailType": "html",
+        "message": "={{ '<p>Hola,</p><p>Para que tengas contexto: Sun Life Beach Hotel (Englewood, Florida) activó Emma hace unas semanas.</p><p>En los primeros 7 días: 40+ consultas atendidas, la mayoría entre las 10pm y las 8am.</p><p>Ana, la dueña, dijo que lo más valioso fue dejar de perder reservas de madrugada.</p><p>Tiempo de respuesta: menos de 3 segundos.<br>Costo: ' + (/espa|suiza|switzerland|spain/i.test($json['Ciudad / País'] || '') ? '$99' : '$49') + '/mes — menos que una noche en tu propio hotel.</p><p>¿Tenés 15 minutos esta semana para verlo con los datos de <strong>' + $json['Nombre Hotel'] + '</strong> específicamente?</p><p>Saludos,<br>Matías | Timeless</p><p style=\"font-size:12px;color:#999;\">Timeless AI · Zúrich, Suiza · Para no recibir más, <a href=\"https://timelessai.pro/baja.html?e=' + encodeURIComponent($json['Email encontrado']) + '\">darte de baja</a> o respondé BAJA.</p>' }}",
+        "options": { "senderName": "Matías | Timeless" }
+      },
+      "webhookId": "85a3929e-8a2b-4ea3-a983-196b08933fdb"
+    },
+    {
+      "id": "node-gmail-3",
+      "name": "Gmail - Toque 3",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [1440, 100],
+      "credentials": { "gmailOAuth2": { "id": "4XxJNzwMmxbTni6s", "name": "Gmail OAuth2 API" } },
+      "parameters": {
+        "resource": "message",
+        "operation": "send",
+        "sendTo": "={{ $json['Email encontrado'] }}",
+        "subject": "Lo que pierden los hoteles sin respuesta nocturna",
+        "emailType": "html",
+        "message": "={{ '<p>Hola,</p><p>La mayoría de las consultas en hoteles boutique llegan fuera del horario de atención. La mayoría no vuelve a escribir si no recibe respuesta en menos de una hora.</p><p>Emma resuelve exactamente eso — y se instala en menos de 24 horas.</p><p>¿Si una sola reserva extra por mes justifica el costo, vale 10 minutos verlo en acción con los datos de <strong>' + $json['Nombre Hotel'] + '</strong>?</p><p>Saludos,<br>Matías | Timeless</p><p style=\"font-size:12px;color:#999;\">Timeless AI · Zúrich, Suiza · Para no recibir más, <a href=\"https://timelessai.pro/baja.html?e=' + encodeURIComponent($json['Email encontrado']) + '\">darte de baja</a> o respondé BAJA.</p>' }}",
+        "options": { "senderName": "Matías | Timeless" }
+      },
+      "webhookId": "67e54f52-cf2b-4600-a8e1-03ed54c04dd6"
+    },
+    {
+      "id": "node-gmail-4",
+      "name": "Gmail - Toque 4",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [1440, 300],
+      "credentials": { "gmailOAuth2": { "id": "4XxJNzwMmxbTni6s", "name": "Gmail OAuth2 API" } },
+      "parameters": {
+        "resource": "message",
+        "operation": "send",
+        "sendTo": "={{ $json['Email encontrado'] }}",
+        "subject": "Cerrando el loop — Timeless",
+        "emailType": "html",
+        "message": "<p>Hola,</p><p>Hace un mes te escribí sobre Emma. Desde entonces siguió respondiendo consultas reales, a toda hora, en un hotel boutique en Florida.</p><p>Solo escribo para cerrar el loop: si en algún momento querés charlar, acá estoy. Si preferís no recibir más emails, me avisás y listo.</p><p>Saludos,<br>Matías<br>Timeless AI — team@timelessai.pro</p>",
+        "options": { "senderName": "Matías | Timeless" }
+      },
+      "webhookId": "2e4906c5-c43e-47e1-949e-258cf830153b"
+    },
+    {
+      "id": "node-update-1",
+      "name": "Sheets - Update Toque 1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [1920, -300],
+      "credentials": { "googleSheetsOAuth2Api": { "id": "0uNp6g1Sebhvcwic", "name": "Google Sheets OAuth2 API" } },
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": { "__rl": true, "mode": "id", "value": "1gJqxMsei6JBtsMwB2u6Wfyzg_DM7SFVAmkOgx5Udyhs", "cachedResultName": "Timeless - CRM Maestro" },
+        "sheetName": { "__rl": true, "mode": "name", "value": "Prospectos", "cachedResultName": "Prospectos" },
+        "columns": { "mappingMode": "defineBelow", "matchingColumns": ["Email encontrado"], "value": { "Email encontrado": "={{ $json['Email encontrado'] }}", "Notas": "={{ ($json['Notas'] ? $json['Notas'] + ' | ' : '') + 'Toque 1 enviado el ' + new Date().toLocaleDateString('es-AR', {day:'2-digit', month:'2-digit', year:'numeric'}) }}" }, "schema": [] },
+        "options": {}
+      }
+    },
+    {
+      "id": "node-update-2",
+      "name": "Sheets - Update Toque 2",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [1680, -100],
+      "credentials": { "googleSheetsOAuth2Api": { "id": "0uNp6g1Sebhvcwic", "name": "Google Sheets OAuth2 API" } },
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": { "__rl": true, "mode": "id", "value": "1gJqxMsei6JBtsMwB2u6Wfyzg_DM7SFVAmkOgx5Udyhs", "cachedResultName": "Timeless - CRM Maestro" },
+        "sheetName": { "__rl": true, "mode": "name", "value": "Prospectos", "cachedResultName": "Prospectos" },
+        "columns": { "mappingMode": "defineBelow", "matchingColumns": ["Email encontrado"], "value": { "Email encontrado": "={{ $json['Email encontrado'] }}", "Notas": "={{ ($json['Notas'] ? $json['Notas'] + ' | ' : '') + 'Toque 2 enviado el ' + new Date().toLocaleDateString('es-AR', {day:'2-digit', month:'2-digit', year:'numeric'}) }}" }, "schema": [] },
+        "options": {}
+      }
+    },
+    {
+      "id": "node-update-3",
+      "name": "Sheets - Update Toque 3",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [1680, 100],
+      "credentials": { "googleSheetsOAuth2Api": { "id": "0uNp6g1Sebhvcwic", "name": "Google Sheets OAuth2 API" } },
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": { "__rl": true, "mode": "id", "value": "1gJqxMsei6JBtsMwB2u6Wfyzg_DM7SFVAmkOgx5Udyhs", "cachedResultName": "Timeless - CRM Maestro" },
+        "sheetName": { "__rl": true, "mode": "name", "value": "Prospectos", "cachedResultName": "Prospectos" },
+        "columns": { "mappingMode": "defineBelow", "matchingColumns": ["Email encontrado"], "value": { "Email encontrado": "={{ $json['Email encontrado'] }}", "Notas": "={{ ($json['Notas'] ? $json['Notas'] + ' | ' : '') + 'Toque 3 enviado el ' + new Date().toLocaleDateString('es-AR', {day:'2-digit', month:'2-digit', year:'numeric'}) }}" }, "schema": [] },
+        "options": {}
+      }
+    },
+    {
+      "id": "node-update-4",
+      "name": "Sheets - Update Toque 4",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [1680, 300],
+      "credentials": { "googleSheetsOAuth2Api": { "id": "0uNp6g1Sebhvcwic", "name": "Google Sheets OAuth2 API" } },
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": { "__rl": true, "mode": "id", "value": "1gJqxMsei6JBtsMwB2u6Wfyzg_DM7SFVAmkOgx5Udyhs", "cachedResultName": "Timeless - CRM Maestro" },
+        "sheetName": { "__rl": true, "mode": "name", "value": "Prospectos", "cachedResultName": "Prospectos" },
+        "columns": { "mappingMode": "defineBelow", "matchingColumns": ["Email encontrado"], "value": { "Email encontrado": "={{ $json['Email encontrado'] }}", "Notas": "={{ ($json['Notas'] ? $json['Notas'] + ' | ' : '') + 'Toque 4 enviado el ' + new Date().toLocaleDateString('es-AR', {day:'2-digit', month:'2-digit', year:'numeric'}) }}" }, "schema": [] },
+        "options": {}
+      }
+    },
+    {
+      "id": "5b8c01d6-657d-4299-a074-0d052749920f",
+      "name": "Get Bajas",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [240, -180],
+      "credentials": { "googleSheetsOAuth2Api": { "id": "0uNp6g1Sebhvcwic", "name": "Google Sheets OAuth2 API" } },
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "operation": "read",
+        "documentId": { "__rl": true, "mode": "id", "value": "1gJqxMsei6JBtsMwB2u6Wfyzg_DM7SFVAmkOgx5Udyhs", "cachedResultName": "Timeless - CRM Maestro" },
+        "sheetName": { "__rl": true, "mode": "name", "value": "bajas", "cachedResultName": "bajas" },
+        "range": "A:C",
+        "options": {}
+      }
+    },
+    {
+      "id": "2b3b4678-5e78-44c5-b4d7-2e5b7ff62174",
+      "name": "Filtrar bajas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [600, 0],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "let bajas = new Set();\ntry {\n  for (const r of $('Get Bajas').all()) {\n    const e = String((r.json && (r.json.Email ?? r.json.email)) || '').toLowerCase().trim();\n    if (e) bajas.add(e);\n  }\n} catch (err) { /* fail-open */ }\nreturn $input.all().filter(it => {\n  const email = String(it.json['Email encontrado'] || '').toLowerCase().trim();\n  return !email || !bajas.has(email);\n});"
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": { "main": [ [ { "node": "Google Sheets - Get Rows", "type": "main", "index": 0 }, { "node": "Get Bajas", "type": "main", "index": 0 } ] ] },
+    "Google Sheets - Get Rows": { "main": [ [ { "node": "Code - Filtrar y calcular dias", "type": "main", "index": 0 } ] ] },
+    "Code - Filtrar y calcular dias": { "main": [ [ { "node": "Filtrar bajas", "type": "main", "index": 0 } ] ] },
+    "Filtrar bajas": { "main": [ [ { "node": "IF - Hay follow-ups?", "type": "main", "index": 0 } ] ] },
+    "IF - Hay follow-ups?": { "main": [ [ { "node": "Split In Batches", "type": "main", "index": 0 } ], [] ] },
+    "Split In Batches": { "main": [ [ { "node": "Switch - Toque", "type": "main", "index": 0 } ] ] },
+    "Switch - Toque": { "main": [ [ { "node": "Code - Encode URL hotel", "type": "main", "index": 0 } ], [ { "node": "Gmail - Toque 2", "type": "main", "index": 0 } ], [ { "node": "Gmail - Toque 3", "type": "main", "index": 0 } ], [ { "node": "Gmail - Toque 4", "type": "main", "index": 0 } ] ] },
+    "Code - Encode URL hotel": { "main": [ [ { "node": "Gmail - Toque 1", "type": "main", "index": 0 } ] ] },
+    "Gmail - Toque 1": { "main": [ [ { "node": "Sheets - Update Toque 1", "type": "main", "index": 0 } ] ] },
+    "Gmail - Toque 2": { "main": [ [ { "node": "Sheets - Update Toque 2", "type": "main", "index": 0 } ] ] },
+    "Gmail - Toque 3": { "main": [ [ { "node": "Sheets - Update Toque 3", "type": "main", "index": 0 } ] ] },
+    "Gmail - Toque 4": { "main": [ [ { "node": "Sheets - Update Toque 4", "type": "main", "index": 0 } ] ] }
+  }
+}

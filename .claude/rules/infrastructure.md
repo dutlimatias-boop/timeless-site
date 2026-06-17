@@ -9,9 +9,10 @@
 
 | Workflow | Trigger | Propósito |
 |----------|---------|-----------|
-| Timeless — Onboarding v2 | POST /onboarding-hotel | Ingest KB → smoke test → email al cliente |
+| Timeless — Onboarding v2 | POST /onboarding-hotel | Ingest KB → smoke test → email al cliente. Nodo embedding migrado de `Header Auth account` (key muerta `lKIA`) a `OpenAI W1W2` el 2026-06-16 |
 | Timeless — Status Endpoint | GET /onboarding-status | Polling: devuelve estados desde Google Sheets |
 | Timeless — Ingesta de documentos | POST /ingest-document | Ingestión RAG genérica en Supabase |
+| Timeless — Supabase Keep-Alive (`oYbxM2pPG195VPB8`) | Cron diario 6am | Query trivial a `documents` para evitar el auto-pause del free tier de Supabase (creado 2026-06-16) |
 
 ### Workflows de marketing y ventas (mayo 2026)
 
@@ -100,7 +101,9 @@ LINKEDIN_PERSON_ID=<GET https://api.linkedin.com/v2/me → campo id>
 
 ## Supabase
 - Role: vector storage (pgvector)
+- Project ref: `mueljmpduxhhdyryyckl` (nombre "Timeless", free tier, West EU Ireland)
 - Table: `documents`
+- ⚠️ **Free tier se auto-pausa a los ~7 días sin actividad** → da `NXDOMAIN` → tumba onboarding, Ingesta y el RAG de todos los bots (incl. Emma live). Resume desde el dashboard (data intacta, ~90 días de ventana). Mitigado con `Timeless — Supabase Keep-Alive`. Ver [[project_supabase_pause_risk]].
 
 ## Cloudflare Pages (primario)
 - Site: https://timeless-site.pages.dev

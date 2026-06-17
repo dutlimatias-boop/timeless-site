@@ -9,6 +9,10 @@ El trabajo de desarrollo de Timeless es siempre a nivel **plataforma**: template
 
 ---
 
+> **⚠️ Fuente canónica:** este archivo es histórico. El estado actual y autoritativo del proyecto vive en `.claude/rules/*` (cargados vía `.claude/CLAUDE.md`). Donde haya contradicción, gana `rules/*`. Drift conocido en este archivo: hosting primario es **Cloudflare Pages** (`timeless-site.pages.dev`), no Netlify (legacy); Ana usa **Excel/OneDrive**, no Google Sheets directo. Ver `rules/status.md` e `rules/infrastructure.md`.
+
+---
+
 ## What is Timeless
 Timeless is an AI automation SaaS for hotels, restaurants, clinics, and small businesses. It provides a virtual assistant (named per client) that handles guest/customer communications 24/7, plus a management dashboard and weekly analytics reports.
 

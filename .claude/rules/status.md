@@ -54,6 +54,7 @@ Timeless tiene un cliente activo (Sun Life Beach Hotel), infraestructura complet
 | Timeless — Status Endpoint | `JF7LKuT4TGO6x4Fo` | ✓ Activo | Polling de estado de onboarding |
 | Timeless — Ingesta de documentos | `61BW87IVFtBdLEdU` | ✓ Activo | Ingest RAG a Supabase |
 | Timeless — Error Notification | `XnfBtmWah9W0TXfj` | ✓ Activo | Alertas de errores |
+| Timeless — Supabase Keep-Alive | `oYbxM2pPG195VPB8` | ✓ Activo | Cron diario 6am → query trivial a `documents` para evitar el auto-pause del free tier (creado 2026-06-16). Ver [[project_supabase_pause_risk]] |
 
 ### Sun Life Beach Hotel
 | Workflow | ID | Estado | Descripción |
@@ -61,14 +62,17 @@ Timeless tiene un cliente activo (Sun Life Beach Hotel), infraestructura complet
 | Sunlife — Bot Demo | `6tGhMpKls5NbFgCF` | ✓ Activo | Chat principal de Emma |
 | Sunlife — Panel API | `2v2fI1emw91k5Hh3` | ✓ Activo | API para el dashboard |
 | Sunlife — Reporte Semanal | `lEzgYNVXVP7m9HkG` | ⏸ Inactivo | Email lunes 8am a Ana (apagado mientras Ana está pausada — corre el Silencioso en su lugar) |
-| Sunlife — Reporte Semanal Silencioso | `JoNrXeN1GgvRGQeJ` | ✓ Activo | Guarda resumen en "Weekly Reports" sin email a Ana |
-| Sunlife — Guest Journey (Silent) | `EuW7N0FwaIrb0sS7` | ✓ Activo | Detecta check-ins/checkouts, loga en "Guest Journey Log" sin enviar mensajes |
+| Sunlife — Reporte Semanal Silencioso | `JoNrXeN1GgvRGQeJ` | ✓ Activo | Guarda resumen en "Weekly Reports" sin email a Ana. Typo `const rows = .all();` arreglado y publicado 2026-06-16 |
+| Sunlife — Guest Journey (Silent) | `EuW7N0FwaIrb0sS7` | ✓ Activo | Detecta check-ins/checkouts, loga en "Guest Journey Log" sin enviar mensajes. Code node arreglado 2026-06-16; ⚠️ falta fix manual del IF `Has Actions` (`={{ .Action }}` → `={{ $json.Action }}`) — bloqueado por guardrail de cliente |
 | Emma — Bot Demo (OneDrive) | `Cy3Rlw7xDRFvm7mh` | ⏸ Inactivo | Versión con Excel/OneDrive — pendiente credenciales OAuth de Ana |
 
 ---
 
-## Salud de infraestructura (revisión 2026-06-14)
-- ✅ 0 ejecuciones fallidas/crashed desde 2026-05-31. Sitios (timelessai.pro, pages.dev, netlify) + webhook de status responden 200.
+## Salud de infraestructura (revisión 2026-06-16)
+- 🔴→✅ **Incidente Supabase (2026-06-16):** el proyecto `mueljmpduxhhdyryyckl` ("Timeless", free tier) se **auto-pausó por inactividad** → daba `NXDOMAIN` → tumbó onboarding, Ingesta y el **RAG de Emma** (degradada: chateaba sin knowledge base). Resuelto: Resume project (data intacta). Se creó **`Timeless — Supabase Keep-Alive` (`oYbxM2pPG195VPB8`)** — cron diario que evita la re-pausa. Ver [[project_supabase_pause_risk]].
+- 🔴→✅ **Onboarding v2:** el nodo `OpenAI — Generar embedding` usaba la credencial muerta `Header Auth account` (key vieja `lKIA`, 401) → migrado a `OpenAI W1W2`. Job de prueba end-to-end verde (received·ingestion·smoketest·email). **OJO:** esto invalida el punto #1 del roadmap ("nada usa la lKIA") — sí la usaba.
+- ⚠️ **Corrección al claim previo "0 ejecuciones fallidas":** era FALSO. Al 2026-06-16 fallaban en silencio (sin alerta, no cableados a Error Notification): Outreach W2 (arreglado en revisión-marketing), Guest Journey Silent (diario) y Reporte Semanal Silencioso (lunes) por typo `const rows = .all();`, y Content Generator Parte A (viernes, schema "Contenido"). **Reporte Semanal Silencioso arreglado + publicado (2026-06-16).** Guest Journey pendiente OK del usuario (workflow de cliente). Content Generator Parte A pendiente.
+- ✅ Sitios (timelessai.pro, pages.dev, netlify) + webhook de status responden 200.
 - ✅ **Error Notification** cableado (2026-06-14) como "Error Workflow" en 7 de plataforma/marketing: Lead Hunter, Outreach, Follow-up, Content Generator, Mateo, Ingesta, Status Endpoint. **Onboarding v2** quedó sin cablear a propósito (estado intencional del usuario — no tocar). No se tocaron Sun Life ni los Bot Demos de cliente.
 - 🟡 **Backups desfasados:** solo 5 `.json` commiteados en `n8n-workflows/`; los workflows editados el 14/6 (Lead Hunter, Outreach, Content Generator, Mateo) no están exportados al repo.
 - 🟡 **Credenciales n8n:** 21 totales, ~14 sin uso en 90d, 2 huérfanas, 7 de OpenAI → consolidar (reduce confusión sobre cuál key borrar + superficie de ataque).

@@ -1874,20 +1874,10 @@
 <section class="lead-section">
   <h2 class="reveal d1">En vivo en <em>24 horas.</em></h2>
   <p class="reveal d2">Contanos sobre tu negocio y configuramos tu asistente — sin tarjeta de crédito, sin contrato de permanencia.</p>
-  <form class="lead-form reveal d3" id="leadForm" novalidate>
-    <input type="text" name="business_name" placeholder="Nombre de tu negocio" required autocomplete="organization" />
-    <select name="business_type" required>
-      <option value="" disabled selected>Tipo de negocio</option>
-      <option value="hotel">Hotel / Hotel Boutique</option>
-      <option value="restaurant">Restaurante / Café</option>
-      <option value="clinic">Clínica / Consultorio</option>
-      <option value="other">Otro</option>
-    </select>
-    <input type="email" name="email" placeholder="Tu email" required autocomplete="email" />
-    <button type="submit" id="leadBtn">Quiero mi asistente →</button>
-  </form>
-  <div class="lead-success" id="leadSuccess">
-    <span style="font-size:1.2rem;">✓</span> Te contactamos en menos de 24h.
+  <div class="reveal d3" style="display:flex; justify-content:center;">
+    <a href="https://timelessai.pro/onboarding.html" class="btn-primary" style="font-size:1rem; padding:15px 36px;">
+      Quiero mi asistente →
+    </a>
   </div>
 </section>
 
@@ -1954,26 +1944,6 @@
       heroSub.querySelector('strong').textContent = hotel;
     }
   })();
-
-  /* ── Lead capture form ── */
-  document.getElementById('leadForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const btn = document.getElementById('leadBtn');
-    const form = this;
-    const data = Object.fromEntries(new FormData(form).entries());
-    if (!data.business_name || !data.business_type || !data.email) return;
-    btn.textContent = 'Sending…';
-    btn.disabled = true;
-    try {
-      await fetch('https://matiasdutli22.app.n8n.cloud/webhook/onboarding-hotel', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-    } catch (_) { /* fire and forget */ }
-    form.style.display = 'none';
-    document.getElementById('leadSuccess').classList.add('visible');
-  });
 
   /* ── Nav scroll class ── */
   const nav = document.getElementById('nav');

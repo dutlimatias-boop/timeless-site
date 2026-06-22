@@ -1,5 +1,5 @@
 # Auditoría Semanal — Timeless
-**Fecha:** 2026-06-15
+**Fecha:** 2026-06-22
 **Generado por:** Agente de auditoría automático
 
 ---
@@ -7,48 +7,46 @@
 ## ✅ Workflows activos (según docs)
 
 ### Plataforma / Marketing
-| Workflow | Trigger | Propósito |
-|----------|---------|-----------|
-| Timeless — Lead Hunter | Lunes 8am | Google Maps → Place Details (captura website+tel) → AI scoring excluye cadenas (≥7 al CRM). City rotation ISO week. Embudo arreglado y verificado 2026-06-14. |
-| Timeless — Outreach Email | Martes 10am | Lee CRM (`Tiene web?`) → Hunter.io → cold email desde matiidutlii@gmail.com con link `/?hotel=` |
-| Timeless — Follow-up Bot | Diario 9am | Secuencia 4 toques (día 1, 5, 12, 30) a prospectos sin respuesta |
-| Timeless — Mateo Reply Handler | Gmail trigger (team@timelessai.pro) | Clasifica reply con OpenAI → speech por categoría → alerta Telegram. Link Calendly en speech LLAMADA. |
-| Timeless — Content Generator | Viernes 10am + Diario 11am | Genera posts LinkedIn/Instagram (Parte A) + auto-publica aprobados (Parte B). LinkedIn de Matías live. |
-| Timeless — Onboarding v2 | POST /onboarding-hotel | Form multi-step 6 verticales → ingest KB → smoke test → email bienvenida |
-| Timeless — Status Endpoint | GET /onboarding-status | Polling estado de onboarding por job_id |
-| Timeless — Ingesta de documentos | POST /ingest-document | Ingestión RAG genérica a Supabase |
-| Timeless — Error Notification | Error trigger | Alertas de errores en 7 workflows (plataforma/marketing). Cableado 2026-06-14. |
-| Timeless — Unsubscribe (Baja) | POST webhook | Suprime contacto de futuros envíos. Wired a `baja.html`. |
+| Workflow | ID | Trigger | Propósito |
+|----------|----|---------|-----------|
+| Timeless — Lead Hunter | `uhtAIR0uKDxPzVXn` | Lunes 8am | Google Maps → Place Details (website+tel) → AI scoring ≥7 → CRM. City rotation ISO week. Verificado 2026-06-14. |
+| Timeless — Outreach Email | `RJArwDBVO9X9GbAp` | Martes 10am | Lee `Tiene web?` del CRM → Hunter.io → cold email desde matiidutlii@gmail.com con link `/?hotel=` |
+| Timeless — Follow-up Bot | `DG1KRnNlMewrbZW9` | Diario 9am | Secuencia 4 toques (día 1, 5, 12, 30) a prospectos sin respuesta. ⚠️ senderName corrupto. |
+| Timeless — Mateo Reply Handler | `L1Cd7ZGaJkIVJn85` | Gmail trigger (team@timelessai.pro) | Clasifica reply con OpenAI → speech por categoría → alerta Telegram. Link Calendly en LLAMADA. |
+| Timeless — Content Generator | `LnDGBsIJStSGp0os` | Vie 10am + Diario 11am | Posts LinkedIn/Instagram (Parte A) + auto-publica aprobados (Parte B). ⚠️ Parte A fallando por schema. |
+| Timeless — Unsubscribe (Baja) | `Rl85GmT7EnStTyIY` | POST webhook | Suprime contacto de futuros envíos. Wired a `baja.html`. |
+| Timeless — Onboarding v2 | `WySJmWJPvWbFUwXx` | POST /onboarding-hotel | Form 6 verticales → ingest KB → smoke test → email bienvenida. Migrado a `OpenAI W1W2` el 16/6. |
+| Timeless — Status Endpoint | `JF7LKuT4TGO6x4Fo` | GET /onboarding-status | Polling de estado por job_id |
+| Timeless — Ingesta de documentos | `61BW87IVFtBdLEdU` | POST /ingest-document | Ingestión RAG genérica a Supabase |
+| Timeless — Error Notification | `XnfBtmWah9W0TXfj` | Error trigger | Alertas en 7 workflows plataforma/marketing (cableado 2026-06-14). Onboarding v2 excluido — intencional. |
+| Timeless — Supabase Keep-Alive | `oYbxM2pPG195VPB8` | Cron diario 6am | Query trivial a `documents` para evitar auto-pause del free tier (creado 2026-06-16). |
 
 ### Sun Life Beach Hotel
-| Workflow | Propósito |
-|----------|-----------|
-| Sunlife — Bot Demo | Emma activa en sunlifebeachhotel.com vía widget. Logs a Google Sheets. |
-| Sunlife — Panel API | API que alimenta el dashboard de Ana |
-| Sunlife — Reporte Semanal Silencioso | Acumula métricas en pestaña "Weekly Reports" sin email a Ana |
-| Sunlife — Guest Journey (Silent) | Detecta check-ins/checkouts, loga en "Guest Journey Log" sin disparar mensajes |
+| Workflow | ID | Propósito |
+|----------|----|-----------|
+| Sunlife — Bot Demo | `6tGhMpKls5NbFgCF` | Emma activa en sunlifebeachhotel.com vía widget. Logs a Google Sheets. |
+| Sunlife — Panel API | `2v2fI1emw91k5Hh3` | API que alimenta el dashboard de Ana |
+| Sunlife — Reporte Semanal Silencioso | `JoNrXeN1GgvRGQeJ` | Acumula métricas en "Weekly Reports" sin email. Fix typo `rows = .all()` aplicado 2026-06-16. |
+| Sunlife — Guest Journey (Silent) | `EuW7N0FwaIrb0sS7` | Detecta check-ins/checkouts, loga en "Guest Journey Log". ⚠️ Bug IF `Has Actions` pendiente. |
 
 ### Sandbox Patagonia
-| Workflow | Propósito |
-|----------|-----------|
-| Hotel Patagonia - Bot Demo | Bot GPT-4o-mini con reranking Cohere conectado como tool `buscar_info_hotel` |
-| Panel - Hotel Patagonia API | Demo panel del sandbox |
+| Workflow | ID | Propósito |
+|----------|----|-----------|
+| Hotel Patagonia - Bot Demo | `fxrIKIn65oZ4o2RN` | Bot GPT-4o-mini con reranking Cohere (`buscar_info_hotel`) — activo, sin testear post-fix |
+| Panel - Hotel Patagonia API | — | Demo panel del sandbox |
 
 ---
 
 ## ⏸️ Workflows pausados/inactivos
 
-| Workflow | Motivo documentado |
-|----------|--------------------|
-| Sunlife — Reporte Semanal (con email) | Pausado — Ana no disponible. El Silencioso acumula métricas en su lugar. |
-| Emma — Bot Demo (OneDrive) | Pendiente OAuth2 de Ana para autorizar el OneDrive del hotel |
-| Timeless — AI Sales Agent (Demo Generator) | Inactivo — listo para activar. Sin esto el funnel de ventas no cierra automáticamente. |
-| Timeless — AI Sales Agent (Monitor) | ⚠️ **Estado contradictorio entre docs** — ver sección Notas. Si está activo, consume ~8.640 ejec/mes. |
-| Timeless — AI Sales Agent (Daily Digest) | Suite Sales Agent legacy reemplazada por Mateo — `active: false` según `status.md` |
-| Timeless — AI Sales Agent (Cleanup) | Suite Sales Agent legacy — `active: false` según `status.md` |
-| Hotel Patagonia - Bot Demo (Claude test) | Inactivo — A/B vs GPT listo pero no ejecutado desde el 1/jun (2 semanas de deuda) |
-| Hotel Patagonia - RAG Rerank (sub-workflow) | Creado y conectado al Bot Demo. Bloqueado por cupo de ejecuciones de mayo; debería estar disponible ya. |
-| Demos legacy | Restaurante, Beauty, Clínica, Inmobiliaria — desactivados. Conservar como referencia. |
+| Workflow | ID | Motivo |
+|----------|----|--------|
+| Sunlife — Reporte Semanal (con email) | `lEzgYNVXVP7m9HkG` | Pausado — Ana no disponible. Silencioso corre en su lugar. |
+| Emma — Bot Demo (OneDrive) | `Cy3Rlw7xDRFvm7mh` | Pendiente OAuth2 de Ana para su Excel en OneDrive. |
+| Hotel Patagonia - Bot Demo (Claude test) | `BBbqvxenIswa5Sta` | A/B vs GPT listo. Debía activarse el 1/jun. **3 semanas de deuda.** |
+| Hotel Patagonia - RAG Rerank (sub-workflow) | `wU8MTEcUENyqA1Hj` | Conectado al Bot Demo. Bloqueado por cupo agotado en mayo — reset ya ocurrió el 1/jun. |
+| Suite AI Sales Agent ×4 | múltiples | Reemplazada por Mateo. Monitor/Daily Digest/Cleanup/Demo Generator: `active: false` según `status.md`. |
+| Demos legacy | — | Restaurante, Beauty, Clínica, Inmobiliaria — desactivados, conservar como referencia. |
 
 ---
 
@@ -56,34 +54,36 @@
 
 ### 🔴 Críticas
 
-1. **A/B test Patagonia sin ejecutar — 2 semanas de deuda.**
-   El reseteo del cupo fue el 1 de junio. A 15/06 hay cupo disponible. Ambos workflows (GPT `fxrIKIn65oZ4o2RN` y Claude `BBbqvxenIswa5Sta`) están listos. Sin este test no hay dato para decidir si migrar a Claude cuando entren nuevos clientes.
+1. **A/B test Patagonia sin ejecutar — 3 semanas de deuda.**
+   El reset de ejecuciones fue el 1/jun. A 22/06 hay cupo disponible. Los workflows GPT (`fxrIKIn65oZ4o2RN`) y Claude (`BBbqvxenIswa5Sta`) están listos, credenciales configuradas. Sin este test no hay dato para decidir migración de modelo cuando entren nuevos clientes.
 
-2. **Demo Generator inactivo = funnel de ventas roto en el paso decisivo.**
-   Cuando un prospecto dice "quiero una demo", no pasa nada automático. El cierre es 100% manual. Escalar el outreach (W1/W2/W3 activos) sin resolver esto genera oportunidades que se pierden.
+2. **Content Generator Parte A fallando en silencio.**
+   Error de schema "Contenido" los viernes 10am. Sin posts generados en LinkedIn/Instagram desde que falló. Impacta directamente adquisición orgánica.
 
-3. **AI Sales Agent Monitor — estado incierto.**
-   Si está activo corre cada 5 min = ~8.640 ejec/mes contra un plan de 2.500/mes. En mayo llegó a 2.500/2.500. Verificar en n8n si `active: true`. Si lo está, apagarlo ya.
+3. **Demo Generator inactivo = funnel sin cierre automático.**
+   Cuando un prospecto dice "quiero demo", no pasa nada automático. El cierre es 100% manual. Con W1/W2/W3 activos, las oportunidades que genera el sistema no se convierten.
 
-4. **Secretos hardcodeados — riesgo abierto desde mayo.**
-   OpenAI key activa `sk-...b2wA` + Supabase `service_role` en texto plano en nodos Code Tool (deshabilitados pero no borrados) y en archivos `n8n-workflows/*.json`. Los `.json` están en `.gitignore` — no hay filtración pública confirmada. El camino correcto es migrar a credenciales n8n (no rotar de emergencia — rota el service_role y rompe Emma en producción).
+4. **Secretos hardcodeados — riesgo abierto.**
+   OpenAI key activa `sk-...b2wA` + Supabase `service_role` en texto plano en Code Tool de los 5 Bot Demos (nodos desactivados, no borrados). Los `.json` están en `.gitignore` — no hay filtración pública. Migrar a credenciales n8n es el camino correcto (no rotar de emergencia: rota el service_role y rompe Emma en producción).
 
-5. **Backups de workflows críticos desactualizados.**
-   Lead Hunter, Outreach, Content Generator y Mateo Reply Handler fueron editados el 14/6 y NO están exportados a `n8n-workflows/` en el repo. Un borrado en n8n Cloud = pérdida sin recovery.
+5. **Backups desfasados — riesgo de pérdida total.**
+   Lead Hunter, Outreach Email, Content Generator y Mateo Reply Handler fueron editados el 14/6 y NO están exportados a `n8n-workflows/` en el repo. Un borrado en n8n Cloud = pérdida sin recovery.
 
 ### 🟡 Menores
 
-6. **Key OpenAI `sk-...lKIA` pendiente de borrar.** `roadmap.md` la marca como prioritaria desde el 14/6. Verificar columna "Last used" en platform.openai.com para confirmar que no se usa, luego revocar.
+6. **W3 senderName corrupto.** "Mat?as ? Timeless" en emails de follow-up — encoding UTF-8 roto. Daña credibilidad profesional en cada toque automático.
 
-7. **W3 senderName corrupto.** "Mat?as ? Timeless" en emails de follow-up — encoding UTF-8 roto. Daña percepción profesional.
+7. **Key OpenAI `sk-...lKIA` pendiente de borrar.** Nada la usa desde la migración del 16/6. Verificar "Last used" en platform.openai.com y revocar.
 
-8. **W2 campo `apertura` sin usar.** GPT genera apertura personalizada que el template de email descarta. Se paga por tokens que no generan valor.
+8. **Bug Guest Journey Silent — nodo IF.** Expresión `={{ .Action }}` debe ser `={{ $json.Action }}`. El workflow corre pero puede no evaluar acciones correctamente. Pendiente fix con OK del usuario (workflow de cliente).
 
-9. **KB de Emma con horarios incorrectos.** Check-in/out desactualizados en Supabase — Emma responde mal a huéspedes reales en sunlifebeachhotel.com. Fix: 5 minutos via webhook de ingesta.
+9. **KB de Emma con horarios incorrectos.** Check-in/out desactualizados en Supabase — Emma responde mal a huéspedes reales en sunlifebeachhotel.com. Fix: 5 min via webhook de ingesta.
 
-10. **Content Generator pendiente Instagram + token LinkedIn.** LinkedIn de Matías live pero falta `LINKEDIN_ACCESS_TOKEN` + `LINKEDIN_PERSON_ID` en variables n8n. Token caduca cada 60 días — agregar reminder al calendario.
+10. **Content Generator — token LinkedIn expira cada 60 días.** Faltan `LINKEDIN_ACCESS_TOKEN` + `LINKEDIN_PERSON_ID` en variables n8n. Agregar reminder al calendario.
 
-11. **12 webhooks sin autenticación.** Panel API ×6, onboarding, status, baja, ingesta — cualquier llamada puede leer datos de guest o disparar ingestiones.
+11. **12 webhooks sin autenticación.** Panel API ×6, onboarding, status, baja, ingesta. Riesgo bajo pero superficie abierta.
+
+12. **radar-2026-06 no existe aún.** El radar de mayo anunció "próxima edición: fines de junio". Ya es 22/jun — generar la próxima edición del radar de mercado.
 
 ---
 
@@ -92,53 +92,54 @@
 | Bloqueo | Impacto | Resolución |
 |---------|---------|------------|
 | Ana no disponible | Sun Life pausado, KB desactualizada, OneDrive sin activar | Recontactar con evidencia de Emma acumulada en "Weekly Reports" |
-| OneDrive sin autorizar | Dashboard con demo data, Guest Journey loga sin enviar mensajes reales | Ana completa OAuth2 en n8n → activar `Emma — Bot Demo (OneDrive)` |
-| Sin WhatsApp del hotel | Sin canal WhatsApp para Emma | Ana da número cuando retome |
-| Check-in/out desactualizado en KB | Emma responde horarios incorrectos a huéspedes reales | Ingestar texto corregido vía webhook Supabase (5 min — solo Matías) |
-| Demo Generator inactivo | Funnel sin cierre automático | Apagar/reemplazar Monitor → activar Demo Generator |
-| A/B test Patagonia sin ejecutar | Sin datos para decidir migración a Claude | Correr las 5 preguntas de prueba esta semana |
+| OneDrive sin autorizar | Dashboard con demo data, Guest Journey sin mensajes reales | Ana hace OAuth2 en n8n → activar `Emma — Bot Demo (OneDrive)` |
+| Sin WhatsApp del hotel | Emma solo atiende por web | Ana da número cuando retome |
+| Check-in/out desactualizado en KB | Emma responde horarios incorrectos | Ingestar texto corregido vía webhook Supabase (5 min) |
+| Demo Generator inactivo | Funnel sin cierre automático de demos | Verificar estado AI Sales Agent Monitor → apagarlo → activar Demo Generator |
+| A/B test Patagonia sin ejecutar | Sin datos para decidir migración a Claude | Activar `BBbqvxenIswa5Sta`, correr 5 preguntas, documentar resultado |
 
 ---
 
 ## 🎯 Top 3 acciones urgentes esta semana
 
-**Prioridad: adquisición primero.**
+> Criterio: prioridad a adquisición sobre producto.
 
-### 1. 🔴 Monitorear primera corrida real del embudo W1→W2 (lunes 16/6)
-El embudo está reparado y verificado por código (14/6) pero aún no hay confirmación de una corrida real con emails enviados a dominios reales (el bloqueo anterior era W1 no capturando website, causando 0 emails enviados). Revisar el CRM el lunes/martes: ¿aparecen prospectos nuevos con columna `Tiene web?` completa? ¿W2 enviò emails con dominios reales? Esta corrida confirma o niega que el sistema funciona de punta a punta.
+### 1. 🔴 Corregir Content Generator Parte A (schema "Contenido")
+**Impacto directo en adquisición.** El agente de contenido no genera posts para LinkedIn/Instagram desde que falló. Sin contenido orgánico = sin presencia = menos inbound. Es el canal de menor costo de adquisición que tenemos.
+**Acción:** revisar el nodo que falla en Parte A del workflow `LnDGBsIJStSGp0os`, corregir el schema de output que espera GPT, testear con una corrida manual.
 
-### 2. 🔴 Correr el A/B test Patagonia (2 semanas de deuda)
-Activar `Hotel Patagonia - Bot Demo (Claude test)` en n8n. Mandar las mismas 5 preguntas a ambos bots (GPT y Claude). Registrar calidad, costo y latencia en `docs/patagonia-sandbox-experiments.md`. Si Claude gana: habilitar prompt caching (-90% en costo de tokens) y actualizar el roadmap. Sin datos, la decisión de migrar o no queda bloqueada indefinidamente.
+### 2. 🔴 Corregir W3 senderName encoding (UTF-8)
+**Impacto en credibilidad de la secuencia activa.** Cada follow-up sale con "Mat?as ? Timeless" — un prospecto que lo recibe ve un sistema roto. Con W3 corriendo diariamente, el daño se acumula en cada prospecto del pipeline.
+**Acción:** en el nodo del Follow-up Bot (`DG1KRnNlMewrbZW9`) donde se construye el senderName, asegurar encoding UTF-8 correcto o usar string ASCII.
 
-### 3. 🟡 Exportar los 4 workflows editados el 14/6 al repo
-Lead Hunter, Outreach Email, Content Generator y Mateo Reply Handler no tienen backup en `n8n-workflows/`. En n8n → cada workflow → Export → descargar JSON → `git add` + commit. Sin este backup, un error en n8n Cloud o un borrado accidental tiene pérdida total sin recovery.
-
-*(El Demo Generator y el Monitor siguen en el backlog técnico — no son adquisición, pero el Monitor sí es un riesgo de infraestructura activo.)*
+### 3. 🟡 Ejecutar el A/B test Patagonia (3 semanas de deuda)
+**Impacto estratégico.** La decisión de migrar o no a Claude depende de este test. Tiene 3 semanas de retraso. Los workflows están listos y el cupo de ejecuciones se reseteó el 1/jun.
+**Acción:** activar `Hotel Patagonia - Bot Demo (Claude test)` (`BBbqvxenIswa5Sta`), mandar las mismas 5 preguntas a ambos bots, registrar resultado en `docs/patagonia-sandbox-experiments.md`. Si Claude gana, habilitar prompt caching en Anthropic Console (radar 1.5).
 
 ---
 
 ## 📊 Estado del funnel de ventas
 
 ```
-[W1 Lead Hunter] ✅  →  [W2 Outreach Email] ✅  →  [W3 Follow-up] ✅
-                                                         ↓
-                                             [Mateo Reply Handler] ✅
-                                                         ↓
-                                          [Demo Generator] ⏸ HUECO CRÍTICO
-                                                         ↓
-                                             [Onboarding v2] ✅
+[W1 Lead Hunter] ✅  →  [W2 Outreach Email] ✅  →  [W3 Follow-up] ✅ ⚠️UTF-8
+                                                          ↓
+                                              [Mateo Reply Handler] ✅
+                                                          ↓
+                                           [Demo Generator] ⏸ HUECO
+                                                          ↓
+                                              [Onboarding v2] ✅
 ```
 
 | Etapa | Estado | Nota |
 |-------|--------|------|
-| Prospección (W1) | ✅ Embudo reparado | Primera corrida real pendiente: lunes 16/6 |
-| Outreach (W2) | ✅ Activo | Lee `Tiene web?` del CRM — ya no adivina dominios |
-| Follow-up (W3) | ✅ Activo | ⚠️ senderName corrupto — fix pendiente UTF-8 |
+| Prospección (W1) | ✅ Activo | Embudo reparado 2026-06-14. Corridas semanales en curso. |
+| Outreach (W2) | ✅ Activo | Lee dominio real desde CRM, no adivina. |
+| Follow-up (W3) | ✅ Activo | ⚠️ senderName "Mat?as ? Timeless" — UTF-8 roto |
 | Gestión replies (Mateo) | ✅ Activo | Speech por categoría + Calendly automático en LLAMADA |
-| Demo automática | ⏸ Inactivo | Demo Generator sin activar — hueco más costoso del funnel |
+| Demo automática | ⏸ Inactivo | Demo Generator apagado — hueco más costoso del funnel |
 | Landing/demo | ✅ Live | `/?hotel=NombreHotel` muestra demo contextualizada |
-| Adquisición orgánica (W4) | 🟡 Parcial | LinkedIn de Matías live. Instagram y token LinkedIn pendientes. |
-| Agendado de demos | ✅ Activo | Calendly — "Demo Timeless — 15 min". Lun–Vie 18–22 + Sáb 9–13 CET. |
+| Contenido orgánico | ⚠️ Parcial | LinkedIn de Matías live. Parte A fallando → sin nuevos posts. |
+| Agendado de demos | ✅ Activo | Calendly "Demo Timeless — 15 min". Lun–Vie 18–22 + Sáb 9–13 CET. |
 
 ---
 
@@ -146,37 +147,36 @@ Lead Hunter, Outreach Email, Content Generator y Mateo Reply Handler no tienen b
 
 | Experimento | Workflow ID | Estado |
 |-------------|-------------|--------|
-| Bot GPT-4o-mini + reranking Cohere | `fxrIKIn65oZ4o2RN` | Activo — listo para testear |
-| Bot Claude (claude-sonnet-4-6) + reranking | `BBbqvxenIswa5Sta` | Inactivo — activar para A/B |
-| Sub-workflow RAG Rerank (Cohere) | `wU8MTEcUENyqA1Hj` | Conectado al Bot Demo. Debería tener cupo disponible post-1/jun. |
+| Bot GPT-4o-mini + reranking Cohere | `fxrIKIn65oZ4o2RN` | ✅ Activo — cupo disponible post-1/jun |
+| Bot Claude (claude-sonnet-4-6) + reranking | `BBbqvxenIswa5Sta` | ⏸ Inactivo — activar para A/B |
+| Sub-workflow RAG Rerank (Cohere rerank-v3.5) | `wU8MTEcUENyqA1Hj` | Conectado al Bot Demo, sin keys hardcodeadas ✅ |
 
-**A/B — 2 semanas de deuda (target original: 1/jun):**
-- Variables: modelo (gpt-4o-mini vs claude-sonnet-4-6). Mismo reranking (Cohere rerank-v3.5, top 4 de 20 candidatos). Mismo prompt.
-- Test: 5 preguntas reales de huésped (precios, mascotas, check-in, cancelación, actividades).
-- Métricas: % respuestas correctas, costo/token, latencia, respeto del JSON estricto.
-- Si Claude gana → habilitar prompt caching en Anthropic Console (radar 1.5: -90% tokens cacheados). Créditos disponibles: USD 10.
+**A/B pendiente — 3 semanas de deuda (target original: 1/jun):**
+- Mismo reranking (top 4 de 20 candidatos), mismo prompt, mismo `client_id: 'Hotel_Patagonia'`
+- Variables a comparar: modelo (`gpt-4o-mini` vs `claude-sonnet-4-6`), costo/token, latencia, respeto JSON estricto
+- Preguntas sugeridas: precios, mascotas, check-in, cancelación, actividades (set de 5-15)
+- Si Claude gana → habilitar prompt caching en Anthropic Console (créditos USD 10 disponibles) → ~90% de ahorro en tokens cacheados
 
-**Bloqueo de seguridad abierto (independiente del A/B):** Nodo Code Tool viejo (desactivado, no borrado) tiene OpenAI key + Supabase service_role en texto plano. Sub-workflow RAG Rerank usa credenciales n8n — la deuda es solo el nodo viejo. Rotar keys puede esperar la migración formal; no hacerlo de emergencia.
+**Credenciales listas:** `anthropicApi` `3NLGSIOWRqFxCJ0D` ✅ · `cohereApi` `wh0wx6aRSMiZYnsw` ✅ · sub-workflow sin secrets hardcodeados ✅
 
 ---
 
 ## 📝 Notas — Inconsistencias detectadas entre docs
 
-1. **AI Sales Agent Monitor — estado contradictorio (carryover de semana anterior).**
-   `timeless-saas-overview.md` (actualizado 2026-05-30): lo lista como `⚠️ Activo — EN REVISIÓN`.
-   `status.md` (actualizado 2026-06-14): lo lista como `active: false` dentro de la "Suite AI Sales Agent inactiva".
-   No es posible determinar el estado real desde los docs. **Requiere verificación directa en n8n.** Si está activo, es el riesgo de infraestructura más urgente (8.640 ejec/mes vs límite de 2.500).
+1. **AI Sales Agent — estado contradictorio (carryover desde semana anterior, sin resolver).**
+   `timeless-saas-overview.md` (2026-05-30): Monitor `⚠️ Activo EN REVISIÓN`, Daily Digest y Cleanup `✅ Activo`.
+   `status.md` e `infrastructure.md` (2026-06-14+): los 4 workflows de la suite están `active: false`, reemplazados por Mateo.
+   No se puede determinar el estado real desde los docs. **Requiere verificación directa en n8n.** Si Monitor está activo: ~8.640 ejec/mes contra límite de 2.500 = techo reventado.
 
-2. **AI Sales Agent Daily Digest y Cleanup — misma inconsistencia.**
-   `timeless-saas-overview.md`: `✅ Activo`. `status.md`: `active: false`. Verificar junto con el Monitor.
+2. **Pricing inconsistente entre docs (carryover).**
+   `timeless-saas-overview.md`: "$79/mes + setup $200–500". `strategy.md`: "$49 LATAM / $99 Europa" (lanzamiento).
+   `strategy.md` es la fuente correcta. Actualizar `timeless-saas-overview.md` para evitar confusión en pitch.
 
-3. **Content Generator — estado resuelto respecto a auditoría anterior.**
-   La semana pasada figuraba como inactivo/sin destino. `status.md` (2026-06-14) ahora lo lista como activo con LinkedIn de Matías live. El bloqueo parcial sigue: falta Instagram y el token de LinkedIn en variables n8n.
+3. **A/B test sin update en `patagonia-sandbox-experiments.md`.**
+   El doc marca "a correr el 1 de junio". Hoy es 22 de junio y no hay registro de ejecución ni resultado. O no se corrió (acción pendiente urgente) o se corrió sin documentar (gap en docs).
 
-4. **Pricing inconsistente entre docs (carryover).**
-   `timeless-saas-overview.md`: "$79/mes + setup $200–500".
-   `strategy.md`: "$49 LATAM / $99 Europa" (lanzamiento), "$79/$149" (post-primeros-3-clientes).
-   `strategy.md` es más reciente y detallado — es la fuente correcta. `timeless-saas-overview.md` debería actualizarse para evitar confusión en pitch.
+4. **`radar-2026-06` ausente.**
+   `radar-2026-05.md` anunciaba "próxima edición: fines de junio". Ya es 22/jun — el doc no existe en el repo.
 
-5. **A/B test target date desactualizada en los docs.**
-   `patagonia-sandbox-experiments.md` y `roadmap.md` marcan "correr el 1 de junio". Actualizar a "pendiente — ejecutar semana del 15/06" cuando se ejecute.
+5. **Supabase Keep-Alive creado el 16/6 no está reflejado en `patagonia-sandbox-experiments.md`.**
+   El doc de sandbox menciona el riesgo de auto-pause del free tier pero no sabe que ya hay mitigación activa. Drift temporal menor — no crítico.

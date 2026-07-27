@@ -1,5 +1,5 @@
 # Auditoría Semanal — Timeless
-**Fecha:** 2026-07-20
+**Fecha:** 2026-07-27
 **Generado por:** Agente de auditoría automático
 
 ---
@@ -23,7 +23,7 @@
 | Timeless — Status Endpoint | `JF7LKuT4TGO6x4Fo` | GET /onboarding-status | Polling de estado por job_id |
 | Timeless — Ingesta de documentos | `61BW87IVFtBdLEdU` | POST /ingest-document | Ingestión RAG genérica a Supabase |
 | Timeless — Error Notification | `XnfBtmWah9W0TXfj` | Error trigger | Cableado en 7 workflows de plataforma/marketing. Onboarding v2 excluido intencionalmente. |
-| Timeless — Supabase Keep-Alive | `oYbxM2pPG195VPB8` | Cron diario 6am | Query trivial a `documents` para evitar auto-pause del free tier. Creado 2026-06-16. |
+| Timeless — Supabase Keep-Alive | `oYbxM2pPG195VPB8` | Cron diario 6am | Query trivial a `documents` para evitar auto-pause del free tier. |
 
 ### Sun Life Beach Hotel
 | Workflow | ID | Propósito |
@@ -47,9 +47,9 @@
 |----------|----|--------|
 | Sunlife — Reporte Semanal (con email) | `lEzgYNVXVP7m9HkG` | Pausado — Ana no disponible. Silencioso corre en su lugar. |
 | Emma — Bot Demo (OneDrive) | `Cy3Rlw7xDRFvm7mh` | Pendiente OAuth2 de Ana para su Excel en OneDrive. |
-| Hotel Patagonia - Bot Demo (Claude test) | `BBbqvxenIswa5Sta` | A/B vs GPT listo. Target original: 1/jun. **7 semanas de deuda.** |
+| Hotel Patagonia - Bot Demo (Claude test) | `BBbqvxenIswa5Sta` | A/B vs GPT listo. Target original: 1/jun. **8 semanas de deuda.** |
 | Hotel Patagonia - RAG Rerank (sub-workflow) | `wU8MTEcUENyqA1Hj` | Conectado al Bot Demo GPT. Sin testeo post-reseteo de ejecuciones. |
-| Suite AI Sales Agent ×4 | múltiples | Reemplazada por Mateo. Monitor/Daily Digest/Cleanup/Demo Generator: `active: false` según docs más recientes. Ver Nota 1. |
+| Suite AI Sales Agent ×4 | múltiples | Reemplazada por Mateo. Monitor/Daily Digest/Cleanup/Demo Generator: `active: false` según docs actuales. Ver Nota 1. |
 | Demos legacy | — | Restaurante, Beauty, Clínica, Inmobiliaria — desactivados, conservar como referencia. |
 
 ---
@@ -58,38 +58,38 @@
 
 ### 🔴 Críticas
 
-1. **Content Generator Parte A fallando en silencio — sin contenido orgánico por >4 semanas.**
-   Error de schema "Contenido" los viernes 10am. LinkedIn de Matías está live pero no recibe posts generados. Canal de adquisición con costo variable cero, efectivamente apagado desde junio.
+1. **Content Generator Parte A fallando en silencio — 6+ semanas sin contenido orgánico.**
+   Error de schema "Contenido" los viernes 10am. LinkedIn de Matías está live pero no recibe posts generados. Canal de adquisición costo-cero, efectivamente apagado desde junio. Cada semana que pasa es presencia orgánica perdida frente a prospectos.
 
 2. **Demo Generator inactivo = funnel sin cierre automático.**
-   W1/W2/W3/Mateo generan oportunidades que no cierran solas. Sin Demo Generator activo, cada prospecto interesado depende de intervención manual de Matías. No escala.
+   W1/W2/W3/Mateo generan oportunidades que no cierran solas. Cada prospecto interesado depende de intervención manual de Matías. No escala. Sin Demo Generator activo, el sistema de adquisición está incompleto.
 
 3. **Secretos hardcodeados — riesgo abierto.**
-   OpenAI key activa `sk-...b2wA` + Supabase `service_role` en texto plano en Code Tool de los 5 Bot Demos (nodos desactivados, no borrados). `.json` en `.gitignore` — sin filtración pública confirmada. Migrar a credenciales n8n es el camino correcto; NO rotar de emergencia (rompería Emma en producción y todos los demos).
+   OpenAI key activa `sk-...b2wA` + Supabase `service_role` en texto plano en Code Tool de los 5 Bot Demos (nodos desactivados, no borrados). `.json` en `.gitignore` — sin filtración pública confirmada. Migrar a credenciales n8n es el camino correcto; NO rotar de emergencia (rompería Emma en producción).
 
-4. **Backups desfasados — riesgo de pérdida total.**
-   Lead Hunter, Outreach Email, Content Generator y Mateo Reply Handler editados el 14/6 y no están exportados a `n8n-workflows/` en el repo. Borrado en n8n Cloud = sin recovery. Persiste por segunda auditoría consecutiva.
+4. **Backups desfasados — riesgo de pérdida total. Tercera auditoría consecutiva.**
+   Lead Hunter, Outreach Email, Content Generator y Mateo Reply Handler editados el 14/6 y no están exportados a `n8n-workflows/` en el repo. Sin recovery si n8n Cloud pierde esos workflows.
 
-5. **A/B test Patagonia sin ejecutar — 7 semanas de deuda.**
+5. **A/B test Patagonia sin ejecutar — 8 semanas de deuda.**
    Reset de ejecuciones ocurrió el 1/jun. Los workflows GPT (`fxrIKIn65oZ4o2RN`) y Claude (`BBbqvxenIswa5Sta`) están listos, credenciales configuradas. Sin este test no hay dato para decidir migración de modelo cuando entren nuevos clientes.
 
 ### 🟡 Menores
 
-6. **W3 senderName corrupto.** "Mat?as ? Timeless" — encoding UTF-8 roto. Daña credibilidad en cada toque automático diario.
+6. **W3 senderName corrupto.** "Mat?as ? Timeless" — encoding UTF-8 roto. Daña credibilidad en cada toque automático diario. Fix de 5 minutos.
 
 7. **Key OpenAI `sk-...lKIA` pendiente de borrar.** Nada la usa desde migración del 16/6. Verificar "Last used" en platform.openai.com y revocar.
 
 8. **Bug Guest Journey Silent — nodo IF.** Expresión `={{ .Action }}` debe ser `={{ $json.Action }}`. Pendiente OK del usuario (workflow de cliente).
 
-9. **KB de Emma con horarios incorrectos.** Check-in/out desactualizados en Supabase — Emma responde mal a huéspedes reales. Fix de 5 min vía webhook de ingesta (no requiere a Ana).
+9. **KB de Emma con horarios incorrectos.** Check-in/out desactualizados en Supabase — Emma responde mal a huéspedes reales. Fix vía webhook de ingesta, no requiere a Ana.
 
-10. **LinkedIn Access Token expira cada 60 días.** Faltan `LINKEDIN_ACCESS_TOKEN` + `LINKEDIN_PERSON_ID` en n8n Variables. Sin esto, Parte B de Content Generator no puede auto-publicar en LinkedIn.
+10. **LinkedIn Access Token expira cada 60 días.** Faltan `LINKEDIN_ACCESS_TOKEN` + `LINKEDIN_PERSON_ID` en n8n Variables. Sin esto, Content Generator Parte B no puede auto-publicar en LinkedIn. Riesgo de expiración si no se configuró al crear el perfil.
 
-11. **12 webhooks sin autenticación.** Panel API ×6, onboarding, status, baja, ingesta. Riesgo bajo pero superficie abierta.
+11. **12 webhooks sin autenticación.** Panel API ×6, onboarding, status, baja, ingesta. Superficie abierta.
 
-12. **`radar-2026-06` ausente.** `radar-2026-05.md` anunciaba "próxima edición: fines de junio". Ya pasó — el radar no existe en el repo.
+12. **`radar-2026-06` ausente.** `radar-2026-05.md` anunciaba "próxima edición: fines de junio". Ya pasó julio — el radar no existe en el repo. Segunda auditoría consecutiva sin update.
 
-13. **Instagram business sin crear.** Perfil pendiente desde mayo. El canal visual más relevante para captar dueños de hoteles/restaurantes/beauty sigue sin existir.
+13. **Instagram business sin crear.** Perfil pendiente desde mayo. Canal visual más relevante para dueños de hoteles/restaurantes/beauty. Segunda auditoría consecutiva sin acción.
 
 ---
 
@@ -102,7 +102,7 @@
 | Sin WhatsApp del hotel | Emma solo atiende por web | Ana da número cuando retome |
 | Check-in/out desactualizado en KB | Emma responde horarios incorrectos a huéspedes reales | Ingestar texto corregido vía webhook Supabase (sin necesitar a Ana) |
 | Demo Generator inactivo | Funnel sin cierre automático | Testear flujo completo y activar |
-| A/B test Patagonia sin ejecutar | Sin datos para decisión de modelo | Activar `BBbqvxenIswa5Sta`, correr 5 preguntas, documentar resultado |
+| A/B test Patagonia sin ejecutar | Sin datos para decisión de modelo cuando entren clientes | Activar `BBbqvxenIswa5Sta`, correr 5 preguntas, documentar resultado |
 
 ---
 
@@ -111,15 +111,15 @@
 > Criterio: adquisición sobre producto. El cuello de botella es conseguir clientes, no mejorar el producto.
 
 ### 1. 🔴 Corregir Content Generator Parte A (schema "Contenido")
-**Impacto directo en adquisición.** Sin posts generados, no hay presencia orgánica en LinkedIn/Instagram. Canal de costo variable cero, apagado de facto hace más de un mes. Cada semana que pasa es contenido de adquisición que no llega a futuros prospectos.
-**Acción:** abrir workflow `LnDGBsIJStSGp0os` en n8n → identificar nodo de Parte A que falla por schema "Contenido" → corregir → testear con corrida manual → exportar `.json` actualizado al repo.
+**Impacto directo en adquisición.** 6 semanas sin posts generados = canal orgánico apagado. LinkedIn de Matías live sin recibir contenido. Cada semana que pasa es presencia perdida frente a prospectos que sí están buscando.
+**Acción:** abrir workflow `LnDGBsIJStSGp0os` en n8n → identificar nodo Parte A que falla por schema "Contenido" → corregir → testear con corrida manual → exportar `.json` actualizado al repo.
 
 ### 2. 🔴 Corregir W3 senderName encoding (UTF-8)
-**Impacto en credibilidad del pipeline activo.** Cada follow-up sale con "Mat?as ? Timeless" — un prospecto que lo recibe percibe un sistema roto. El daño se acumula en el pipeline diariamente. Fix de 5 minutos con impacto en cada corrida del cron diario.
-**Acción:** en workflow `DG1KRnNlMewrbZW9`, localizar nodo que construye el senderName → reemplazar con string limpio (`Matias de Timeless`) o forzar encoding correcto. Testear con corrida manual.
+**Impacto en credibilidad del pipeline activo.** Cada follow-up sale con "Mat?as ? Timeless" — un prospecto que lo recibe percibe un sistema roto. El daño se acumula diariamente en el pipeline vivo. Fix de 5 minutos.
+**Acción:** en workflow `DG1KRnNlMewrbZW9`, localizar nodo que construye el senderName → reemplazar con string limpio (`Matias de Timeless`) → testear con corrida manual.
 
-### 3. 🟡 Exportar backups de los 4 workflows editados el 14/6
-**Riesgo de pérdida total.** Lead Hunter, Outreach Email, Content Generator y Mateo Reply Handler no tienen copia en el repo desde sus ediciones de junio. Si n8n Cloud pierde esos workflows, no hay recovery. 10 minutos de trabajo para eliminar el riesgo.
+### 3. 🔴 Exportar backups de los 4 workflows editados en junio
+**Riesgo de pérdida irreversible — tercera semana sin resolver.** Lead Hunter, Outreach Email, Content Generator y Mateo no tienen copia desde sus ediciones del 14/6. Sin recovery en n8n Cloud. 10 minutos de trabajo para eliminar este riesgo.
 **Acción:** desde n8n, exportar JSON de cada uno → guardar en `n8n-workflows/` → commit + push.
 
 ---
@@ -144,8 +144,8 @@
 | Gestión replies (Mateo) | ✅ Activo | Speech por categoría + Calendly automático en LLAMADA |
 | Demo automática | ⏸ Inactivo | Demo Generator apagado — hueco más costoso del funnel |
 | Landing/demo | ✅ Live | `/?hotel=NombreHotel` muestra demo contextualizada |
-| Contenido orgánico | ⚠️ Roto | LinkedIn de Matías live. Content Generator Parte A fallando → sin nuevos posts hace >4 semanas. |
-| Instagram business | ❌ Sin crear | Perfil pendiente desde mayo. Prioridad según strategy.md. |
+| Contenido orgánico | ⚠️ Roto | LinkedIn de Matías live. Content Generator Parte A fallando → sin nuevos posts desde junio (6+ semanas). |
+| Instagram business | ❌ Sin crear | Perfil pendiente desde mayo. Prioridad alta según strategy.md. |
 | Agendado de demos | ✅ Activo | Calendly "Demo Timeless — 15 min". Lun–Vie 18–22 + Sáb 9–13 CET. |
 
 ---
@@ -155,10 +155,10 @@
 | Experimento | Workflow ID | Estado |
 |-------------|-------------|--------|
 | Bot GPT-4o-mini + reranking Cohere | `fxrIKIn65oZ4o2RN` | ✅ Activo |
-| Bot Claude (claude-sonnet-4-6) + reranking | `BBbqvxenIswa5Sta` | ⏸ Inactivo — **7 semanas de deuda** (target original: 1/jun) |
+| Bot Claude (claude-sonnet-4-6) + reranking | `BBbqvxenIswa5Sta` | ⏸ Inactivo — **8 semanas de deuda** (target original: 1/jun) |
 | Sub-workflow RAG Rerank (Cohere rerank-v3.5) | `wU8MTEcUENyqA1Hj` | Conectado al Bot Demo, sin secrets hardcodeados ✅ |
 
-**A/B pendiente — 7 semanas de deuda:**
+**A/B pendiente — 8 semanas de deuda:**
 - Mismo reranking (top 4 de 20 candidatos), mismo prompt, mismo `client_id: 'Hotel_Patagonia'`
 - Variables a comparar: modelo (`gpt-4o-mini` vs `claude-sonnet-4-6`), costo/token, latencia, respeto JSON estricto
 - Preguntas sugeridas: precios, mascotas, check-in, cancelación, actividades (set de 5 del doc original)
@@ -170,23 +170,23 @@
 
 ## 📝 Notas — Inconsistencias detectadas entre docs
 
-1. **AI Sales Agent — estado contradictorio.**
+1. **AI Sales Agent — estado contradictorio. Sin resolver desde auditoría anterior.**
    `timeless-saas-overview.md` (2026-05-30): Monitor `⚠️ Activo EN REVISIÓN`, Daily Digest y Cleanup `✅ Activo`.
-   `status.md` e `infrastructure.md` (post 2026-06-14): los 4 workflows de la suite están `active: false`, reemplazados por Mateo.
-   Estado real irresoluble desde docs. **Requiere verificación directa en n8n.** Si Monitor sigue activo: ~8.640 ejec/mes vs límite de 2.500 = cupo reventado y otros workflows fallando.
+   `status.md` e `infrastructure.md` (post 2026-06-14): los 4 workflows están `active: false`, reemplazados por Mateo.
+   Estado real irresoluble desde docs. **Requiere verificación directa en n8n.** Si Monitor sigue activo: ~8.640 ejec/mes vs límite de 2.500 = cupo reventado y workflows de adquisición fallando sin saber.
 
 2. **Pricing inconsistente entre docs.**
-   `timeless-saas-overview.md`: "$79/mes + setup $200–500". `strategy.md`: "$49 LATAM / $99 Europa" (lanzamiento).
-   `strategy.md` es la fuente correcta. `timeless-saas-overview.md` necesita actualización.
+   `timeless-saas-overview.md`: "$79/mes + setup $200–500". `strategy.md`: "$49 LATAM / $99 Europa".
+   `strategy.md` es la fuente correcta. `timeless-saas-overview.md` requiere actualización.
 
-3. **A/B test sin update en `patagonia-sandbox-experiments.md`.**
-   El doc marca "a correr el 1 de junio". Hoy es 20 de julio — 7 semanas sin update. No hay registro de ejecución ni resultado. Persiste desde auditoría anterior.
+3. **A/B test sin update en `patagonia-sandbox-experiments.md`. Tercera auditoría consecutiva.**
+   El doc marca "a correr el 1 de junio". Hoy 27 de julio — 8 semanas sin update, sin registro de ejecución ni resultado.
 
-4. **`radar-2026-06` ausente.**
-   `radar-2026-05.md` anunciaba "próxima edición: fines de junio". El doc no existe en el repo. Persiste desde auditoría anterior.
+4. **`radar-2026-06` ausente. Segunda auditoría consecutiva.**
+   `radar-2026-05.md` anunciaba "próxima edición: fines de junio". El doc no existe en el repo.
 
 5. **W2 campo apertura sin usar.**
-   GPT genera una apertura personalizada pero no se integra en el email. Tokens desperdiciados en cada corrida.
+   GPT genera una apertura personalizada en cada corrida pero no se integra en el email. Tokens desperdiciados, no hay riesgo operativo pero sí costo variable evitable.
 
-6. **Backups de 4 workflows editados el 14/6 siguen sin commitear.**
-   `n8n-workflows/` en el repo tiene solo 5 `.json` — Lead Hunter, Outreach, Content Generator y Mateo no están. Persiste por segunda auditoría consecutiva — riesgo creciente.
+6. **Backups de 4 workflows editados el 14/6 siguen sin commitear. Tercera auditoría consecutiva.**
+   `n8n-workflows/` tiene solo 5 `.json` — Lead Hunter, Outreach, Content Generator y Mateo no están actualizados. Riesgo creciente de pérdida irreversible.

@@ -1,0 +1,403 @@
+<title>Timeless — Guía de Entrevista</title>
+<style>
+  :root {
+    --black:    #07090f;
+    --black-2:  #0d1218;
+    --black-3:  #131b27;
+    --white:    #f0e6d3;
+    --muted:    #a99b86;
+    --muted-2:  #6d6656;
+    --gold:     #c8912b;
+    --gold-dim: rgba(200,145,43,0.14);
+    --gold-line:rgba(200,145,43,0.32);
+    --border:   rgba(240,230,211,0.09);
+    --border-2: rgba(240,230,211,0.16);
+    --ground:   var(--black);
+    --card:     var(--black-2);
+    --inset:    var(--black-3);
+    --text:     var(--white);
+    --dim:      var(--muted);
+    --dimmer:   var(--muted-2);
+    --font-h: Georgia, 'Cormorant Garamond', 'Times New Roman', serif;
+    --font-b: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --font-m: ui-monospace, 'SF Mono', Menlo, 'DM Mono', monospace;
+    --maxw: 760px;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --ground: #efe7d7;
+      --card:   #f7f1e5;
+      --inset:  #ece2ce;
+      --text:   #1c1a15;
+      --dim:    #5c5344;
+      --dimmer: #8a7e68;
+      --border:   rgba(28,26,21,0.10);
+      --border-2: rgba(28,26,21,0.18);
+      --gold-dim: rgba(160,110,20,0.12);
+      --gold-line:rgba(160,110,20,0.34);
+      --gold:   #9a6a12;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: var(--black); --card: var(--black-2); --inset: var(--black-3);
+    --text: var(--white); --dim: var(--muted); --dimmer: var(--muted-2);
+    --border: rgba(240,230,211,0.09); --border-2: rgba(240,230,211,0.16);
+    --gold: #c8912b; --gold-dim: rgba(200,145,43,0.14); --gold-line: rgba(200,145,43,0.32);
+  }
+  :root[data-theme="light"] {
+    --ground: #efe7d7; --card: #f7f1e5; --inset: #ece2ce;
+    --text: #1c1a15; --dim: #5c5344; --dimmer: #8a7e68;
+    --border: rgba(28,26,21,0.10); --border-2: rgba(28,26,21,0.18);
+    --gold: #9a6a12; --gold-dim: rgba(160,110,20,0.12); --gold-line: rgba(160,110,20,0.34);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--text);
+    font-family: var(--font-b);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 22px 96px; }
+
+  /* ---------- Hero ---------- */
+  header.hero {
+    padding: 64px 22px 40px;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand {
+    font-family: var(--font-h);
+    font-weight: 500;
+    font-size: clamp(1.5rem, 4vw, 1.9rem);
+    letter-spacing: 0.14em;
+    margin: 0 0 30px;
+  }
+  .brand .dot { color: var(--gold); }
+  .eyebrow {
+    font-family: var(--font-m);
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 18px;
+  }
+  h1.title {
+    font-family: var(--font-h);
+    font-weight: 500;
+    font-size: clamp(2.1rem, 6.5vw, 3.4rem);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0 0 22px;
+  }
+  h1.title em { color: var(--gold); font-style: italic; }
+  .lede {
+    font-size: 1.06rem;
+    color: var(--dim);
+    max-width: 62ch;
+    margin: 0;
+  }
+  .lede strong { color: var(--text); font-weight: 600; }
+
+  /* ---------- Section scaffolding ---------- */
+  section { padding-top: 54px; }
+  .sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 22px; }
+  .sec-num {
+    font-family: var(--font-m);
+    font-size: 0.78rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    flex: none;
+    padding-top: 2px;
+  }
+  h2 {
+    font-family: var(--font-h);
+    font-weight: 500;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0;
+  }
+  p { margin: 0 0 16px; }
+  p.note { color: var(--dim); font-size: 0.95rem; }
+  strong { color: var(--text); }
+  em.g { color: var(--gold); font-style: normal; font-weight: 600; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 26px 26px 22px;
+  }
+  .card + .card { margin-top: 16px; }
+
+  /* pull quote / key line */
+  .keyline {
+    border-left: 2px solid var(--gold);
+    padding: 4px 0 4px 20px;
+    margin: 0 0 20px;
+    font-family: var(--font-h);
+    font-size: 1.28rem;
+    line-height: 1.4;
+    font-style: italic;
+    color: var(--text);
+  }
+  .say {
+    margin-top: 16px;
+    background: var(--gold-dim);
+    border: 1px solid var(--gold-line);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 0.92rem;
+    color: var(--text);
+  }
+  .say b {
+    display: block;
+    font-family: var(--font-m);
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  /* RAG three-step */
+  .steps3 { display: grid; gap: 12px; grid-template-columns: 1fr; margin-top: 4px; }
+  @media (min-width: 620px) { .steps3 { grid-template-columns: repeat(3,1fr); } }
+  .step3 { background: var(--inset); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+  .step3 .k { font-family: var(--font-m); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .step3 h4 { font-family: var(--font-h); font-weight: 500; font-size: 1.15rem; margin: 0 0 6px; }
+  .step3 p { font-size: 0.88rem; color: var(--dim); margin: 0; }
+
+  /* two halves */
+  .halves { display: grid; gap: 16px; grid-template-columns: 1fr; }
+  @media (min-width: 620px) { .halves { grid-template-columns: 1fr 1fr; } }
+  .half { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+  .half .tag { font-size: 1.4rem; margin-bottom: 6px; }
+  .half h3 { font-family: var(--font-h); font-weight: 500; font-size: 1.35rem; margin: 0 0 4px; }
+  .half .who { font-size: 0.82rem; color: var(--dimmer); font-family: var(--font-m); letter-spacing: 0.04em; margin-bottom: 14px; }
+  .half ul { margin: 0; padding: 0; list-style: none; }
+  .half li { font-size: 0.9rem; padding: 7px 0; border-top: 1px solid var(--border); color: var(--dim); }
+  .half li:first-child { border-top: none; }
+  .half li b { color: var(--text); font-weight: 600; }
+
+  /* stack table */
+  .table-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 14px; }
+  table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 13px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  thead th { font-family: var(--font-m); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); font-weight: 500; background: var(--card); }
+  tbody tr:last-child td { border-bottom: none; }
+  td.tool { font-weight: 600; color: var(--text); white-space: nowrap; }
+  td .m { font-family: var(--font-m); font-size: 0.82rem; color: var(--gold); }
+  td.why { color: var(--dim); }
+
+  /* flow diagram */
+  .flow { display: flex; flex-direction: column; gap: 0; margin-top: 4px; }
+  .fstep { position: relative; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 15px 18px; }
+  .fstep .fl { font-family: var(--font-m); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 3px; }
+  .fstep p { margin: 0; font-size: 0.92rem; }
+  .fstep p span { color: var(--dim); }
+  .farrow { width: 1px; height: 22px; background: var(--gold-line); margin: 0 auto; position: relative; }
+  .farrow::after { content: ""; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid var(--gold-line); }
+  .fstep.aside { border-style: dashed; border-color: var(--gold-line); background: var(--gold-dim); }
+
+  /* funnel schedule list */
+  .fun { display: flex; flex-direction: column; gap: 10px; }
+  .fun-row { display: grid; grid-template-columns: 96px 1fr; gap: 14px; align-items: start; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+  .fun-when { font-family: var(--font-m); font-size: 0.72rem; color: var(--gold); letter-spacing: 0.02em; line-height: 1.4; padding-top: 2px; }
+  .fun-row p { margin: 0; font-size: 0.9rem; }
+  .fun-row b { color: var(--text); }
+
+  /* Q&A */
+  .qa { display: flex; flex-direction: column; gap: 12px; }
+  details.q {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0;
+    overflow: hidden;
+  }
+  details.q[open] { border-color: var(--gold-line); }
+  details.q summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 17px 48px 17px 20px;
+    font-family: var(--font-h);
+    font-size: 1.12rem;
+    line-height: 1.35;
+    position: relative;
+    color: var(--text);
+  }
+  details.q summary::-webkit-details-marker { display: none; }
+  details.q summary::after {
+    content: "+";
+    position: absolute;
+    right: 20px; top: 15px;
+    font-family: var(--font-m);
+    font-size: 1.3rem;
+    color: var(--gold);
+    transition: transform 0.2s ease;
+  }
+  details.q[open] summary::after { transform: rotate(45deg); }
+  details.q .a { padding: 0 20px 20px; font-size: 0.94rem; color: var(--dim); }
+  details.q .a strong { color: var(--text); }
+  details.q .a .caveat { color: var(--gold); font-weight: 600; }
+
+  /* cheat sheet */
+  .cheat { display: grid; gap: 10px; grid-template-columns: 1fr; }
+  @media (min-width: 620px) { .cheat { grid-template-columns: 1fr 1fr; } }
+  .chip { background: var(--inset); border: 1px solid var(--border); border-radius: 11px; padding: 15px 17px; }
+  .chip .q { font-family: var(--font-m); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+  .chip .a { font-size: 0.92rem; color: var(--text); line-height: 1.5; }
+
+  code { font-family: var(--font-m); font-size: 0.86em; background: var(--gold-dim); color: var(--gold); padding: 1px 6px; border-radius: 5px; }
+
+  footer { margin-top: 60px; padding-top: 22px; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--dimmer); font-family: var(--font-m); letter-spacing: 0.03em; }
+
+  a { color: var(--gold); }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<header class="hero">
+  <p class="brand">TIMELESS<span class="dot">.</span></p>
+  <p class="eyebrow">Guía de entrevista · repaso rápido</p>
+  <h1 class="title">Entender Timeless <em>de fundamentos</em> — y responder la pregunta difícil.</h1>
+  <p class="lede"><strong>Timeless es una SaaS que le da a un negocio chico un asistente virtual con IA</strong> — con nombre y personalidad propios — que atiende a sus clientes 24/7, captura leads y le manda un reporte semanal al dueño. Todo por ~$49–99/mes, sin que el dueño toque nada técnico.</p>
+</header>
+
+<div class="wrap">
+
+  <!-- 1 · RAG -->
+  <section>
+    <div class="sec-head"><span class="sec-num">01</span><h2>La idea que ancla todo: RAG</h2></div>
+    <p class="note">Si entendés esto, entendés el 90% de Timeless. <strong>El problema:</strong> GPT es brillante pero no sabe nada de <em class="g">tu</em> hotel — tus precios, tu check-in, si aceptás mascotas. Si le preguntás, se lo inventa (“alucina”). Inaceptable para un negocio.</p>
+    <p class="note"><strong>La solución — RAG (Retrieval-Augmented Generation):</strong></p>
+    <div class="steps3">
+      <div class="step3"><div class="k">Retrieval</div><h4>Buscar</h4><p>La info del negocio se guarda como “vectores” (significado convertido en números). Ante una pregunta, se buscan los pedacitos más parecidos.</p></div>
+      <div class="step3"><div class="k">Augmented</div><h4>Aumentar</h4><p>Esos pedacitos verificados se le pasan al modelo como contexto: “respondé solo con esto”.</p></div>
+      <div class="step3"><div class="k">Generation</div><h4>Generar</h4><p>El modelo redacta la respuesta correcta, en el idioma del huésped, sin inventar nada.</p></div>
+    </div>
+    <div class="say"><b>Decilo así</b>Usamos RAG para que el bot responda solo con información verificada del negocio y no alucine. Cada cliente tiene su knowledge base aislada por un <code>client_id</code>.</div>
+  </section>
+
+  <!-- 2 · Two halves -->
+  <section>
+    <div class="sec-head"><span class="sec-num">02</span><h2>Timeless son dos mitades. No las mezcles.</h2></div>
+    <p class="note">La trampa más común es confundirlas. Si te preguntan “¿qué es Timeless?” hablás del <em class="g">Producto</em>. Si te preguntan “¿cómo consiguen clientes?” hablás de la <em class="g">Máquina de crecimiento</em>.</p>
+    <div class="halves">
+      <div class="half">
+        <div class="tag">🤖</div>
+        <h3>El Producto</h3>
+        <p class="who">lo usa el hotel + sus huéspedes</p>
+        <ul>
+          <li><b>Bot</b> — atiende consultas 24/7 (ej: Emma)</li>
+          <li><b>Panel</b> — tabla de conversaciones para el dueño</li>
+          <li><b>Dashboard</b> — calendario + métricas del negocio</li>
+          <li><b>Reporte semanal</b> — resumen por email, automático</li>
+        </ul>
+      </div>
+      <div class="half">
+        <div class="tag">📣</div>
+        <h3>La Máquina de crecimiento</h3>
+        <p class="who">la usa Matías (dueño de Timeless)</p>
+        <ul>
+          <li><b>Lead Hunter</b> — encuentra hoteles prospecto</li>
+          <li><b>Outreach</b> — manda cold emails personalizados</li>
+          <li><b>Follow-up</b> — 4 toques a los que no responden</li>
+          <li><b>Mateo</b> — clasifica respuestas y avisa por Telegram</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · Stack -->
+  <section>
+    <div class="sec-head"><span class="sec-num">03</span><h2>El stack: cada herramienta y por qué está</h2></div>
+    <p class="note">Pensalo como una cocina — cada pieza hace una cosa. El corazón es <em class="g">n8n</em> como orquestador.</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Herramienta</th><th>Rol en Timeless</th></tr></thead>
+        <tbody>
+          <tr><td class="tool">n8n</td><td class="why"><b>El cerebro / orquestador.</b> Automatización visual por nodos. Todos los flujos viven acá: bot, marketing, onboarding.</td></tr>
+          <tr><td class="tool">Supabase <span class="m">pgvector</span></td><td class="why"><b>La memoria del bot.</b> Guarda la knowledge base de cada cliente como vectores para el RAG. Tabla <code>documents</code>, aislada por <code>client_id</code>.</td></tr>
+          <tr><td class="tool">OpenAI</td><td class="why"><b>El motor de lenguaje.</b> Convierte texto en vectores (embeddings) <em>y</em> genera las respuestas (<code>gpt-4o-mini</code>).</td></tr>
+          <tr><td class="tool">Google Sheets</td><td class="why"><b>El data store del cliente.</b> Logs de conversaciones, leads, CRM. Elegido porque un dueño no-técnico ya sabe usarlo.</td></tr>
+          <tr><td class="tool">Cloudflare Pages</td><td class="why"><b>Hosting primario.</b> Sirve landing, chat, panel y dashboard. Push a <code>main</code> → deploy en ~30s.</td></tr>
+          <tr><td class="tool">Netlify</td><td class="why"><b>Hosting legacy.</b> No se apaga: el widget de Emma en el sitio de Ana apunta ahí.</td></tr>
+          <tr><td class="tool">GitHub</td><td class="why"><b>El repositorio.</b> Todo el código; dispara los deploys automáticos.</td></tr>
+          <tr><td class="tool">Apoyo</td><td class="why"><span class="m">Hunter.io</span> emails · <span class="m">Google Maps</span> prospectos · <span class="m">Gmail</span> envíos · <span class="m">Telegram</span> alertas · <span class="m">Calendly</span> demos · <span class="m">Cohere</span> reranking (experimental)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 4 · Guest flow -->
+  <section>
+    <div class="sec-head"><span class="sec-num">04</span><h2>El flujo estrella: qué pasa cuando un huésped escribe</h2></div>
+    <p class="note">Este es el diagrama que conviene saber dibujar. Si te lo piden, quedás muy bien.</p>
+    <div class="flow">
+      <div class="fstep"><span class="fl">1 · Entrada</span><p>Huésped escribe en el chat del sitio web <span>— widget <code>@n8n/chat</code></span></p></div>
+      <div class="farrow"></div>
+      <div class="fstep"><span class="fl">2 · Webhook</span><p>El widget manda el mensaje a un <b>webhook de n8n</b></p></div>
+      <div class="farrow"></div>
+      <div class="fstep"><span class="fl">3 · Embedding</span><p>n8n convierte la pregunta en un <b>vector</b> <span>(OpenAI)</span></p></div>
+      <div class="farrow"></div>
+      <div class="fstep"><span class="fl">4 · Retrieval</span><p>Busca en <b>Supabase</b> los chunks más parecidos <span>— filtrados por <code>client_id</code></span></p></div>
+      <div class="farrow"></div>
+      <div class="fstep aside"><span class="fl">4b · Sandbox</span><p>Rerank con <b>Cohere</b>: recupera 20, se queda con los 4 mejores <span>(sube precisión ~70%→90%)</span></p></div>
+      <div class="farrow"></div>
+      <div class="fstep"><span class="fl">5 · Generación</span><p>Le pasa esos chunks a <b>GPT</b> como contexto → genera la respuesta</p></div>
+      <div class="farrow"></div>
+      <div class="fstep"><span class="fl">6 · Salida</span><p>Responde al huésped <b>+ loguea la conversación</b> en Google Sheets</p></div>
+    </div>
+    <p class="note" style="margin-top:18px;">Detalle por si aprietan: corre sobre <code>gpt-4o-mini</code>, con <em>Simple Memory</em> (recuerda la charla) y devuelve un <b>JSON estricto</b> (intención + datos de reserva) que dispara side-effects: alerta de lead caliente por Telegram, secuencia de follow-up.</p>
+  </section>
+
+  <!-- 5 · Growth funnel -->
+  <section>
+    <div class="sec-head"><span class="sec-num">05</span><h2>De desconocido a cliente (la máquina de crecimiento)</h2></div>
+    <div class="fun">
+      <div class="fun-row"><div class="fun-when">Lun 8am</div><p><b>W1 · Lead Hunter</b> — busca hoteles en Google Maps, GPT los puntúa (1–10), los ≥7 van al CRM.</p></div>
+      <div class="fun-row"><div class="fun-when">Mar 10am</div><p><b>W2 · Outreach</b> — Hunter.io saca el email, GPT arma el asunto, Gmail manda el cold email con link a la demo.</p></div>
+      <div class="fun-row"><div class="fun-when">Diario 9am</div><p><b>W3 · Follow-up</b> — 4 toques (día 1, 5, 12, 30) a los que no contestaron.</p></div>
+      <div class="fun-row"><div class="fun-when">Al responder</div><p><b>Mateo</b> — GPT clasifica la intención (precio / demo / confianza…), le pasa a Matías un “speech” por Telegram, y manda el link de Calendly si piden llamada.</p></div>
+      <div class="fun-row"><div class="fun-when">Se convence</div><p><b>Onboarding</b> — completa <code>onboarding.html</code> → n8n ingesta su KB a Supabase → smoke test del bot → email de bienvenida con sus accesos. Progreso en vivo (polling cada 4s).</p></div>
+    </div>
+  </section>
+
+  <!-- 6 · Hard questions -->
+  <section>
+    <div class="sec-head"><span class="sec-num">06</span><h2>Preguntas difíciles y cómo responderlas</h2></div>
+    <p class="note">Tocá cada una para ver la respuesta. La honestidad sobre los límites (los <span class="caveat" style="color:var(--gold);font-weight:600">caveats</span> en dorado) suma más que fingir que todo es perfecto.</p>
+    <div class="qa">
+      <details class="q"><summary>¿Cómo evitan que el bot invente cosas / alucine?</summary><div class="a">Con <strong>RAG</strong>. El bot no responde de su conocimiento general — recupera info verificada de la knowledge base del cliente en Supabase y responde solo con eso. Si no encuentra info relevante, dice que no sabe en lugar de inventar.</div></details>
+      <details class="q"><summary>¿Cómo aíslan los datos de un cliente de otro?</summary><div class="a">Cada documento en Supabase tiene un campo <code>client_id</code>. La búsqueda vectorial filtra por ese id, así el bot de un hotel jamás ve la data de otro. <span class="caveat">Honesto:</span> hoy es filtrado a nivel query; row-level security a nivel DB está en el radar.</div></details>
+      <details class="q"><summary>¿Por qué n8n y no código propio?</summary><div class="a">Velocidad y costo. n8n deja construir y cambiar flujos en horas, no semanas, y armar un cliente nuevo es duplicar workflows. Para un negocio validando producto, esa agilidad vale más que optimizar con stack propio.</div></details>
+      <details class="q"><summary>¿Por qué Google Sheets como base de datos? No escala.</summary><div class="a">Es una decisión <strong>de producto</strong>, no técnica. El dueño de un hotel de 8 habitaciones ya sabe usar Sheets — le da control y transparencia sin logins nuevos. Es el “puente universal”: onboarding en &lt;24h sin necesitar la API del PMS. <span class="caveat">Cuando el cliente escale, se migra.</span></div></details>
+      <details class="q"><summary>¿Cuál es la ventaja competitiva? Conduit y HiJiffy ya existen.</summary><div class="a">Precio y segmento. Esas plataformas apuntan a hoteles grandes y cuestan $300+. Nosotros damos ~80% del valor al 20% del costo (desde $49/mes) para hoteles de 4–30 habitaciones que hoy no pueden pagar nada. Diferenciadores en desarrollo: <strong>guest journey automation, unified inbox, auto-registro de leads.</strong></div></details>
+      <details class="q"><summary>¿Qué pasa si se cae Supabase u OpenAI?</summary><div class="a">Es un riesgo real y conocido. Ej: el free tier de Supabase se auto-pausa a los ~7 días de inactividad y eso tumba el RAG de todos los bots. Lo mitigamos con un workflow <strong>“Keep-Alive”</strong> (cron diario que hace una query trivial). <span class="caveat">Es fragilidad de free tier — se resuelve subiendo de plan cuando hay ingresos.</span></div></details>
+      <details class="q"><summary>¿Dónde está el mayor riesgo del negocio hoy?</summary><div class="a">No es el producto, es la <strong>adquisición</strong>. Hay un cliente (pausado) y toda la infra lista; el cuello de botella es conseguir los primeros 3–5 clientes de pago. Por eso la mitad del sistema es máquina de marketing automatizada.</div></details>
+    </div>
+  </section>
+
+  <!-- 7 · Cheat sheet -->
+  <section>
+    <div class="sec-head"><span class="sec-num">07</span><h2>Cheat sheet — one-liners de memoria</h2></div>
+    <div class="cheat">
+      <div class="chip"><div class="q">¿Qué es?</div><div class="a">Un recepcionista con IA, alquilado por mes, para negocios que no pueden pagar las plataformas caras.</div></div>
+      <div class="chip"><div class="q">Idea técnica clave</div><div class="a">RAG: retrieve → augment → generate. El bot responde solo con info verificada, no alucina.</div></div>
+      <div class="chip"><div class="q">Orquestador</div><div class="a">n8n. Todo — bot, marketing, onboarding — vive en workflows de n8n.</div></div>
+      <div class="chip"><div class="q">Memoria del bot</div><div class="a">Supabase + pgvector, aislada por <code>client_id</code>.</div></div>
+      <div class="chip"><div class="q">Segmento</div><div class="a">Hoteles / negocios de 4–30 unidades. ~80% del valor al 20% del costo.</div></div>
+      <div class="chip"><div class="q">Riesgo #1</div><div class="a">Adquisición, no producto. Conseguir los primeros clientes de pago.</div></div>
+    </div>
+  </section>
+
+  <footer>Guía de estudio interna · Timeless · repaso pre-entrevista</footer>
+
+</div>

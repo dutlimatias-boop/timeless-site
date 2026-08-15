@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo — Valentina para tu clínica · Timeless</title>
+  <meta name="description" content="Mirá cómo Valentina, la asistente virtual de Timeless, agenda turnos y responde a tus pacientes 24/7. Demo en vivo para clínicas y consultorios." />
+  <meta property="og:title" content="Valentina — la asistente virtual de tu clínica" />
+  <meta property="og:description" content="Agenda turnos, responde sobre coberturas y atiende a tus pacientes a cualquier hora. Mirá la demo." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://timelessai.pro/og-cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="demo.css" />
+</head>
+<body data-vertical="clinics" data-assistant-initial="V">
+
+<canvas id="starfield"></canvas>
+<div id="cursor-glow"></div>
+
+<nav id="nav">
+  <a href="/" class="nav-logo">TIMELESS<span>.</span></a>
+  <div class="nav-links">
+    <a href="/#precios">Precios</a>
+    <a href="/onboarding.html" class="nav-cta" data-keep-param>Crear mi asistente</a>
+  </div>
+</nav>
+
+<section class="demo-hero">
+  <div class="hero-badge reveal">
+    <span class="badge-dot"></span>
+    <span id="badge-text">Demo en vivo · Clínicas</span>
+  </div>
+
+  <h1 class="hero-h1 reveal d1">
+    Cada paciente,<br><em>una respuesta al instante.</em>
+  </h1>
+
+  <p class="hero-sub reveal d2">
+    Así atendería <strong data-biz>tu clínica</strong> las consultas que llegan fuera de hora —
+    agenda el turno, informa coberturas y nunca revela datos sensibles.
+  </p>
+
+  <div class="demo-stage reveal d3">
+    <div>
+      <div class="vert-chat">
+        <div class="vc-header">
+          <div class="vc-avatar">V</div>
+          <div>
+            <div class="vc-name">Valentina — Turnos</div>
+            <div class="vc-role"><span data-biz>tu clínica</span></div>
+          </div>
+          <div class="vc-online"><span class="status-dot"></span> Online · 24/7</div>
+        </div>
+        <div class="vc-msgs">
+          <div class="vm u"><div class="vm-av">👤</div><div class="vm-b">buenas, atienden sin turno? me duele una muela hace dos días</div></div>
+          <div class="vm a"><div class="vm-av">V</div><div class="vm-b">Hola, lamento lo del dolor — conviene verlo pronto. Hoy ya no quedan lugares, pero mañana tengo 9:30 o 15 hs con la Dra. Salas. ¿Cuál te viene mejor?</div></div>
+          <div class="vm u"><div class="vm-av">👤</div><div class="vm-b">mañana 9:30. trabajan con OSDE?</div></div>
+          <div class="vm a"><div class="vm-av">V</div><div class="vm-b">Sí, trabajamos con OSDE. Te dejo agendado mañana 9:30 — traé el carnet y un documento. Si el dolor empeora antes, escribime y lo adelantamos.</div></div>
+        </div>
+      </div>
+      <button class="replay">↺ Ver de nuevo</button>
+    </div>
+
+    <div class="vert-info">
+      <span class="label">Agenda que se llena sola</span>
+      <h3 class="vert-title">Valentina atiende<br>a cada paciente.</h3>
+      <p class="vert-desc">Responde consultas, agenda y reprograma turnos, informa coberturas y prepara al paciente para la visita — con el cuidado y la discreción que tu clínica necesita.</p>
+      <div class="vert-bullets">
+        <div class="vert-bullet">Agenda y reprograma turnos 24/7</div>
+        <div class="vert-bullet">Informa obras sociales, preparación y requisitos</div>
+        <div class="vert-bullet">Envía recordatorios y reduce ausencias</div>
+        <div class="vert-bullet">Nunca expone información médica sensible</div>
+      </div>
+      <div class="demo-cta">
+        <a href="/onboarding.html" class="btn-primary" data-keep-param>Crear mi asistente →</a>
+        <a href="https://calendly.com/team-timelessai" target="_blank" rel="noopener" class="btn-ghost">📅 Agendar 15 min</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="trust reveal">
+    <div class="trust-item"><span class="trust-n">&lt;3s</span><span class="trust-l">Tiempo de respuesta</span></div>
+    <div class="trust-item"><span class="trust-n">24/7</span><span class="trust-l">Sin horarios ni feriados</span></div>
+    <div class="trust-item"><span class="trust-n">0</span><span class="trust-l">Consultas sin responder</span></div>
+    <div class="trust-item"><span class="trust-n">24h</span><span class="trust-l">Y queda lista</span></div>
+  </div>
+
+  <p class="proof reveal">
+    Hoy ya atiende consultas reales, todos los días, en un negocio de Florida.
+    Lo mismo, con el nombre de <strong data-biz>tu clínica</strong>.
+    <cite>Caso en producción · Timeless</cite>
+  </p>
+</section>
+
+<footer>
+  <a href="/" class="footer-logo">TIMELESS<span>.</span></a>
+  <div class="footer-links">
+    <a href="/#precios">Precios</a>
+    <a href="/onboarding.html" data-keep-param>Empezar</a>
+    <a href="mailto:team@timelessai.pro">team@timelessai.pro</a>
+  </div>
+  <span class="footer-copy">© 2026 Timeless AI</span>
+</footer>
+
+<script src="demo.js"></script>
+</body>
+</html>

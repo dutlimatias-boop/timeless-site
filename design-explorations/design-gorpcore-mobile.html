@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timeless — Gorpcore Mobile</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ── EDITAR AQUÍ: tokens de diseño ── */
+  :root {
+    --bg-page:      #e8e4dc;
+    --bg-screen:    #f2ede4;
+    --bg-panel:     #e0dbd0;
+    --black:        #1a1814;
+    --teal:         #0e7c7b;    /* teal Timeless */
+    --teal-dark:    #085450;
+    --teal-light:   #d0ebe8;
+    --gray-warm:    #6b6660;
+    --gray-light:   #c8c4bc;
+    --white:        #f8f4ec;
+    --tag-bg:       #2a2620;
+    --tag-text:     #d0c8b8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg-page);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .label {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--gray-warm);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ── PHONE FRAME ── */
+  .phone {
+    width: 320px;
+    background: var(--tag-bg);
+    border-radius: 36px;
+    border: 2px solid var(--tag-bg);
+    overflow: hidden;
+  }
+
+  .status-bar {
+    background: var(--tag-bg);
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+  }
+  .status-bar span {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--tag-text);
+    letter-spacing: 0.06em;
+  }
+  .notch {
+    width: 80px; height: 6px;
+    background: #111;
+    border-radius: 3px;
+  }
+
+  /* ── SCREEN ── */
+  .screen { background: var(--bg-screen); }
+
+  /* ── NAV ── */
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-light);
+  }
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--black);
+    text-transform: uppercase;
+  }
+  .nav-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--teal);
+    text-transform: uppercase;
+    background: var(--teal-light);
+    padding: 3px 8px;
+    border-radius: 2px;
+  }
+
+  /* ── SPEC HEADER (estilo etiqueta de equipo técnico) ── */
+  .spec-header {
+    background: var(--tag-bg);
+    padding: 14px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .spec-model {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--tag-text);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .spec-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--white);
+    line-height: 1.0;
+    letter-spacing: -0.01em;
+  }
+  .spec-badge {
+    background: var(--teal);
+    color: var(--white);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  /* ── SPECS GRID (estilo datasheet técnico) ── */
+  .specs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--gray-light);
+    border-bottom: 1px solid var(--gray-light);
+  }
+  .spec-cell {
+    background: var(--bg-screen);
+    padding: 11px 14px;
+  }
+  .spec-cell-key {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--gray-warm);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .spec-cell-val {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--black);
+    line-height: 1;
+  }
+  .spec-cell-unit {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gray-warm);
+    margin-top: 2px;
+  }
+
+  /* ── DESCRIPTION ROW ── */
+  .description-row {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--gray-light);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .desc-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--teal-light);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .desc-icon svg { display: block; }
+  .desc-content {}
+  .desc-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--black);
+    margin-bottom: 3px;
+    line-height: 1.2;
+  }
+  .desc-text {
+    font-size: 11px;
+    color: var(--gray-warm);
+    line-height: 1.45;
+  }
+
+  /* ── PRICE ROW ── */
+  .price-row {
+    padding: 14px 16px;
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .price-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--gray-warm);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .price-val {
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--black);
+    line-height: 1;
+  }
+  .price-unit {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gray-warm);
+  }
+
+  /* ── CTA ── */
+  .cta-block {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--gray-light);
+  }
+  .cta-btn {
+    display: block;
+    background: var(--teal);
+    color: var(--white);
+    text-align: center;
+    padding: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
+  .cta-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gray-warm);
+    text-align: center;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── TAGS STRIP ── */
+  .tags-strip {
+    padding: 10px 16px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray-warm);
+    background: var(--bg-panel);
+    padding: 3px 8px;
+    border-radius: 2px;
+    border: 1px solid var(--gray-light);
+  }
+
+  /* ── HOME BAR ── */
+  .home-bar {
+    height: 24px;
+    background: var(--tag-bg);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .home-pill {
+    width: 50px; height: 3px;
+    background: #3a3530;
+    border-radius: 2px;
+  }
+
+  /* ── NOTAS DE EDICIÓN ── */
+  .edit-notes {
+    margin-top: 28px;
+    max-width: 320px;
+    border: 1px solid var(--gray-light);
+    padding: 16px;
+    background: var(--white);
+    border-radius: 4px;
+  }
+  .edit-notes h3 {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 10px;
+  }
+  .edit-notes ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .edit-notes li {
+    font-size: 12px;
+    color: var(--gray-warm);
+    padding-left: 12px;
+    position: relative;
+    line-height: 1.4;
+  }
+  .edit-notes li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--teal);
+    font-family: 'DM Mono', monospace;
+  }
+</style>
+</head>
+<body>
+
+<p class="label">Timeless · Estilo Gorpcore · Mobile Hero</p>
+
+<div class="phone">
+  <div class="status-bar">
+    <span>09:41</span>
+    <div class="notch"></div>
+    <span>TML-v2.1</span>
+  </div>
+
+  <div class="screen">
+
+    <nav class="nav">
+      <span class="nav-logo">TIMELESS</span>
+      <span class="nav-tag">LIVE</span>
+    </nav>
+
+    <div class="spec-header">
+      <div>
+        <p class="spec-model">Unit: Emma · SKU-TML-001</p>
+        <p class="spec-name">Emma<br>no duerme.</p>
+      </div>
+      <span class="spec-badge">24/7</span>
+    </div>
+
+    <div class="specs-grid">
+      <div class="spec-cell">
+        <p class="spec-cell-key">Respuesta</p>
+        <p class="spec-cell-val">&lt;3s</p>
+        <p class="spec-cell-unit">tiempo promedio</p>
+      </div>
+      <div class="spec-cell">
+        <p class="spec-cell-key">Uptime</p>
+        <p class="spec-cell-val">99.9%</p>
+        <p class="spec-cell-unit">garantizado</p>
+      </div>
+      <div class="spec-cell">
+        <p class="spec-cell-key">Setup</p>
+        <p class="spec-cell-val">24 hs</p>
+        <p class="spec-cell-unit">desde cero</p>
+      </div>
+      <div class="spec-cell">
+        <p class="spec-cell-key">Idiomas</p>
+        <p class="spec-cell-val">Multi</p>
+        <p class="spec-cell-unit">auto-detect</p>
+      </div>
+    </div>
+
+    <div class="description-row">
+      <div class="desc-icon">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <circle cx="7" cy="7" r="5.5" stroke="#0e7c7b" stroke-width="1"/>
+          <path d="M 7 4 L 7 7.5 L 9.5 9" stroke="#0e7c7b" stroke-width="1" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="desc-content">
+        <p class="desc-title">Disponible cuando vos no podés</p>
+        <p class="desc-text">Emma responde mensajes de huéspedes a las 3am, los domingos y los feriados — sin costo adicional.</p>
+      </div>
+    </div>
+
+    <div class="description-row">
+      <div class="desc-icon">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <rect x="2" y="2" width="10" height="10" rx="2" stroke="#0e7c7b" stroke-width="1"/>
+          <path d="M 5 7 L 6.5 8.5 L 9 5.5" stroke="#0e7c7b" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="desc-content">
+        <p class="desc-title">Entrenada con tu hotel</p>
+        <p class="desc-text">Base de conocimiento personalizada con tus precios, políticas y servicios específicos.</p>
+      </div>
+    </div>
+
+    <div class="price-row">
+      <div>
+        <p class="price-label">Precio base</p>
+        <p class="price-val">$79</p>
+        <p class="price-unit">USD / mes · sin contrato</p>
+      </div>
+      <div style="text-align:right">
+        <p class="price-label">Tipo</p>
+        <p style="font-size:13px; font-weight:500; color: var(--black);">Starter</p>
+        <p class="price-unit">ver todos los planes →</p>
+      </div>
+    </div>
+
+    <div class="cta-block">
+      <a class="cta-btn">Ver demo en vivo</a>
+      <p class="cta-sub">sin registro · sin tarjeta</p>
+    </div>
+
+    <div class="tags-strip">
+      <span class="tag">Hoteles</span>
+      <span class="tag">Restaurantes</span>
+      <span class="tag">Clínicas</span>
+      <span class="tag">Boutique</span>
+      <span class="tag">24/7</span>
+    </div>
+
+  </div>
+
+  <div class="home-bar"><div class="home-pill"></div></div>
+</div>
+
+<div class="edit-notes">
+  <h3>Cosas a editar</h3>
+  <ul>
+    <li>Cambiar <code>--teal</code> para variar el color de acento funcional</li>
+    <li>Spec header: cambiar "SKU-TML-001" por versión o fecha real</li>
+    <li>Specs grid: reemplazar valores con métricas reales de Emma</li>
+    <li>Icons SVG en description-row: intercambiar por tus iconos de marca</li>
+    <li>Tags strip: agregar/quitar tags según los tipos de negocio activos</li>
+    <li>Price row: conectar a datos dinámicos del plan seleccionado</li>
+  </ul>
+</div>
+
+</body>
+</html>

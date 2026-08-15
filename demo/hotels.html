@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo — Emma para tu hotel · Timeless</title>
+  <meta name="description" content="Mirá cómo Emma, la recepcionista virtual de Timeless, responde a tus huéspedes 24/7 en segundos. Demo en vivo para hoteles boutique." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Emma — la recepcionista virtual de tu hotel" />
+  <meta property="og:description" content="Responde a tus huéspedes en menos de 3 segundos, a cualquier hora, en su idioma. Mirá la demo." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://timelessai.pro/og-cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="demo.css" />
+</head>
+<body data-vertical="hotels" data-assistant-initial="E">
+
+<canvas id="starfield"></canvas>
+<div id="cursor-glow"></div>
+
+<!-- ── NAV ── -->
+<nav id="nav">
+  <a href="/" class="nav-logo">TIMELESS<span>.</span></a>
+  <div class="nav-links">
+    <a href="/#precios">Precios</a>
+    <a href="/onboarding.html" class="nav-cta" data-keep-param>Crear mi Emma</a>
+  </div>
+</nav>
+
+<!-- ── HERO + DEMO ── -->
+<section class="demo-hero">
+  <div class="hero-badge reveal">
+    <span class="badge-dot"></span>
+    <span id="badge-text">Demo en vivo · Hoteles</span>
+  </div>
+
+  <h1 class="hero-h1 reveal d1">
+    Mientras dormís,<br><em>Emma responde.</em>
+  </h1>
+
+  <p class="hero-sub reveal d2">
+    Así atendería <strong data-biz>tu hotel</strong> los mensajes que llegan
+    a las 2 AM — en segundos, en el idioma del huésped, sin que vos hagas nada.
+  </p>
+
+  <!-- DEMO STAGE -->
+  <div class="demo-stage reveal d3">
+    <div>
+      <div class="vert-chat">
+        <div class="vc-header">
+          <div class="vc-avatar">E</div>
+          <div>
+            <div class="vc-name">Emma — Recepción Virtual</div>
+            <div class="vc-role"><span data-biz>tu hotel</span></div>
+          </div>
+          <div class="vc-online"><span class="status-dot"></span> Online · 24/7</div>
+        </div>
+        <div class="vc-msgs">
+          <div class="vm u"><div class="vm-av">👤</div><div class="vm-b">buenas, tienen algo libre para el finde que viene? somos 2</div></div>
+          <div class="vm a"><div class="vm-av">E</div><div class="vm-b">¡Hola! Para este finde me quedan un par de opciones. ¿Buscan una doble o algo con vista al mar? Así te paso el precio justo.</div></div>
+          <div class="vm u"><div class="vm-av">👤</div><div class="vm-b">con vista al mar si se puede, del viernes al domingo</div></div>
+          <div class="vm a"><div class="vm-av">E</div><div class="vm-b">Tengo la Suite Vista al Mar libre de viernes a domingo, con balcón. ¿Te la dejo reservada y te paso el link de pago? 🌊</div></div>
+        </div>
+      </div>
+      <button class="replay">↺ Ver de nuevo</button>
+    </div>
+
+    <div class="vert-info">
+      <span class="label">Recepción que no cierra nunca</span>
+      <h3 class="vert-title">Emma conoce tu hotel<br>de adentro para afuera.</h3>
+      <p class="vert-desc">Tarifas, disponibilidad, políticas de mascotas, horarios de check-in — Emma aprende todo sobre tu propiedad y responde al instante, con calidez y precisión.</p>
+      <div class="vert-bullets">
+        <div class="vert-bullet">Responde disponibilidad y precios 24/7</div>
+        <div class="vert-bullet">Captura el lead: fechas, tipo de habitación, ocasión</div>
+        <div class="vert-bullet">Mensajes de pre-llegada y post-estadía automáticos</div>
+        <div class="vert-bullet">Registra cada conversación en tu panel</div>
+      </div>
+      <div class="demo-cta">
+        <a href="/onboarding.html" class="btn-primary" data-keep-param>Crear mi Emma →</a>
+        <a href="https://calendly.com/team-timelessai" target="_blank" rel="noopener" class="btn-ghost">📅 Agendar 15 min</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRUST STRIP -->
+  <div class="trust reveal">
+    <div class="trust-item"><span class="trust-n">&lt;3s</span><span class="trust-l">Tiempo de respuesta</span></div>
+    <div class="trust-item"><span class="trust-n">24/7</span><span class="trust-l">Sin horarios ni feriados</span></div>
+    <div class="trust-item"><span class="trust-n">40+</span><span class="trust-l">Consultas la 1ª semana en Sun Life</span></div>
+    <div class="trust-item"><span class="trust-n">24h</span><span class="trust-l">Y queda lista</span></div>
+  </div>
+
+  <!-- SOCIAL PROOF -->
+  <p class="proof reveal">
+    “Lo más valioso fue dejar de perder reservas de madrugada.”
+    <cite>Ana — Sun Life Beach Hotel, Florida</cite>
+  </p>
+</section>
+
+<footer>
+  <a href="/" class="footer-logo">TIMELESS<span>.</span></a>
+  <div class="footer-links">
+    <a href="/#precios">Precios</a>
+    <a href="/onboarding.html" data-keep-param>Empezar</a>
+    <a href="mailto:team@timelessai.pro">team@timelessai.pro</a>
+  </div>
+  <span class="footer-copy">© 2026 Timeless AI</span>
+</footer>
+
+<script src="demo.js"></script>
+</body>
+</html>

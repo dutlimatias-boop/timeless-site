@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Darse de baja · Timeless</title>
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --black:#07090f; --black-2:#0d1218; --white:#f0e6d3; --muted:#a09080;
+      --green:#c8912b; --border:rgba(240,230,211,0.07); --border-2:rgba(240,230,211,0.14);
+      --font-h:'Cormorant Garamond',Georgia,serif; --font-b:'DM Sans',system-ui,sans-serif; --font-m:'DM Mono',monospace;
+    }
+    body{
+      background:var(--black); color:var(--white); font-family:var(--font-b);
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      padding:1.5rem; line-height:1.65; overflow:hidden;
+    }
+    body::before{
+      content:''; position:fixed; top:40%; left:50%; transform:translate(-50%,-50%);
+      width:700px; height:700px; pointer-events:none; z-index:0;
+      background:radial-gradient(ellipse,rgba(200,145,43,0.09)0%,rgba(26,80,120,0.06)45%,transparent 70%);
+    }
+    .logo{
+      font-family:var(--font-h); font-weight:500; font-size:1.3rem; letter-spacing:0.1em;
+      color:var(--white); text-decoration:none; position:fixed; top:1.5rem; left:50%;
+      transform:translateX(-50%); z-index:2;
+    }
+    .logo span{color:var(--green)}
+    .card{
+      position:relative; z-index:1; width:100%; max-width:440px; text-align:center;
+      background:var(--black-2); border:1px solid var(--border);
+      border-radius:16px; padding:2.75rem 2rem;
+      box-shadow:0 32px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(200,145,43,0.08);
+    }
+    .icon{
+      width:54px; height:54px; margin:0 auto 1.25rem; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      border:1px solid var(--border-2); font-size:1.5rem; color:var(--green);
+    }
+    h1{font-family:var(--font-h); font-weight:300; font-size:2rem; line-height:1.15; margin-bottom:0.85rem}
+    h1 em{font-style:italic; color:var(--green)}
+    p{color:var(--muted); font-size:0.95rem; font-weight:300}
+    .email{
+      font-family:var(--font-m); font-size:0.8rem; color:var(--white);
+      background:rgba(240,230,211,0.04); border:1px solid var(--border);
+      border-radius:8px; padding:8px 12px; margin:1.25rem 0; word-break:break-all; display:inline-block;
+    }
+    .foot{margin-top:1.5rem; font-size:0.8rem; color:var(--muted)}
+    .foot a{color:var(--green); text-decoration:none}
+    .foot a:hover{text-decoration:underline}
+    .state{display:none}
+    .state.active{display:block}
+    .spinner{
+      width:22px;height:22px;border:2px solid var(--border-2);border-top-color:var(--green);
+      border-radius:50%; margin:0.5rem auto 0; animation:spin .8s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+  <a href="https://timelessai.pro" class="logo">TIMELESS<span>.</span></a>
+
+  <div class="card">
+    <!-- Procesando -->
+    <div class="state active" id="state-loading">
+      <div class="icon">⏳</div>
+      <h1>Procesando tu baja…</h1>
+      <p>Un segundo, estamos registrando tu pedido.</p>
+      <div class="spinner"></div>
+    </div>
+
+    <!-- Confirmado -->
+    <div class="state" id="state-done">
+      <div class="icon">✓</div>
+      <h1>Listo, <em>te diste de baja</em>.</h1>
+      <p>No vas a recibir más emails nuestros. Gracias por avisar.</p>
+      <div class="email" id="email-shown"></div>
+      <div class="foot">¿Fue un error? Escribinos a <a href="mailto:team@timelessai.pro">team@timelessai.pro</a> y lo revertimos.</div>
+    </div>
+
+    <!-- Sin email en el link -->
+    <div class="state" id="state-noemail">
+      <div class="icon">✉️</div>
+      <h1>Darse de baja</h1>
+      <p>Para procesar tu baja, escribinos a <a href="mailto:team@timelessai.pro" style="color:var(--green);text-decoration:none">team@timelessai.pro</a> con el asunto “Baja” y te sacamos de la lista enseguida.</p>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    'use strict';
+    var WEBHOOK = 'https://YOUR-N8N-INSTANCE/webhook/unsubscribe';
+    function show(id){
+      var els = document.querySelectorAll('.state');
+      for (var i=0;i<els.length;i++) els[i].classList.remove('active');
+      document.getElementById(id).classList.add('active');
+    }
+    var params = new URLSearchParams(window.location.search);
+    var raw = params.get('e') || params.get('email');
+    if (!raw){ show('state-noemail'); return; }
+    var email;
+    try { email = decodeURIComponent(raw).trim(); } catch(_){ email = raw.trim(); }
+
+    // Record the opt-out (fire-and-forget; UX confirms regardless so the user
+    // always sees success even if the webhook is briefly unavailable).
+    function finish(){
+      document.getElementById('email-shown').textContent = email;
+      show('state-done');
+    }
+    try {
+      fetch(WEBHOOK, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ email: email, source: 'baja.html', ts: new Date().toISOString() })
+      }).then(finish).catch(finish);
+    } catch(_){ finish(); }
+    // Safety: confirm after 4s even if the request hangs.
+    setTimeout(finish, 4000);
+  })();
+  </script>
+</body>
+</html>

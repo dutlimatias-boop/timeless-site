@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo — Tomás para tu inmobiliaria · Timeless</title>
+  <meta name="description" content="Mirá cómo Tomás, el asesor virtual de Timeless, responde consultas de propiedades y agenda visitas 24/7. Demo en vivo para inmobiliarias." />
+  <meta property="og:title" content="Tomás — el asesor virtual de tu inmobiliaria" />
+  <meta property="og:description" content="Responde por cada propiedad, califica al interesado y agenda la visita — a cualquier hora. Mirá la demo." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://timelessai.pro/og-cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="demo.css" />
+</head>
+<body data-vertical="realestate" data-assistant-initial="T">
+
+<canvas id="starfield"></canvas>
+<div id="cursor-glow"></div>
+
+<nav id="nav">
+  <a href="/" class="nav-logo">TIMELESS<span>.</span></a>
+  <div class="nav-links">
+    <a href="/#precios">Precios</a>
+    <a href="/onboarding.html" class="nav-cta" data-keep-param>Crear mi asistente</a>
+  </div>
+</nav>
+
+<section class="demo-hero">
+  <div class="hero-badge reveal">
+    <span class="badge-dot"></span>
+    <span id="badge-text">Demo en vivo · Inmobiliarias</span>
+  </div>
+
+  <h1 class="hero-h1 reveal d1">
+    Cada consulta,<br><em>un interesado calificado.</em>
+  </h1>
+
+  <p class="hero-sub reveal d2">
+    Así atendería <strong data-biz>tu inmobiliaria</strong> las consultas de cada aviso —
+    responde al instante, califica al interesado y agenda la visita.
+  </p>
+
+  <div class="demo-stage reveal d3">
+    <div>
+      <div class="vert-chat">
+        <div class="vc-header">
+          <div class="vc-avatar">T</div>
+          <div>
+            <div class="vc-name">Tomás — Asesor Virtual</div>
+            <div class="vc-role"><span data-biz>tu inmobiliaria</span></div>
+          </div>
+          <div class="vc-online"><span class="status-dot"></span> Online · 24/7</div>
+        </div>
+        <div class="vc-msgs">
+          <div class="vm u"><div class="vm-av">👤</div><div class="vm-b">hola, sigue disponible el 2 ambientes de la foto? cuánto es el alquiler?</div></div>
+          <div class="vm a"><div class="vm-av">T</div><div class="vm-b">¡Hola! Sí, sigue disponible. Es un 2 ambientes con balcón, expensas incluidas en el aviso. ¿Lo buscás para vivir vos o como inversión? Así te oriento mejor.</div></div>
+          <div class="vm u"><div class="vm-av">👤</div><div class="vm-b">para vivir. se puede ver esta semana?</div></div>
+          <div class="vm a"><div class="vm-av">T</div><div class="vm-b">Claro. Tengo visitas el miércoles 17 hs o el sábado 11 hs. ¿Cuál te queda cómodo? Te pido nombre y un teléfono para confirmarte con el asesor. 🔑</div></div>
+        </div>
+      </div>
+      <button class="replay">↺ Ver de nuevo</button>
+    </div>
+
+    <div class="vert-info">
+      <span class="label">Ningún interesado se enfría</span>
+      <h3 class="vert-title">Tomás responde<br>antes de que llamen a otra inmobiliaria.</h3>
+      <p class="vert-desc">El que consulta una propiedad y no recibe respuesta rápido, escribe a la competencia. Tomás responde al instante por cada aviso, califica al interesado y agenda la visita.</p>
+      <div class="vert-bullets">
+        <div class="vert-bullet">Responde por cada propiedad 24/7</div>
+        <div class="vert-bullet">Califica al interesado: uso, presupuesto, urgencia</div>
+        <div class="vert-bullet">Agenda visitas y deriva al asesor con el lead listo</div>
+        <div class="vert-bullet">Captura nombre y contacto de cada consulta</div>
+      </div>
+      <div class="demo-cta">
+        <a href="/onboarding.html" class="btn-primary" data-keep-param>Crear mi asistente →</a>
+        <a href="https://calendly.com/team-timelessai" target="_blank" rel="noopener" class="btn-ghost">📅 Agendar 15 min</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="trust reveal">
+    <div class="trust-item"><span class="trust-n">&lt;3s</span><span class="trust-l">Tiempo de respuesta</span></div>
+    <div class="trust-item"><span class="trust-n">24/7</span><span class="trust-l">Sin horarios ni feriados</span></div>
+    <div class="trust-item"><span class="trust-n">0</span><span class="trust-l">Consultas sin responder</span></div>
+    <div class="trust-item"><span class="trust-n">24h</span><span class="trust-l">Y queda listo</span></div>
+  </div>
+
+  <p class="proof reveal">
+    Hoy ya atiende consultas reales, todos los días, en un negocio de Florida.
+    Lo mismo, con el nombre de <strong data-biz>tu inmobiliaria</strong>.
+    <cite>Caso en producción · Timeless</cite>
+  </p>
+</section>
+
+<footer>
+  <a href="/" class="footer-logo">TIMELESS<span>.</span></a>
+  <div class="footer-links">
+    <a href="/#precios">Precios</a>
+    <a href="/onboarding.html" data-keep-param>Empezar</a>
+    <a href="mailto:team@timelessai.pro">team@timelessai.pro</a>
+  </div>
+  <span class="footer-copy">© 2026 Timeless AI</span>
+</footer>
+
+<script src="demo.js"></script>
+</body>
+</html>

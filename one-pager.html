@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Timeless AI — One-pager</title>
+  <meta name="description" content="Asistente virtual con IA para hoteles, restaurantes, clínicas y centros de belleza. Atiende 24/7, captura leads y se instala en menos de 24h." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #07090f; --black-2: #0d1218; --black-3: #131b27;
+      --white: #f0e6d3; --muted: #a09080; --muted-2: #3a4455;
+      --green: #c8912b; --green-dim: rgba(200,145,43,0.12);
+      --border: rgba(240,230,211,0.09); --border-2: rgba(240,230,211,0.16);
+      --font-h: 'Cormorant Garamond', Georgia, serif;
+      --font-b: 'DM Sans', system-ui, sans-serif;
+    }
+    body { background: var(--black-2); color: var(--white); font-family: var(--font-b); line-height: 1.5; padding: 2rem 1rem; }
+
+    .sheet {
+      width: 210mm; min-height: 297mm; margin: 0 auto;
+      background: var(--black); border: 1px solid var(--border);
+      padding: 18mm 16mm; display: flex; flex-direction: column;
+    }
+
+    /* ── Header ── */
+    .head { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+    .logo { font-family: var(--font-h); font-weight: 500; font-size: 1.6rem; letter-spacing: 0.1em; }
+    .logo span { color: var(--green); }
+    .head-contact { text-align: right; font-size: 0.72rem; color: var(--muted); line-height: 1.6; }
+    .head-contact a { color: var(--green); text-decoration: none; }
+
+    /* ── Hero ── */
+    .hero { margin: 1.6rem 0 1.3rem; }
+    .hero h1 { font-family: var(--font-h); font-weight: 400; font-size: 2.1rem; line-height: 1.15; margin-bottom: 0.6rem; }
+    .hero h1 em { font-style: italic; color: var(--green); }
+    .hero p { color: var(--muted); font-size: 0.95rem; max-width: 92%; }
+
+    .label { font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green); font-weight: 500; display: block; margin-bottom: 0.7rem; }
+
+    /* ── Two-col body ── */
+    .cols { display: grid; grid-template-columns: 1.05fr 1fr; gap: 1.6rem; margin-bottom: 1.3rem; }
+    .feat { list-style: none; }
+    .feat li { position: relative; padding-left: 1.1rem; margin-bottom: 0.55rem; font-size: 0.85rem; color: var(--white); }
+    .feat li::before { content: "→"; position: absolute; left: 0; color: var(--green); }
+    .feat li span { color: var(--muted); }
+
+    .qa { background: var(--black-3); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1rem; }
+    .qa .q { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.5rem; }
+    .qa .a { font-size: 0.82rem; color: var(--white); border-top: 1px solid var(--border); padding-top: 0.5rem; }
+    .qa .a strong { color: var(--green); font-weight: 500; }
+
+    /* ── ROI table ── */
+    .roi { width: 100%; border-collapse: collapse; margin-top: 0.4rem; font-size: 0.78rem; }
+    .roi th, .roi td { text-align: left; padding: 0.42rem 0.6rem; border-bottom: 1px solid var(--border); }
+    .roi th { color: var(--muted); font-weight: 500; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .roi td:last-child { color: var(--green); }
+
+    /* ── Pricing strip ── */
+    .pricing { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.3rem 0; }
+    .pcard { border: 1px solid var(--border-2); border-radius: 8px; padding: 1rem 1.2rem; }
+    .pcard.eu { background: var(--green-dim); border-color: rgba(200,145,43,0.35); }
+    .pcard .market { font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    .pcard .amt { font-family: var(--font-h); font-size: 2.1rem; font-weight: 500; line-height: 1; margin: 0.25rem 0; }
+    .pcard .amt sup { font-size: 1rem; top: -0.7rem; color: var(--green); }
+    .pcard .per { font-size: 0.72rem; color: var(--muted); }
+    .pcard .geo { font-size: 0.72rem; color: var(--muted); margin-top: 0.35rem; }
+
+    .compare { font-size: 0.78rem; color: var(--muted); text-align: center; margin-top: -0.4rem; }
+    .compare strong { color: var(--white); font-weight: 500; }
+
+    /* ── CTA footer ── */
+    .cta { margin-top: auto; padding-top: 1.2rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+    .cta-text { font-family: var(--font-h); font-size: 1.25rem; font-weight: 400; line-height: 1.25; }
+    .cta-text em { font-style: italic; color: var(--green); }
+    .cta-btn { background: var(--green); color: var(--black); font-weight: 500; font-size: 0.85rem; padding: 0.7rem 1.3rem; border-radius: 6px; text-decoration: none; white-space: nowrap; }
+    .cta-sub { font-size: 0.72rem; color: var(--muted); margin-top: 0.4rem; }
+    .cta-sub a { color: var(--green); text-decoration: none; }
+
+    .section-gap { margin-bottom: 1.2rem; }
+    h3.blk { font-family: var(--font-h); font-size: 1.15rem; font-weight: 500; margin-bottom: 0.4rem; }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .sheet { border: none; width: 100%; min-height: auto; padding: 12mm; }
+      @page { size: A4; margin: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sheet">
+
+    <!-- Header -->
+    <div class="head">
+      <div class="logo">TIMELESS<span>.</span></div>
+      <div class="head-contact">
+        timelessai.pro<br />
+        <a href="mailto:team@timelessai.pro">team@timelessai.pro</a><br />
+        Demo en vivo: timelessai.pro
+      </div>
+    </div>
+
+    <!-- Hero -->
+    <div class="hero">
+      <h1>Tu recepcionista virtual que <em>nunca duerme.</em></h1>
+      <p>Un asistente con IA, con el nombre y la personalidad de tu negocio, que responde a tus clientes 24/7 — en su idioma, en menos de 3 segundos, y captura cada lead automáticamente. En vivo en tu sitio web en menos de 24 horas.</p>
+    </div>
+
+    <!-- Two columns: features + objection -->
+    <div class="cols">
+      <div>
+        <span class="label">Qué hace por vos</span>
+        <ul class="feat">
+          <li>Responde consultas <span>de disponibilidad, precios y servicios, las 24 horas</span></li>
+          <li>Captura leads <span>y los organiza en tu panel de gestión</span></li>
+          <li>Entrenado con tu info real <span>— sin respuestas inventadas (RAG)</span></li>
+          <li>Reporte semanal <span>por email con métricas y preguntas frecuentes</span></li>
+          <li>Personalizado <span>— nombre, estilo y personalidad propios</span></li>
+          <li>Sin contrato <span>— mes a mes, cancelás cuando quieras</span></li>
+        </ul>
+      </div>
+      <div>
+        <span class="label">Para quién</span>
+        <div class="section-gap" style="font-size:0.85rem; color:var(--muted);">
+          Hoteles boutique · Restaurantes · Centros de belleza y barberías · Clínicas estéticas y médicas · Inmobiliarias.
+        </div>
+        <div class="qa">
+          <div class="q">"¿Y si el bot no sabe algo o comete un error?"</div>
+          <div class="a">Está entrenado <strong>solo</strong> con la información de tu negocio. Si no sabe algo, deriva al humano — nunca inventa. Tus datos son tuyos y quedan aislados.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROI -->
+    <div class="section-gap">
+      <span class="label">Se paga solo</span>
+      <table class="roi">
+        <thead>
+          <tr><th>Negocio</th><th>Ticket promedio</th><th>Para cubrir Emma</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Peluquería / barbería</td><td>$8–15 LATAM · €20–35 EU</td><td>3–5 turnos extra/mes</td></tr>
+          <tr><td>Restaurante</td><td>$15–30 LATAM · €40–80 EU</td><td>2 reservas extra/mes</td></tr>
+          <tr><td>Clínica estética</td><td>$30–80 LATAM · €60–150 EU</td><td>1 consulta extra/mes</td></tr>
+          <tr><td>Hotel boutique</td><td>$50–120 LATAM · €80–200 EU</td><td>1 reserva extra/mes</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pricing -->
+    <span class="label">Un precio simple, sin sorpresas</span>
+    <div class="pricing">
+      <div class="pcard">
+        <div class="market">Latinoamérica</div>
+        <div class="amt"><sup>$</sup>49</div>
+        <div class="per">/ mes · precio de lanzamiento</div>
+        <div class="geo">Argentina · Colombia · México · Chile · Uruguay y más</div>
+      </div>
+      <div class="pcard eu">
+        <div class="market">Europa</div>
+        <div class="amt"><sup>$</sup>79</div>
+        <div class="per">/ mes · sin contrato</div>
+        <div class="geo">España · Suiza · comunidades hispanohablantes</div>
+      </div>
+    </div>
+    <p class="compare">Conduit y HiJiffy cobran <strong>$400–$800/mes</strong> — las mismas capacidades, a una fracción del precio. Todo incluido, sin cargos por mensaje.</p>
+
+    <!-- CTA -->
+    <div class="cta">
+      <div>
+        <div class="cta-text">Tus clientes están escribiendo<br />ahora mismo. <em>¿Quién les responde?</em></div>
+        <div class="cta-sub">Agendá una demo de 15 min: <a href="https://calendly.com/team-timelessai/30min">calendly.com/team-timelessai</a></div>
+      </div>
+      <a href="https://timelessai.pro/onboarding.html" class="cta-btn">Empezar ahora →</a>
+    </div>
+
+  </div>
+</body>
+</html>

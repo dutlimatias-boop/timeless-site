@@ -1,0 +1,54 @@
+# Claves y secretos
+apikey*.txt
+KEY*.txt
+KEY *.txt
+*.key
+*.env
+.env*
+secrets/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+*.swp
+
+# n8n exports con credenciales reales (usar los de n8n-workflows/ que tienen placeholders)
+*credentials*.json
+# Bot Demo exports con secrets reales en texto plano (key activa + Supabase service_role)
+n8n-workflows/sunlife-bot-demo.json
+n8n-workflows/sunlife-bot-demo-fixed.json
+# Exports de CLIENTE (Sun Life): contienen emails/PII de Ana y Sheet IDs.
+# Propiedad del cliente — NO versionar en el repo de plataforma.
+n8n-workflows/sunlife-*.json
+n8n-workflows/guest-journey-automation.json
+n8n-workflows/emma-system-prompt-v2.md
+
+# Backups y temporales (no versionar)
+*.bundle
+*_unpacked/
+
+# Fotos de cámara personales (no son assets del proyecto)
+DSC_*.JPG
+DSC_*.jpg
+IMG_*.JPG
+IMG_*.jpg
+
+# ── Repo público: intel interna y contexto de agente (no versionar) ──
+.claude/
+CLAUDE.md
+playbooks/
+prompts/
+og-cover-generator.html
+
+# docs/ interno completo — EXCEPTO artefactos técnicos limpios
+docs/*
+!docs/supabase-security.sql
+
+# Propiedad del cliente (Sun Life): datos/PII de Ana. INTOCABLE en repo público.
+chat-sunlife.html
+panel-sunlife.html
+dashboard-sunlife.html
+emma-widget.js

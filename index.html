@@ -1,0 +1,2190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Timeless — Tu asistente virtual que nunca duerme</title>
+
+  <!-- Open Graph / LinkedIn -->
+  <meta property="og:title" content="Timeless — Tu asistente virtual que nunca duerme" />
+  <meta property="og:description" content="Un asistente virtual con tu nombre, tu personalidad y tu conocimiento. Para hoteles, restaurantes y clínicas que no pueden perder ni un solo mensaje." />
+  <meta property="og:url" content="https://timelessai.pro/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://timelessai.pro/og-cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Timeless — Tu asistente virtual que nunca duerme" />
+  <meta name="twitter:description" content="Asistente IA para hoteles boutique, restaurantes y clínicas. En vivo en 24h. Desde $49/mes." />
+  <meta name="twitter:image" content="https://timelessai.pro/og-cover.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── RESET ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    /* ─── TOKENS ─── */
+    :root {
+      --black:      #07090f;
+      --black-2:    #0d1218;
+      --black-3:    #131b27;
+      --white:      #f0e6d3;
+      --muted:      #3a4455;
+      --muted-2:    #a09080;
+      --green:      #c8912b;
+      --green-dim:  rgba(200, 145, 43, 0.15);
+      --green-glow: rgba(200, 145, 43, 0.08);
+      --border:     rgba(240, 230, 211, 0.07);
+      --border-2:   rgba(240, 230, 211, 0.14);
+      --red-dim:    rgba(160, 120, 60, 0.07);
+      --red:        #9a8560;
+      --font-h:     'Cormorant Garamond', Georgia, serif;
+      --font-b:     'DM Sans', system-ui, sans-serif;
+      --font-m:     'DM Mono', monospace;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-b);
+      font-size: 16px;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    /* ─── SCROLL REVEAL ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.08s; }
+    .d2 { transition-delay: 0.18s; }
+    .d3 { transition-delay: 0.28s; }
+    .d4 { transition-delay: 0.40s; }
+    .d5 { transition-delay: 0.52s; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 3rem;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    nav.scrolled { border-color: var(--border); }
+
+    .nav-logo {
+      font-family: var(--font-h);
+      font-weight: 500;
+      font-size: 1.3rem;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--green); }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 2.5rem;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 400;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-cta {
+      background: var(--green) !important;
+      color: var(--black) !important;
+      padding: 0.5rem 1.25rem;
+      border-radius: 6px;
+      font-weight: 600 !important;
+      font-size: 0.875rem !important;
+      transition: opacity 0.2s !important;
+    }
+    .nav-cta:hover { opacity: 0.85 !important; }
+
+    .nav-mobile-cta {
+      display: none;
+      background: #0e7c7b;
+      color: #fff;
+      padding: 0.45rem 1rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { display: none; }
+      .nav-mobile-cta { display: inline-block; }
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start;
+      text-align: center;
+      padding: 9rem 1.5rem 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-demo {
+      width: 100%;
+      max-width: 1000px;
+      margin-top: 2.5rem;
+      text-align: left;
+    }
+    .hero-demo .vert-tabs { justify-content: center; margin: 0 0 2rem; }
+    /* Inside hero the panel needs a bit less gap */
+    .hero-demo .vert-panel.active { gap: 3rem; }
+
+    /* ─── GLOBAL SPACE CANVAS (fixed, behind everything) ─── */
+    #starfield {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* ─── CURSOR GLOW ─── */
+    #cursor-glow {
+      position: fixed;
+      width: 480px;
+      height: 480px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9;
+      background: radial-gradient(circle,
+        rgba(200, 145, 43, 0.055) 0%,
+        rgba(200, 145, 43, 0.02)  35%,
+        transparent 70%);
+      transform: translate(-50%, -50%);
+      left: -999px;
+      top: -999px;
+      will-change: left, top;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 35%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px; height: 800px;
+      background: radial-gradient(ellipse,
+        rgba(200,145,43,0.10) 0%,
+        rgba(26,80,120,0.08) 45%,
+        transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      animation: nebula-pulse 8s ease-in-out infinite alternate;
+    }
+    @keyframes nebula-pulse {
+      0%   { transform: translate(-50%,-50%) scale(1);    opacity: 0.7; }
+      100% { transform: translate(-50%,-50%) scale(1.15); opacity: 1;   }
+    }
+
+    .hero > * { position: relative; z-index: 1; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(200,145,43,0.3);
+      background: rgba(200,145,43,0.07);
+      color: var(--green);
+      font-family: var(--font-m);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 2rem;
+    }
+    .badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    .hero-h1 {
+      font-family: var(--font-h);
+      font-weight: 300;
+      font-size: clamp(3rem, 7vw, 6.5rem);
+      line-height: 1.05;
+      letter-spacing: 0.01em;
+      max-width: 860px;
+      margin-bottom: 1.5rem;
+    }
+    .hero-h1 em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--green);
+    }
+
+    .hero-sub {
+      color: var(--muted-2);
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      font-weight: 300;
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-btns {
+      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+      margin-bottom: 4rem;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--green);
+      color: var(--black);
+      padding: 13px 28px;
+      border-radius: 8px;
+      font-family: var(--font-b);
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--border-2);
+      color: var(--muted-2);
+      padding: 13px 28px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s, transform 0.2s;
+      background: transparent;
+    }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.25); color: var(--white); transform: translateY(-1px); }
+
+    /* Emma chat preview */
+    .hero-chat {
+      width: 100%; max-width: 480px;
+      background: var(--black-2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(200,145,43,0.08);
+    }
+    .chat-messages { padding: 16px; display: flex; flex-direction: column; gap: 10px; min-height: 200px; }
+
+    /* ─── HERO STATS ─── */
+    .hero-stats {
+      display: flex; gap: 0;
+      margin-top: 2.5rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(13,18,24,0.7);
+      backdrop-filter: blur(12px);
+      width: 100%; max-width: 480px;
+    }
+    .hero-stat {
+      flex: 1;
+      padding: 1rem 0.5rem;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .hero-stat:last-child { border-right: none; }
+    .hero-stat-n {
+      font-family: var(--font-h);
+      font-weight: 600;
+      font-size: 1.5rem;
+      color: var(--green);
+      line-height: 1;
+      display: block;
+    }
+    .hero-stat-l {
+      font-size: 0.68rem;
+      color: var(--muted-2);
+      margin-top: 4px;
+      line-height: 1.3;
+    }
+    .chat-header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      background: var(--black-3);
+    }
+    .chat-avatar {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-h);
+      font-weight: 800;
+      font-size: 0.75rem;
+      color: var(--black);
+      flex-shrink: 0;
+    }
+    .chat-name {
+      font-weight: 600; font-size: 0.88rem; line-height: 1.2;
+    }
+    .chat-status {
+      font-size: 0.72rem; color: var(--green);
+      display: flex; align-items: center; gap: 5px;
+    }
+    .status-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+    .chat-time {
+      margin-left: auto;
+      font-family: var(--font-m);
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+    .chat-messages { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+
+    .msg { display: flex; gap: 8px; align-items: flex-end; }
+    .msg.guest { flex-direction: row-reverse; }
+
+    .msg-avatar {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--black-3);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem; color: var(--muted-2);
+      flex-shrink: 0;
+    }
+    .msg-bubble {
+      padding: 9px 13px;
+      border-radius: 14px;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      max-width: 230px;
+    }
+    .msg.guest .msg-bubble {
+      background: var(--black-3);
+      color: var(--muted-2);
+      border-radius: 14px 14px 4px 14px;
+    }
+    .msg.emma .msg-bubble {
+      background: var(--green);
+      color: var(--black);
+      border-radius: 14px 14px 14px 4px;
+      font-weight: 500;
+    }
+    .msg-meta {
+      font-size: 0.62rem;
+      color: var(--muted);
+      margin-top: -6px;
+      padding: 0 10px;
+    }
+    .msg.guest .msg-meta { text-align: right; }
+
+    .typing {
+      display: flex; align-items: center; gap: 5px;
+      padding: 9px 13px;
+      background: var(--black-3);
+      border-radius: 14px 14px 14px 4px;
+      width: fit-content;
+    }
+    .typing span {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--muted);
+      animation: bounce-dot 1.2s infinite ease-in-out;
+    }
+    .typing span:nth-child(2) { animation-delay: 0.2s; }
+    .typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce-dot {
+      0%, 80%, 100% { opacity: 0.3; transform: scale(0.7); }
+      40% { opacity: 1; transform: scale(1); }
+    }
+
+    /* ─── TICKER ─── */
+    .ticker {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+      overflow: hidden;
+      background: rgba(200,240,96,0.02);
+    }
+    .ticker-inner {
+      display: flex;
+      width: max-content;
+      animation: marquee 28s linear infinite;
+    }
+    @keyframes marquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .ticker-item {
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 0 32px;
+      font-family: var(--font-m);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .ticker-sep {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--green);
+      opacity: 0.6;
+    }
+
+    /* ─── TESTIMONIALS ─── */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 3rem;
+    }
+    @media (max-width: 860px) { .testimonials-grid { grid-template-columns: 1fr; } }
+    .tcard {
+      background: var(--black-2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      display: flex; flex-direction: column; gap: 1.25rem;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .tcard:hover { border-color: rgba(200,145,43,0.25); transform: translateY(-3px); }
+    .tcard-stars { color: var(--green); font-size: 0.85rem; letter-spacing: 2px; }
+    .tcard-quote {
+      font-family: var(--font-h);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 1.1rem;
+      line-height: 1.5;
+      color: var(--white);
+      flex: 1;
+    }
+    .tcard-quote em { font-style: normal; font-weight: 500; color: var(--green); }
+    .tcard-author { display: flex; align-items: center; gap: 12px; }
+    .tcard-av {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-h); font-weight: 800; font-size: 0.85rem;
+      color: var(--black); flex-shrink: 0;
+    }
+    .tcard-name { font-weight: 600; font-size: 0.88rem; }
+    .tcard-role { font-size: 0.75rem; color: var(--muted-2); }
+    .tcard-metrics {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    .tcard-metric {
+      font-family: var(--font-m);
+      font-size: 0.65rem;
+      letter-spacing: 0.06em;
+      padding: 3px 10px;
+      border-radius: 100px;
+      background: var(--green-dim);
+      color: var(--green);
+    }
+
+    /* ─── SECTIONS COMMON ─── */
+    .section {
+      padding: 5rem 1.5rem;
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+    .section-full {
+      padding: 5rem 1.5rem;
+    }
+    .section-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+
+    .label {
+      font-family: var(--font-m);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 1.25rem;
+      display: block;
+    }
+
+    h2.display {
+      font-family: var(--font-h);
+      font-weight: 300;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      line-height: 1.08;
+      letter-spacing: 0.01em;
+      margin-bottom: 1.25rem;
+    }
+    h2.display em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--green);
+    }
+
+    .body-text {
+      color: var(--muted-2);
+      font-size: 1.05rem;
+      line-height: 1.75;
+      font-weight: 300;
+      max-width: 520px;
+    }
+
+    /* ─── 2-COL GRID ─── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    @media (max-width: 860px) {
+      .two-col { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
+    /* ─── PROBLEM SECTION ─── */
+    .missed-log {
+      background: var(--black-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .log-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px;
+      background: var(--black-3);
+      border-bottom: 1px solid var(--border);
+    }
+    .log-title {
+      font-family: var(--font-m);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted-2);
+    }
+    .log-badge {
+      display: flex; align-items: center; gap: 5px;
+      font-family: var(--font-m);
+      font-size: 0.65rem;
+      color: var(--red);
+      letter-spacing: 0.06em;
+    }
+    .log-badge-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--red);
+      animation: pulse-dot 2s infinite;
+    }
+    .log-items { padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+    .log-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 11px 14px;
+      background: var(--red-dim);
+      border: 1px solid rgba(160,120,60,0.12);
+      border-radius: 8px;
+      font-size: 0.82rem;
+    }
+    .log-icon { font-size: 1rem; flex-shrink: 0; line-height: 1; margin-top: 1px; }
+    .log-text { flex: 1; }
+    .log-text strong {
+      display: block;
+      color: var(--white);
+      font-weight: 500;
+      font-size: 0.82rem;
+      margin-bottom: 2px;
+    }
+    .log-text span { color: var(--muted-2); font-size: 0.77rem; }
+    .log-time {
+      font-family: var(--font-m);
+      font-size: 0.65rem;
+      color: var(--muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .log-footer {
+      padding: 12px 20px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .log-footer strong { color: var(--red); }
+
+    /* ─── EMMA SECTION ─── */
+    .emma-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    @media (max-width: 860px) {
+      .emma-grid { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
+    .emma-card {
+      background: var(--black-2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .emma-card-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 14px;
+    }
+    .emma-logo {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      background: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-h);
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--black);
+    }
+    .emma-info strong {
+      display: block;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .emma-info span {
+      font-size: 0.78rem;
+      color: var(--muted-2);
+    }
+    .emma-online {
+      margin-left: auto;
+      display: flex; align-items: center; gap: 5px;
+      font-size: 0.72rem;
+      color: var(--green);
+      font-family: var(--font-m);
+    }
+    .emma-conversations { padding: 14px; display: flex; flex-direction: column; gap: 6px; }
+    .convo-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px;
+      background: var(--black-3);
+      border-radius: 8px;
+      font-size: 0.82rem;
+      cursor: default;
+      transition: background 0.2s;
+    }
+    .convo-row:hover { background: rgba(255,255,255,0.04); }
+    .convo-icon { font-size: 0.9rem; flex-shrink: 0; }
+    .convo-text { flex: 1; min-width: 0; }
+    .convo-text strong { display: block; font-size: 0.8rem; font-weight: 500; color: var(--white); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .convo-text span { font-size: 0.73rem; color: var(--muted-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+    .convo-badge {
+      font-family: var(--font-m);
+      font-size: 0.62rem;
+      padding: 2px 8px;
+      border-radius: 100px;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+    }
+    .cb-done { background: rgba(200,240,96,0.1); color: var(--green); }
+    .cb-live { background: rgba(100,200,255,0.1); color: #64c8ff; }
+    .cb-new  { background: rgba(255,180,50,0.1);  color: #ffb432; }
+    .emma-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--border);
+    }
+    .emma-stat {
+      padding: 14px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .emma-stat:last-child { border-right: none; }
+    .emma-stat-n {
+      font-family: var(--font-h);
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--green);
+      display: block;
+      line-height: 1;
+    }
+    .emma-stat-l {
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* feature pills on right side */
+    .emma-features { display: flex; flex-direction: column; gap: 1rem; }
+    .emma-feat {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 18px 20px;
+      background: var(--black-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: border-color 0.25s;
+    }
+    .emma-feat:hover { border-color: rgba(200,240,96,0.2); }
+    .feat-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: var(--green-dim);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .feat-body strong {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 3px;
+    }
+    .feat-body p {
+      font-size: 0.82rem;
+      color: var(--muted-2);
+      line-height: 1.5;
+    }
+
+    /* ─── VERTICALS ─── */
+    .verticals-section { padding: 7rem 1.5rem; }
+    .vert-tabs {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      margin: 2rem 0 2.5rem;
+    }
+    .vert-tab {
+      display: flex; align-items: center; gap: 7px;
+      padding: 9px 20px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      background: transparent;
+      color: var(--muted-2);
+      font-family: var(--font-b);
+      transition: all 0.2s;
+    }
+    .vert-tab.active {
+      background: var(--green);
+      border-color: var(--green);
+      color: var(--black);
+    }
+    .vert-tab:not(.active):hover {
+      border-color: var(--border-2);
+      color: var(--white);
+    }
+
+    .vert-panel { display: none; }
+    .vert-panel.active { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    @media (max-width: 860px) {
+      .vert-panel.active { grid-template-columns: 1fr; gap: 2rem; }
+    }
+
+    .vert-chat {
+      background: var(--black-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .vc-header {
+      padding: 12px 16px;
+      background: var(--black-3);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .vc-avatar {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--green);
+      font-family: var(--font-h);
+      font-weight: 800;
+      font-size: 0.65rem;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--black);
+    }
+    .vc-name { font-size: 0.82rem; font-weight: 600; }
+    .vc-role { font-size: 0.7rem; color: var(--muted-2); }
+    .vc-online { margin-left: auto; font-size: 0.65rem; color: var(--green); font-family: var(--font-m); display: flex; align-items: center; gap: 4px; }
+    .vc-msgs { padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+    .vm { display: flex; gap: 7px; align-items: flex-end; }
+    .vm.u { flex-direction: row-reverse; }
+    .vm-av { width: 22px; height: 22px; border-radius: 50%; background: var(--black-3); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.55rem; color: var(--muted-2); flex-shrink: 0; }
+    .vm-b {
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      line-height: 1.4;
+      max-width: 210px;
+    }
+    .vm.u .vm-b {
+      background: var(--black-3);
+      color: var(--muted-2);
+      border-radius: 12px 12px 4px 12px;
+    }
+    .vm.a .vm-b {
+      background: var(--green);
+      color: var(--black);
+      font-weight: 500;
+      border-radius: 12px 12px 12px 4px;
+    }
+
+    .vert-info { display: flex; flex-direction: column; gap: 1.5rem; }
+    .vert-title {
+      font-family: var(--font-h);
+      font-weight: 400;
+      font-size: 2.2rem;
+      letter-spacing: 0.01em;
+      line-height: 1.1;
+    }
+    .vert-desc {
+      color: var(--muted-2);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+    .vert-bullets { display: flex; flex-direction: column; gap: 8px; }
+    .vert-bullet {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 0.88rem;
+      color: var(--muted-2);
+    }
+    .vert-bullet::before {
+      content: '';
+      display: block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+
+    /* ─── HOW IT WORKS ─── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 3rem;
+    }
+    @media (max-width: 860px) {
+      .steps { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 500px) {
+      .steps { grid-template-columns: 1fr; }
+    }
+    .step {
+      background: var(--black-2);
+      padding: 2rem;
+      position: relative;
+    }
+    .step-num {
+      font-family: var(--font-m);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: var(--green);
+      margin-bottom: 1rem;
+    }
+    .step-icon {
+      font-size: 1.6rem;
+      display: block;
+      margin-bottom: 0.75rem;
+      line-height: 1;
+    }
+    .step-title {
+      font-family: var(--font-h);
+      font-weight: 500;
+      font-size: 1.15rem;
+      margin-bottom: 0.5rem;
+    }
+    .step-desc {
+      font-size: 0.83rem;
+      color: var(--muted-2);
+      line-height: 1.55;
+    }
+
+    /* ─── PRICING ─── */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 3.5rem;
+    }
+    @media (max-width: 860px) {
+      .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
+    }
+
+    .price-card {
+      background: var(--black-2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      position: relative;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .price-card:hover:not(.featured) {
+      border-color: var(--border-2);
+      transform: translateY(-3px);
+    }
+    .price-card.featured {
+      border-color: rgba(200,145,43,0.4);
+      background: linear-gradient(160deg, rgba(200,145,43,0.06), transparent 60%);
+    }
+    .price-pill {
+      position: absolute;
+      top: -11px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--green);
+      color: var(--black);
+      font-family: var(--font-m);
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      padding: 3px 12px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+    .price-tier {
+      font-family: var(--font-m);
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted-2);
+      margin-bottom: 0.75rem;
+    }
+    .price-amount {
+      font-family: var(--font-h);
+      font-weight: 300;
+      font-size: 3.5rem;
+      letter-spacing: 0;
+      line-height: 1;
+      color: var(--white);
+    }
+    .price-amount sup { font-size: 1.2rem; vertical-align: top; margin-top: 6px; display: inline-block; }
+    .price-period { font-size: 0.82rem; color: var(--muted); margin-bottom: 0.5rem; }
+    .price-target { font-size: 0.8rem; color: var(--muted-2); margin-bottom: 1.5rem; }
+    .price-div { height: 1px; background: var(--border); margin-bottom: 1.25rem; }
+    .price-list { list-style: none; margin-bottom: 1.75rem; display: flex; flex-direction: column; gap: 9px; }
+    .price-list li {
+      display: flex; align-items: flex-start; gap: 9px;
+      font-size: 0.85rem;
+      color: var(--muted-2);
+    }
+    .price-list li::before {
+      content: '✓';
+      color: var(--green);
+      font-weight: 600;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .price-cta {
+      display: block;
+      text-align: center;
+      padding: 11px 20px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .pc-outline {
+      border: 1px solid var(--border-2);
+      color: var(--white);
+    }
+    .pc-outline:hover { background: rgba(255,255,255,0.05); }
+    .pc-green {
+      background: var(--green);
+      color: var(--black);
+    }
+    .pc-green:hover { opacity: 0.88; }
+
+    .pricing-note {
+      text-align: center;
+      margin-top: 1.75rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .pricing-note a { color: var(--muted-2); text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ─── SOCIAL PROOF ─── */
+    .case-card {
+      background: var(--black-2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    @media (max-width: 860px) {
+      .case-card { grid-template-columns: 1fr; }
+    }
+    .case-left {
+      padding: 2.5rem;
+      border-right: 1px solid var(--border);
+    }
+    @media (max-width: 860px) {
+      .case-left { border-right: none; border-bottom: 1px solid var(--border); }
+    }
+    .case-quote {
+      font-family: var(--font-h);
+      font-weight: 300;
+      font-style: italic;
+      font-size: 1.5rem;
+      line-height: 1.4;
+      letter-spacing: 0;
+      margin-bottom: 1.5rem;
+    }
+    .case-quote em { font-style: normal; font-weight: 500; color: var(--green); }
+    .case-author {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .case-av {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-h);
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: var(--black);
+      flex-shrink: 0;
+    }
+    .case-author-name { font-weight: 600; font-size: 0.9rem; }
+    .case-author-role { font-size: 0.78rem; color: var(--muted-2); }
+    .case-right {
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .case-stat {
+      padding: 1rem 1.25rem;
+      background: var(--black-3);
+      border-radius: 10px;
+    }
+    .case-stat-n {
+      font-family: var(--font-h);
+      font-weight: 800;
+      font-size: 2rem;
+      letter-spacing: -0.04em;
+      color: var(--green);
+      line-height: 1;
+    }
+    .case-stat-l { font-size: 0.8rem; color: var(--muted-2); margin-top: 4px; }
+
+    /* ─── CTA FINAL ─── */
+    .cta-section {
+      padding: 6rem 1.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(ellipse, rgba(200,240,96,0.08) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .cta-section h2 {
+      font-family: var(--font-h);
+      font-weight: 300;
+      font-size: clamp(2.4rem, 6vw, 5.5rem);
+      letter-spacing: 0.01em;
+      line-height: 1.05;
+      margin-bottom: 1.25rem;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cta-section h2 em { font-style: italic; font-weight: 300; color: var(--green); }
+    .cta-sub {
+      color: var(--muted-2);
+      font-size: 1.05rem;
+      max-width: 440px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+    .linkedin-share {
+      display: inline-flex; align-items: center; gap: 9px;
+      margin-top: 1.25rem;
+      border: 1px solid var(--border);
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      color: var(--muted-2);
+      text-decoration: none;
+      background: rgba(10,102,194,0.05);
+      transition: all 0.2s;
+    }
+    .linkedin-share:hover {
+      border-color: rgba(10,102,194,0.35);
+      background: rgba(10,102,194,0.1);
+      color: var(--white);
+    }
+    .li-box {
+      width: 18px; height: 18px;
+      background: #0A66C2;
+      border-radius: 3px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    /* ─── FOUNDER ─── */
+    .founder-section { padding-top: 4rem; padding-bottom: 4rem; }
+    .founder-inner {
+      display: flex;
+      gap: 2.5rem;
+      align-items: flex-start;
+    }
+    @media (max-width: 600px) {
+      .founder-inner { flex-direction: column; gap: 1.75rem; }
+    }
+    .founder-photo {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: var(--black-3);
+      border: 1px solid var(--border-2);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .founder-initials {
+      font-family: var(--font-h);
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: var(--green);
+      letter-spacing: 0.05em;
+    }
+    .founder-quote {
+      font-family: var(--font-h);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 1.15rem;
+      line-height: 1.6;
+      color: var(--white);
+      margin-bottom: 1.25rem;
+    }
+    .founder-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .founder-name {
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--white);
+    }
+    .founder-role {
+      font-size: 0.8rem;
+      color: var(--muted-2);
+    }
+    .founder-li {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: var(--muted-2);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .founder-li:hover { color: var(--white); }
+    .founder-li-icon {
+      width: 18px; height: 18px;
+      background: #0A66C2;
+      border-radius: 3px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+    }
+    @media (max-width: 600px) {
+      footer { padding: 1.5rem; flex-direction: column; text-align: center; }
+    }
+    .footer-logo {
+      font-family: var(--font-h);
+      font-weight: 500;
+      font-size: 1.2rem;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .footer-logo span { color: var(--green); }
+    .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .footer-links a {
+      color: var(--muted);
+      font-size: 0.82rem;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--white); }
+    .footer-copy { font-size: 0.78rem; color: var(--muted); }
+
+    /* footer columns */
+    .footer-col { display: flex; flex-direction: column; gap: 0.5rem; }
+    .footer-tagline { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+    .footer-contact { font-size: 0.82rem; color: var(--muted); }
+    .footer-contact a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-contact a:hover { color: var(--white); }
+    .footer-social { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem; }
+    .footer-li-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 5px;
+      background: rgba(255,255,255,0.08);
+      font-size: 0.75rem; font-weight: 700; color: var(--white);
+      text-decoration: none; transition: background 0.2s;
+    }
+    .footer-li-icon:hover { background: rgba(200,145,43,0.25); }
+
+    /* inline lead capture */
+    .lead-section {
+      padding: 5rem 2rem;
+      text-align: center;
+      background: linear-gradient(180deg, transparent, rgba(200,145,43,0.03) 50%, transparent);
+      border-top: 1px solid var(--border);
+    }
+    .lead-section h2 {
+      font-family: var(--font-h);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 300;
+      color: var(--white);
+      margin: 0 0 0.75rem;
+    }
+    .lead-section h2 em { color: var(--green); font-style: italic; }
+    .lead-section p {
+      color: var(--muted);
+      font-size: 1rem;
+      margin: 0 auto 2.5rem;
+      max-width: 420px;
+      line-height: 1.6;
+    }
+    .lead-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    .lead-form input,
+    .lead-form select {
+      width: 100%;
+      padding: 13px 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--white);
+      font-family: var(--font-b);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+      appearance: none;
+    }
+    .lead-form input::placeholder { color: var(--muted); }
+    .lead-form input:focus,
+    .lead-form select:focus { border-color: rgba(200,145,43,0.5); }
+    .lead-form select option { background: #0d1218; color: var(--white); }
+    .lead-form button {
+      padding: 14px;
+      background: var(--green);
+      border: none;
+      border-radius: 10px;
+      color: var(--black);
+      font-family: var(--font-b);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .lead-form button:hover { opacity: 0.9; transform: translateY(-1px); }
+    .lead-form button:active { transform: translateY(0); }
+    .lead-success {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      color: var(--green);
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+    .lead-success.visible { display: flex; }
+  </style>
+</head>
+<body>
+
+<!-- Global space canvas — fixed, behind everything -->
+<canvas id="starfield"></canvas>
+<!-- Cursor glow -->
+<div id="cursor-glow"></div>
+
+<!-- ── NAV ── -->
+<nav id="nav">
+  <a href="#" class="nav-logo">TIMELESS<span>.</span></a>
+  <a href="#solucion" class="nav-mobile-cta">Ver demo</a>
+  <div class="nav-links">
+    <a href="#como-funciona">Cómo funciona</a>
+    <a href="#solucion">Tu asistente</a>
+    <a href="#precios">Precios</a>
+    <a href="https://timelessai.pro/onboarding.html" class="nav-cta">Empezar</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero" id="inicio">
+  <div class="hero-badge reveal" id="hero-badge">
+    <span class="badge-dot"></span>
+    <span id="hero-badge-text">Demo en vivo</span>
+  </div>
+
+  <h1 class="hero-h1 reveal d1">
+    Mientras dormís,<br>
+    <em>Emma responde.</em>
+  </h1>
+
+  <p class="hero-sub reveal d2" id="hero-sub">
+    Un asistente virtual con tu nombre, tu voz y todo lo que sabe tu negocio. Para hoteles, restaurantes y clínicas donde cada mensaje sin responder es un cliente que se va con la competencia.
+  </p>
+
+  <div class="hero-btns reveal d3">
+    <a href="https://timelessai.pro/onboarding.html" class="btn-primary">
+      Activá tu asistente — Gratis →
+    </a>
+  </div>
+
+  <!-- Interactive business type selector + live chat -->
+  <div class="hero-demo reveal d3">
+    <div class="vert-tabs">
+      <button class="vert-tab active" data-vert="hotel">🏨 Hotel</button>
+      <button class="vert-tab" data-vert="restaurant">🍽️ Restaurante</button>
+      <button class="vert-tab" data-vert="clinic">🏥 Clínica</button>
+    </div>
+
+    <!-- HOTEL -->
+    <div class="vert-panel active" id="vert-hotel">
+      <div class="vert-chat">
+        <div class="vc-header">
+          <div class="vc-avatar">E</div>
+          <div>
+            <div class="vc-name">Emma — Ocean View Hotel</div>
+            <div class="vc-role">Recepción Virtual</div>
+          </div>
+          <div class="vc-online"><span class="status-dot"></span> Online · responde en segundos</div>
+        </div>
+        <div class="vc-msgs">
+          <div class="vm u">
+            <div class="vm-av">👤</div>
+            <div class="vm-b">buenas, tienen algo libre para el finde que viene? somos 2</div>
+          </div>
+          <div class="vm a">
+            <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">E</div>
+            <div class="vm-b">¡Hola! Para este finde me quedan un par de opciones. ¿Buscan una doble o algo con vista al mar? Así te paso el precio justo.</div>
+          </div>
+          <div class="vm u">
+            <div class="vm-av">👤</div>
+            <div class="vm-b">con vista al mar si se puede, del viernes al domingo</div>
+          </div>
+          <div class="vm a">
+            <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">E</div>
+            <div class="vm-b">Tengo la Suite Vista al Mar libre de viernes a domingo, $189 la noche con balcón. ¿Te la dejo reservada y te paso el link de pago? 🌊</div>
+          </div>
+        </div>
+      </div>
+      <div class="vert-info">
+        <span class="label" style="margin-bottom:0.75rem;">Ocean View Hotel</span>
+        <h3 class="vert-title">Emma conoce tu hotel<br>de adentro para afuera.</h3>
+        <p class="vert-desc">Desde tarifas y disponibilidad hasta políticas de mascotas y horarios — Emma aprende todo sobre tu propiedad y responde a los huéspedes al instante, con calidez y precisión.</p>
+        <div class="vert-bullets">
+          <div class="vert-bullet">Responde consultas de disponibilidad y precios 24/7</div>
+          <div class="vert-bullet">Captura datos del lead: fechas, tipo de habitación, ocasión especial</div>
+          <div class="vert-bullet">Envía mensajes de pre-llegada y post-estadía automáticamente</div>
+          <div class="vert-bullet">Registra cada conversación en tu panel de control</div>
+        </div>
+        <a href="https://timelessai.pro/onboarding.html" class="btn-primary" style="margin-top:1.5rem; width:fit-content;">
+          Crear mi Emma →
+        </a>
+      </div>
+    </div>
+
+    <!-- RESTAURANT -->
+    <div class="vert-panel" id="vert-restaurant">
+      <div class="vert-chat">
+        <div class="vc-header">
+          <div class="vc-avatar">S</div>
+          <div>
+            <div class="vc-name">Sofía — Reservas</div>
+            <div class="vc-role">Asistente del Restaurante</div>
+          </div>
+          <div class="vc-online"><span class="status-dot"></span> Online · responde en segundos</div>
+        </div>
+        <div class="vc-msgs">
+          <div class="vm u">
+            <div class="vm-av">👤</div>
+            <div class="vm-b">hola! tenían mesa para el sábado a la noche? éramos 6, capaz 7</div>
+          </div>
+          <div class="vm a">
+            <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">S</div>
+            <div class="vm-b">¡Hola! El sábado te puedo reservar mesa para 7 sobre las 21 hs. ¿Es por alguna ocasión, así les preparamos algo lindo?</div>
+          </div>
+          <div class="vm u">
+            <div class="vm-av">👤</div>
+            <div class="vm-b">es un cumple 🙌 uno de los chicos es celíaco, se complica?</div>
+          </div>
+          <div class="vm a">
+            <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">S</div>
+            <div class="vm-b">Para nada, el chef maneja opciones sin TACC. Dejo la mesa para 7 el sábado 21 hs y aviso en cocina. Te confirmo el viernes así no se te pasa.</div>
+          </div>
+        </div>
+      </div>
+      <div class="vert-info">
+        <span class="label" style="margin-bottom:0.75rem;">Restaurante</span>
+        <h3 class="vert-title">Sofía no pierde<br>ninguna reserva.</h3>
+        <p class="vert-desc">Nunca más pierdas una reserva del sábado por un mensaje sin respuesta. Sofía toma reservas, gestiona pedidos especiales y confirma mesas — incluso a las 11 PM.</p>
+        <div class="vert-bullets">
+          <div class="vert-bullet">Toma y confirma reservas 24/7</div>
+          <div class="vert-bullet">Gestiona requerimientos dietarios y celebraciones especiales</div>
+          <div class="vert-bullet">Envía confirmaciones y recordatorios automáticos</div>
+          <div class="vert-bullet">Captura lista de espera en noches completas</div>
+        </div>
+        <a href="https://timelessai.pro/onboarding.html" class="btn-primary" style="margin-top:1.5rem; width:fit-content;">
+          Crear mi Sofía →
+        </a>
+      </div>
+    </div>
+
+    <!-- CLINIC -->
+    <div class="vert-panel" id="vert-clinic">
+      <div class="vert-chat">
+        <div class="vc-header">
+          <div class="vc-avatar">V</div>
+          <div>
+            <div class="vc-name">Valentina — Turnos</div>
+            <div class="vc-role">Asistente de Clínica</div>
+          </div>
+          <div class="vc-online"><span class="status-dot"></span> Online · responde en segundos</div>
+        </div>
+        <div class="vc-msgs">
+          <div class="vm u">
+            <div class="vm-av">👤</div>
+            <div class="vm-b">buenas, atienden sin turno? me duele una muela hace dos días</div>
+          </div>
+          <div class="vm a">
+            <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">V</div>
+            <div class="vm-b">Hola, lamento lo del dolor — conviene verlo pronto. Hoy ya no quedan lugares, pero mañana tengo 9:30 o 15 hs con la Dra. Salas. ¿Cuál te viene mejor?</div>
+          </div>
+          <div class="vm u">
+            <div class="vm-av">👤</div>
+            <div class="vm-b">mañana 9:30. trabajan con OSDE?</div>
+          </div>
+          <div class="vm a">
+            <div class="vm-av" style="background:var(--green);color:var(--black);font-weight:700;font-size:0.55rem;border:none;">V</div>
+            <div class="vm-b">Sí, trabajamos con OSDE. Te dejo agendado mañana 9:30 — traé el carnet y un documento. Si el dolor empeora antes, escribime y lo adelantamos.</div>
+          </div>
+        </div>
+      </div>
+      <div class="vert-info">
+        <span class="label" style="margin-bottom:0.75rem;">Clínica</span>
+        <h3 class="vert-title">Valentina no deja<br>un turno sin agendar.</h3>
+        <p class="vert-desc">Valentina maneja solicitudes de turno, consultas previas e ingreso de pacientes — para que tu recepcionista pueda concentrarse en quienes ya están en la sala de espera.</p>
+        <div class="vert-bullets">
+          <div class="vert-bullet">Agenda y confirma turnos automáticamente</div>
+          <div class="vert-bullet">Responde consultas de servicios, obra social y ubicación</div>
+          <div class="vert-bullet">Envía recordatorios 24 horas antes del turno</div>
+          <div class="vert-bullet">Captura datos del paciente nuevo antes de la primera visita</div>
+        </div>
+        <a href="https://timelessai.pro/onboarding.html" class="btn-primary" style="margin-top:1.5rem; width:fit-content;">
+          Crear mi Valentina →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS STRIP ── -->
+<div style="border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:rgba(13,18,24,0.8); backdrop-filter:blur(16px);">
+  <div style="max-width:960px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); text-align:center;">
+    <div style="padding:1.5rem 1rem; border-right:1px solid var(--border);">
+      <div style="font-family:var(--font-h); font-size:2rem; font-weight:600; color:var(--green); line-height:1;">24/7</div>
+      <div style="font-size:0.75rem; color:var(--muted-2); margin-top:4px;">respuestas sin pausas</div>
+    </div>
+    <div style="padding:1.5rem 1rem; border-right:1px solid var(--border);">
+      <div style="font-family:var(--font-h); font-size:2rem; font-weight:600; color:var(--green); line-height:1;">&lt;24h</div>
+      <div style="font-size:0.75rem; color:var(--muted-2); margin-top:4px;">hasta tu asistente en vivo</div>
+    </div>
+    <div style="padding:1.5rem 1rem; border-right:1px solid var(--border);">
+      <div style="font-family:var(--font-h); font-size:2rem; font-weight:600; color:var(--green); line-height:1;">&lt;3s</div>
+      <div style="font-size:0.75rem; color:var(--muted-2); margin-top:4px;">tiempo promedio de respuesta</div>
+    </div>
+    <div style="padding:1.5rem 1rem;">
+      <div style="font-family:var(--font-h); font-size:2rem; font-weight:600; color:var(--green); line-height:1;">$0</div>
+      <div style="font-size:0.75rem; color:var(--muted-2); margin-top:4px;">costo por mensaje — sin límites</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TICKER ── -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <div class="ticker-item"><span class="ticker-sep"></span>Atención 24/7</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Respuestas Instantáneas</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Captura de Leads</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Asistencia con Reservas</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Reporte Semanal</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Panel en Vivo</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Cero Mensajes Sin Respuesta</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>En vivo en 24h</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Asistente con Tu Nombre</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>WhatsApp al Contratar</div>
+    <!-- duplicate for seamless loop -->
+    <div class="ticker-item"><span class="ticker-sep"></span>Atención 24/7</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Respuestas Instantáneas</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Captura de Leads</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Asistencia con Reservas</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Reporte Semanal</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Panel en Vivo</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Cero Mensajes Sin Respuesta</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>En vivo en 24h</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>Asistente con Tu Nombre</div>
+    <div class="ticker-item"><span class="ticker-sep"></span>WhatsApp al Contratar</div>
+  </div>
+</div>
+
+<!-- ── PROBLEM ── -->
+<section class="section" id="problema">
+  <div class="two-col">
+    <div>
+      <span class="label reveal">El Problema</span>
+      <h2 class="display reveal d1">Cada mensaje sin respuesta<br>es un <em>cliente perdido.</em></h2>
+      <p class="body-text reveal d2">
+        El 78% de los clientes elige al primero que responde. Cuando tu recepción está cerrada, la competencia no lo está. Cada mensaje sin respuesta fuera de horario es ingreso que se va por la puerta.
+      </p>
+      <p class="body-text reveal d3" style="margin-top: 1rem;">
+        Vos no podés estar disponible 24/7. <strong style="color:var(--white);">Timeless sí puede.</strong>
+      </p>
+    </div>
+
+    <div class="missed-log reveal d2">
+      <div class="log-header">
+        <span class="log-title">Mensajes sin respuesta</span>
+        <span class="log-badge">
+          <span class="log-badge-dot"></span>
+          En vivo · Esta noche
+        </span>
+      </div>
+      <div class="log-items">
+        <div class="log-item">
+          <span class="log-icon">💬</span>
+          <div class="log-text">
+            <strong>Consulta de reserva — Habitación para 2</strong>
+            <span>¿Tienen disponibilidad del 15 al 18 de agosto? Preferimos cama king.</span>
+          </div>
+          <span class="log-time">11:34 PM</span>
+        </div>
+        <div class="log-item">
+          <span class="log-icon">📋</span>
+          <div class="log-text">
+            <strong>Ocasión especial</strong>
+            <span>Estamos festejando nuestro aniversario, ¿pueden hacer algo especial?</span>
+          </div>
+          <span class="log-time">1:02 AM</span>
+        </div>
+        <div class="log-item">
+          <span class="log-icon">💳</span>
+          <div class="log-text">
+            <strong>Listo para reservar — esperando respuesta</strong>
+            <span>Perfecto, ¿cuál es la política de cancelación? Reservo ahora mismo.</span>
+          </div>
+          <span class="log-time">2:47 AM</span>
+        </div>
+        <div class="log-item">
+          <span class="log-icon">📸</span>
+          <div class="log-text">
+            <strong>Influencer — propuesta de colaboración</strong>
+            <span>¡Hola! Tengo 45k seguidores en Instagram. ¿Les interesaría...</span>
+          </div>
+          <span class="log-time">3:15 AM</span>
+        </div>
+      </div>
+      <div class="log-footer">
+        <strong>4 mensajes</strong> recibidos fuera de horario — 0 respondidos.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EMMA ── -->
+<section class="section" id="solucion" style="border-top: 1px solid var(--border);">
+  <div style="text-align:center; max-width: 640px; margin: 0 auto 4rem;">
+    <span class="label reveal">La Solución</span>
+    <h2 class="display reveal d1">Conocé a tu nuevo<br><em>asistente.</em></h2>
+    <p class="body-text reveal d2" style="max-width: 100%; margin: 0 auto;">
+      Timeless te da un asistente virtual con nombre y personalidad propios, entrenado con la información de tu negocio — tus servicios, tus precios, tu estilo. No es un bot genérico que repite respuestas armadas. Es <em style="font-style:italic; color:var(--white);">tu</em> asistente.
+    </p>
+  </div>
+
+  <div class="emma-grid">
+    <div class="emma-card reveal">
+      <div class="emma-card-header">
+        <div class="emma-logo">E</div>
+        <div class="emma-info">
+          <strong>Emma</strong>
+          <span>Recepción Virtual · Sun Life Beach Hotel</span>
+        </div>
+        <div class="emma-online">
+          <span class="status-dot"></span>
+          Online 24/7
+        </div>
+      </div>
+      <div class="emma-conversations">
+        <div class="convo-row">
+          <span class="convo-icon">🏖️</span>
+          <div class="convo-text">
+            <strong>María G. — Consulta de reserva</strong>
+            <span>¡Claro! Tenemos una hermosa habitación con vista al mar disponible para...</span>
+          </div>
+          <span class="convo-badge cb-done">Respondida</span>
+        </div>
+        <div class="convo-row">
+          <span class="convo-icon">📅</span>
+          <div class="convo-text">
+            <strong>James R. — Pregunta de check-in</strong>
+            <span>El check-in es a las 3 PM, pero puedo consultar si es posible la llegada temprana...</span>
+          </div>
+          <span class="convo-badge cb-live">En vivo</span>
+        </div>
+        <div class="convo-row">
+          <span class="convo-icon">🎉</span>
+          <div class="convo-text">
+            <strong>Sofía T. — Paquete aniversario</strong>
+            <span>¡Felicitaciones! Nos encantaría hacer tu estadía extra especial. Tenemos...</span>
+          </div>
+          <span class="convo-badge cb-done">Respondida</span>
+        </div>
+        <div class="convo-row">
+          <span class="convo-icon">🅿️</span>
+          <div class="convo-text">
+            <strong>Nuevo visitante — Estacionamiento</strong>
+            <span>Sí, tenemos estacionamiento gratuito para todos los huéspedes. Lo encontrás...</span>
+          </div>
+          <span class="convo-badge cb-new">Nuevo lead</span>
+        </div>
+      </div>
+      <div class="emma-stats">
+        <div class="emma-stat">
+          <span class="emma-stat-n">100%</span>
+          <div class="emma-stat-l">Tasa de respuesta</div>
+        </div>
+        <div class="emma-stat">
+          <span class="emma-stat-n">&lt;30s</span>
+          <div class="emma-stat-l">Tiempo de respuesta</div>
+        </div>
+        <div class="emma-stat">
+          <span class="emma-stat-n">24/7</span>
+          <div class="emma-stat-l">Siempre activa</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="emma-features reveal d2">
+      <div class="emma-feat">
+        <div class="feat-icon">🧠</div>
+        <div class="feat-body">
+          <strong>Conoce tu negocio de adentro para afuera</strong>
+          <p>Entrenado con tu información real — habitaciones, precios, políticas, preguntas frecuentes — con tecnología RAG. Sin alucinaciones, sin respuestas incorrectas.</p>
+        </div>
+      </div>
+      <div class="emma-feat">
+        <div class="feat-icon">✍️</div>
+        <div class="feat-body">
+          <strong>Tu nombre, tu personalidad</strong>
+          <p>Llamalo Emma, Sofía, Valentina — lo que mejor represente tu marca. El tono se adapta: formal o cercano, cálido o profesional, en cualquier idioma.</p>
+        </div>
+      </div>
+      <div class="emma-feat">
+        <div class="feat-icon">📊</div>
+        <div class="feat-body">
+          <strong>Panel + reportes semanales</strong>
+          <p>Ves cada conversación, lead capturado y solicitud del cliente en un solo lugar. Recibís un resumen semanal cada lunes por la mañana.</p>
+        </div>
+      </div>
+      <div class="emma-feat">
+        <div class="feat-icon">🔌</div>
+        <div class="feat-body">
+          <strong>En tu sitio web en minutos</strong>
+          <p>Una línea de código vía Google Tag Manager. Funciona en cualquier sitio — GoDaddy, Wix, WordPress — sin necesitar conocimientos técnicos.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="section" id="como-funciona" style="border-top: 1px solid var(--border);">
+  <div style="text-align:center; max-width: 580px; margin: 0 auto 0;">
+    <span class="label reveal">Cómo funciona</span>
+    <h2 class="display reveal d1">Del formulario a en vivo<br><em>en menos de 24 horas.</em></h2>
+  </div>
+  <div class="steps reveal d2">
+    <div class="step">
+      <div class="step-num">PASO 01</div>
+      <span class="step-icon">📝</span>
+      <div class="step-title">Completás el formulario</div>
+      <p class="step-desc">Nos contás sobre tu negocio: nombre, tipo, servicios, horarios y preguntas frecuentes. Lleva unos 10 minutos.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">PASO 02</div>
+      <span class="step-icon">🧠</span>
+      <div class="step-title">Entrenamos tu asistente</div>
+      <p class="step-desc">Cargamos tu base de conocimiento en un modelo de IA seguro. Tu asistente aprende tu negocio, tu tono y tus reglas.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">PASO 03</div>
+      <span class="step-icon">🔌</span>
+      <div class="step-title">Lo instalamos</div>
+      <p class="step-desc">Una línea de código vía Google Tag Manager. Tu asistente aparece en tu sitio al instante — sin conocimientos técnicos.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">PASO 04</div>
+      <span class="step-icon">✨</span>
+      <div class="step-title">Libre para siempre</div>
+      <p class="step-desc">Cada mensaje queda respondido. Cada lead, capturado. Tu panel se actualiza en tiempo real. Recuperaste tus noches.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── VISIÓN (Cabina — hacia dónde vamos) ── -->
+<section class="section" id="vision" style="border-top: 1px solid var(--border);">
+  <div style="text-align:center; max-width: 660px; margin: 0 auto 3.5rem;">
+    <span class="label reveal">Hacia dónde vamos</span>
+    <h2 class="display reveal d1">Tu día entero,<br><em>en un solo lugar.</em></h2>
+    <p class="body-text reveal d2" style="max-width: 100%; margin: 0 auto;">
+      Hoy tu negocio vive repartido: las reservas en un lado, los mensajes en otro, el check-in en un cuaderno. Estamos construyendo Timeless para que todo converja en una sola pantalla — quién llega hoy, quién se va, qué quedó libre — sin saltar entre cinco aplicaciones.
+    </p>
+  </div>
+  <div class="reveal d2" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; max-width:880px; margin:0 auto;">
+    <div style="background:var(--black-2); border:1px solid var(--border); border-radius:14px; padding:2rem 1.5rem;">
+      <div style="font-family:var(--font-h); font-size:1.35rem; font-weight:600; color:var(--white); margin-bottom:0.5rem;">Tu día de un vistazo</div>
+      <p style="font-size:0.9rem; color:var(--muted); line-height:1.6; margin:0;">Abrís una sola app y ves lo que importa, sin revisar planillas ni papeles.</p>
+    </div>
+    <div style="background:var(--black-2); border:1px solid var(--border); border-radius:14px; padding:2rem 1.5rem;">
+      <div style="font-family:var(--font-h); font-size:1.35rem; font-weight:600; color:var(--white); margin-bottom:0.5rem;">Check-in sin papeleo</div>
+      <p style="font-size:0.9rem; color:var(--muted); line-height:1.6; margin:0;">Un toque y queda registrado. Chau cuaderno, chau tachar y reescribir cada cambio.</p>
+    </div>
+    <div style="background:var(--black-2); border:1px solid var(--border); border-radius:14px; padding:2rem 1.5rem;">
+      <div style="font-family:var(--font-h); font-size:1.35rem; font-weight:600; color:var(--white); margin-bottom:0.5rem;">Una sola fuente</div>
+      <p style="font-size:0.9rem; color:var(--muted); line-height:1.6; margin:0;">Lo que cambia en un lado se refleja en todo. Siempre la versión correcta, sin dudar.</p>
+    </div>
+  </div>
+  <p class="reveal d3" style="text-align:center; max-width:620px; margin:2rem auto 0; font-size:0.85rem; color:var(--muted-2);">
+    En construcción — lo estamos desarrollando junto a nuestros primeros negocios. Hoy ya en vivo: la atención 24/7.
+  </p>
+</section>
+
+<!-- ── CO-BUILD (Clientes fundadores) ── -->
+<section class="section" id="fundadores" style="border-top: 1px solid var(--border);">
+  <div class="two-col">
+    <div>
+      <span class="label reveal">Clientes fundadores</span>
+      <h2 class="display reveal d1">Lo estamos construyendo<br><em>con vos.</em></h2>
+      <p class="body-text reveal d2">
+        No te vendemos una caja cerrada. Entrás temprano, con el setup sin costo, y nos ayudás a conectar Timeless con lo que ya usás — tu Excel, tu Google Sheets, tu sistema de reservas.
+      </p>
+      <p class="body-text reveal d3" style="margin-top:1rem;">
+        Ayudanos a ayudarte: <strong style="color:var(--white);">juntos hacemos que tu día sea más simple</strong>, en un mundo que se mueve cada vez más rápido.
+      </p>
+      <a href="https://timelessai.pro/onboarding.html" class="btn-primary reveal d3" style="margin-top:1.75rem; width:fit-content;">
+        Sumate como cliente fundador →
+      </a>
+    </div>
+
+    <div class="reveal d2" style="background:var(--black-2); border:1px solid var(--border); border-radius:14px; padding:1.75rem;">
+      <div style="font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted-2); margin-bottom:1.4rem;">Qué conectamos</div>
+      <div style="display:flex; flex-direction:column; gap:1.1rem;">
+        <div style="display:flex; align-items:flex-start; gap:0.85rem;">
+          <span style="font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:700; padding:3px 9px; border-radius:999px; white-space:nowrap; flex-shrink:0; margin-top:2px; background:var(--green); color:var(--black);">Ahora</span>
+          <div><strong style="display:block; color:var(--white); font-size:0.95rem;">Tu Excel o Google Sheets</strong><span style="color:var(--muted); font-size:0.85rem; line-height:1.5;">Conectás la planilla que ya usás y la ves en tu panel.</span></div>
+        </div>
+        <div style="display:flex; align-items:flex-start; gap:0.85rem;">
+          <span style="font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:700; padding:3px 9px; border-radius:999px; white-space:nowrap; flex-shrink:0; margin-top:2px; background:var(--green-dim); color:var(--green);">Pronto</span>
+          <div><strong style="display:block; color:var(--white); font-size:0.95rem;">El export de tu sistema de reservas</strong><span style="color:var(--muted); font-size:0.85rem; line-height:1.5;">Subís tu archivo y te lo ordenamos en el panel.</span></div>
+        </div>
+        <div style="display:flex; align-items:flex-start; gap:0.85rem;">
+          <span style="font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:700; padding:3px 9px; border-radius:999px; white-space:nowrap; flex-shrink:0; margin-top:2px; background:transparent; color:var(--muted-2); border:1px solid var(--border-2);">Después</span>
+          <div><strong style="display:block; color:var(--white); font-size:0.95rem;">Booking, Airbnb y channel managers</strong><span style="color:var(--muted); font-size:0.85rem; line-height:1.5;">En el roadmap. Lo decimos derecho: todavía no está.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ── -->
+<section class="section" id="precios" style="border-top: 1px solid var(--border);">
+  <div style="text-align:center; max-width: 600px; margin: 0 auto 0;">
+    <span class="label reveal">Precios</span>
+    <h2 class="display reveal d1">Un precio simple.<br><em>Sin sorpresas.</em></h2>
+    <p class="body-text reveal d2" style="margin: 0 auto; max-width: 100%;">
+      Todo incluido. Sin cargos por mensaje. Cancelable cuando quieras.<br>
+      <span style="color:var(--muted-2); font-size:0.85rem;">Comparado con Conduit o HiJiffy a $400–$800/mes — las mismas capacidades, a una fracción del precio.</span>
+    </p>
+  </div>
+
+  <div class="pricing-grid" style="max-width: 880px; grid-template-columns: 1fr 1fr;">
+    <!-- LATAM -->
+    <div class="price-card reveal">
+      <div class="price-tier">Latinoamérica</div>
+      <div class="price-amount"><sup>$</sup>49</div>
+      <div class="price-period">/ mes · precio de lanzamiento</div>
+      <div class="price-target">Argentina · Colombia · México · Chile · Uruguay y más</div>
+      <div class="price-div"></div>
+      <ul class="price-list">
+        <li>Asistente virtual 24/7 en tu web</li>
+        <li>Conversaciones ilimitadas</li>
+        <li>Captura de leads + panel de gestión</li>
+        <li>Reporte semanal por email</li>
+        <li>Nombre, estructura y personalidad personalizados</li>
+        <li>Soporte por email</li>
+      </ul>
+      <a href="https://timelessai.pro/onboarding.html" class="price-cta pc-outline">Empezar ahora →</a>
+    </div>
+
+    <!-- Europa -->
+    <div class="price-card featured reveal d1">
+      <div class="price-pill">Europa</div>
+      <div class="price-tier">España · Suiza</div>
+      <div class="price-amount"><sup>$</sup>79</div>
+      <div class="price-period">/ mes · sin contrato</div>
+      <div class="price-target">España · Suiza · y comunidades hispanohablantes en Europa</div>
+      <div class="price-div"></div>
+      <ul class="price-list">
+        <li>Asistente virtual 24/7 en tu web</li>
+        <li>Conversaciones ilimitadas</li>
+        <li>Captura de leads + panel de gestión</li>
+        <li>Reporte semanal por email</li>
+        <li>Nombre, estructura y personalidad personalizados</li>
+        <li>Soporte por email</li>
+      </ul>
+      <a href="https://timelessai.pro/onboarding.html" class="price-cta pc-green">Empezar ahora →</a>
+    </div>
+  </div>
+
+  <p class="pricing-note reveal" style="max-width:600px; margin: 2rem auto 0; text-align:center;">
+    Sin contrato de permanencia · Sin tarjeta requerida para empezar · <a href="/terms.html">Términos</a> · <a href="/privacy.html">Privacidad</a>
+  </p>
+</section>
+
+<!-- ── TESTIMONIALS ── placeholder: agregar cuando Sun Life (Ana) autorice su caso real -->
+<!--
+<section class="section" style="border-top: 1px solid var(--border);">
+  TESTIMONIOS — pendiente caso real con permiso del cliente
+</section>
+-->
+
+<!-- ── FINAL CTA ── -->
+<div class="cta-section">
+  <span class="label reveal" style="display:block; margin-bottom:1.5rem;">¿Listo?</span>
+  <h2 class="reveal d1">
+    Tus clientes están escribiendo<br>ahora mismo. <em>¿Quién les responde?</em>
+  </h2>
+  <p class="cta-sub reveal d2">
+    Creá tu asistente hoy. En vivo en tu sitio web en menos de 24 horas. Sin tarjeta de crédito para empezar.
+  </p>
+  <div class="reveal d3">
+    <a href="https://timelessai.pro/onboarding.html" class="btn-primary" style="font-size:1rem; padding:15px 36px;">
+      Activá tu asistente — Gratis →
+    </a>
+  </div>
+  <div class="reveal d4">
+    <a
+      href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Ftimelessai.pro%2F"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="linkedin-share"
+    >
+      <div class="li-box">in</div>
+      Compartir en LinkedIn — ayudá a otro dueño de negocio a recuperar su tiempo
+    </a>
+  </div>
+</div>
+
+<!-- ── INLINE LEAD CAPTURE ── -->
+<section class="lead-section">
+  <h2 class="reveal d1">En vivo en <em>24 horas.</em></h2>
+  <p class="reveal d2">Contanos sobre tu negocio y configuramos tu asistente — sin tarjeta de crédito, sin contrato de permanencia.</p>
+  <div class="reveal d3" style="display:flex; justify-content:center;">
+    <a href="https://timelessai.pro/onboarding.html" class="btn-primary" style="font-size:1rem; padding:15px 36px;">
+      Quiero mi asistente →
+    </a>
+  </div>
+</section>
+
+<!-- ── FOUNDER ── -->
+<section class="section founder-section" style="border-top: 1px solid var(--border); max-width: 760px;">
+  <div class="founder-inner reveal">
+    <div class="founder-photo" aria-label="Matías Dutli, fundador de Timeless">
+      <span class="founder-initials">MD</span>
+    </div>
+    <div class="founder-text">
+      <span class="label" style="margin-bottom: 0.75rem;">Detrás de Timeless</span>
+      <p class="founder-quote">
+        "Soy Matías, fundador de Timeless. Lo armé porque vi cómo los negocios chicos pierden clientes todos los días simplemente por no poder responder a tiempo. Emma existe para resolver exactamente eso — sin que tengas que estar pegado al teléfono."
+      </p>
+      <div class="founder-meta">
+        <span class="founder-name">Matías Dutli</span>
+        <span class="founder-role">Fundador · Zurich, Suiza</span>
+        <a href="https://linkedin.com/in/matiasdutli" target="_blank" rel="noopener" class="founder-li">
+          <span class="founder-li-icon">in</span>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-col">
+    <a href="#" class="footer-logo">TIMELESS<span>.</span></a>
+    <span class="footer-tagline">Asistente virtual IA para tu negocio</span>
+  </div>
+  <div class="footer-links">
+    <a href="https://timelessai.pro/onboarding.html">Empezar</a>
+    <a href="#precios">Precios</a>
+    <a href="#como-funciona">Cómo funciona</a>
+    <a href="/terms.html">Términos</a>
+    <a href="/privacy.html">Privacidad</a>
+  </div>
+  <div class="footer-col" style="align-items:flex-end;">
+    <div class="footer-contact">¿Preguntas? <a href="mailto:team@timelessai.pro">team@timelessai.pro</a></div>
+    <div class="footer-social">
+      <span class="footer-contact" style="font-size:0.78rem;">Seguinos</span>
+      <a href="https://www.linkedin.com/company/timelessai" target="_blank" rel="noopener" class="footer-li-icon" aria-label="LinkedIn">in</a>
+    </div>
+    <div class="footer-copy" style="margin-top:0.25rem;">© 2026 Timeless AI · Suiza · Todos los derechos reservados.</div>
+  </div>
+</footer>
+
+<script>
+  /* ── ?hotel= URL param — personalize hero for cold outreach ── */
+  (function initHotelParam() {
+    const params = new URLSearchParams(window.location.search);
+    const hotelRaw = params.get('hotel');
+    if (!hotelRaw) return;
+    const hotel = decodeURIComponent(hotelRaw);
+    const badgeText = document.getElementById('hero-badge-text');
+    const heroSub = document.getElementById('hero-sub');
+    if (badgeText) badgeText.textContent = 'Emma para ' + hotel;
+    if (heroSub) {
+      heroSub.innerHTML =
+        'Así quedaría <em style="font-style:italic;color:var(--green);">Emma</em> para ' +
+        '<strong></strong> — lista en menos de 24 horas.';
+      heroSub.querySelector('strong').textContent = hotel;
+    }
+  })();
+
+  /* ── Nav scroll class ── */
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 40);
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  /* ── IntersectionObserver reveal ──
+     Theory: instead of listening to every scroll event (expensive, fires 60× per second),
+     we register each element once. The browser tells us when it enters the viewport.
+     We add a class, CSS handles the animation. No scroll listener needed. */
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+  /* Hero elements are already visible on load — reveal immediately */
+  setTimeout(() => {
+    document.querySelectorAll('.hero .reveal').forEach((el, i) => {
+      setTimeout(() => el.classList.add('visible'), i * 130);
+    });
+  }, 100);
+
+
+  /* ── CountUp animation ── */
+  (function initCountUp() {
+    const els = document.querySelectorAll('.count-up');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = +el.dataset.target;
+        const suffix = el.dataset.suffix || '';
+        const duration = 1800;
+        const start = performance.now();
+        function step(now) {
+          const p = Math.min((now - start) / duration, 1);
+          const ease = 1 - Math.pow(1 - p, 3);
+          const val = Math.round(ease * target);
+          el.textContent = val.toLocaleString() + suffix;
+          if (p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+        obs.unobserve(el);
+      });
+    }, { threshold: 0.4 });
+    els.forEach(el => obs.observe(el));
+  })();
+
+  /* ── Vertical tabs — with chat message animation ── */
+  const tabs = document.querySelectorAll('.vert-tab');
+  const panels = document.querySelectorAll('.vert-panel');
+
+  function animateChatMessages(panel) {
+    const msgs = panel.querySelectorAll('.vm');
+    msgs.forEach(m => { m.style.opacity = '0'; m.style.transform = 'translateY(8px)'; });
+    msgs.forEach((m, i) => {
+      setTimeout(() => {
+        m.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+        m.style.opacity = '1';
+        m.style.transform = 'none';
+      }, i * 320);
+    });
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.vert;
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      const targetPanel = document.getElementById('vert-' + target);
+      if (targetPanel) {
+        targetPanel.classList.add('active');
+        animateChatMessages(targetPanel);
+      }
+    });
+  });
+
+  /* Animate the default active panel on load */
+  setTimeout(() => {
+    const defaultPanel = document.querySelector('.vert-panel.active');
+    if (defaultPanel) animateChatMessages(defaultPanel);
+  }, 800);
+
+  /* ── Cursor glow ── */
+  (function initCursorGlow() {
+    const glow = document.getElementById('cursor-glow');
+    if (!glow) return;
+    let cx = -999, cy = -999;
+    let tx = -999, ty = -999;
+    window.addEventListener('mousemove', e => {
+      tx = e.clientX; ty = e.clientY;
+    }, { passive: true });
+    // Smooth follow with lerp so it drifts softly behind the cursor
+    function tick() {
+      cx += (tx - cx) * 0.09;
+      cy += (ty - cy) * 0.09;
+      glow.style.left = cx + 'px';
+      glow.style.top  = cy + 'px';
+      requestAnimationFrame(tick);
+    }
+    tick();
+  })();
+
+  /* ── Space starfield — global, fixed, parallax on scroll ──
+     Three depth layers scroll at different speeds to create a sense of
+     floating through space. Far stars barely move; near stars drift faster.
+     Stars wrap around vertically so the field is infinite. */
+  (function initStarfield() {
+    const canvas = document.getElementById('starfield');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let W, H, stars = [];
+
+    // depth layers: [parallaxFactor, count, maxRadius, maxOpacity, goldChance]
+    const LAYERS = [
+      { parallax: 0.04, count: 130, rMax: 0.7,  opMax: 0.35, gold: 0.08 }, // far — barely moves
+      { parallax: 0.13, count: 80,  rMax: 1.1,  opMax: 0.55, gold: 0.14 }, // mid
+      { parallax: 0.28, count: 40,  rMax: 1.7,  opMax: 0.75, gold: 0.22 }, // near — drifts noticeably
+    ];
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+
+    function createStars() {
+      stars = [];
+      LAYERS.forEach(layer => {
+        for (let i = 0; i < layer.count; i++) {
+          stars.push({
+            x:        Math.random() * window.innerWidth,
+            y:        Math.random() * window.innerHeight,
+            r:        Math.random() * layer.rMax + 0.2,
+            baseOp:   Math.random() * layer.opMax * 0.6 + 0.04,
+            tSpeed:   Math.random() * 0.007 + 0.002,
+            phase:    Math.random() * Math.PI * 2,
+            parallax: layer.parallax,
+            gold:     Math.random() < layer.gold,
+          });
+        }
+      });
+    }
+
+    let frame = 0;
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      frame++;
+      const scrollY = window.scrollY;
+      stars.forEach(s => {
+        const twinkle = Math.sin(frame * s.tSpeed + s.phase);
+        const alpha   = Math.max(0.03, s.baseOp + twinkle * 0.18);
+        // parallax: each layer moves at a different speed relative to scroll
+        // modulo H so stars wrap seamlessly when they leave the viewport
+        const drawY = ((s.y - scrollY * s.parallax) % H + H) % H;
+        ctx.beginPath();
+        ctx.arc(s.x, drawY, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = s.gold
+          ? `rgba(200,145,43,${alpha})`
+          : `rgba(240,230,211,${alpha})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+
+    resize();
+    createStars();
+    draw();
+    window.addEventListener('resize', () => { resize(); createStars(); }, { passive: true });
+  })();
+</script>
+</body>
+</html>
